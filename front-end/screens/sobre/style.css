@@ -132,6 +132,7 @@ section .section-title {
     border-radius: .25rem;
 }
 
+
 .image-flip:hover .frontside,
 .image-flip.hover .frontside {
     -webkit-transform: rotateY(180deg);
@@ -153,12 +154,20 @@ section .section-title {
     position: relative;
 }
 
+.backside, .frontside {
+    width: 100%;
+}
+
 .frontside {
     position: relative;
     -webkit-transform: rotateY(0deg);
     -ms-transform: rotateY(0deg);
     z-index: 2;
     margin-bottom: 30px;
+}
+
+.social-icon i {
+    font-size: 36px;
 }
 
 .backside {
