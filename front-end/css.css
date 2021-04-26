@@ -20,18 +20,12 @@ html {
 	height: 0%;
 	left: 0%;
 	top: 10%;
-	
+
 	background: rgba(0, 0, 0, 0.3);
 }
 
 #imgbarra {
 	height: 50px;
-}
-
-
-.vibe-pic img {
-  height: 100%;
-  width: 100%;
 }
 
 .content {
@@ -40,7 +34,7 @@ html {
 }
 
 .bg-image {
-	background-image: url('bd.jpg');
+	background-image: url('assets/background.jpg');
 	background-attachment: fixed;
 	filter: blur(1px);
 	-webkit-filter: blur(5px);
@@ -62,9 +56,9 @@ html {
 }
 
 @media screen and (min-width: 1024px) {
-	/* .navbar {
-                   height: 7vh;
-               } */
+	.navbar {
+		height: 7vh;
+	}
 }
 
 #navbarum {
@@ -126,6 +120,12 @@ html {
 	background-color: white;
 }
 
+#carduml {
+	margin-top: -120%;
+	margin-bottom: 10%;
+	margin-left: 20%;
+}
+
 #letrasbaixo {
 	margin-left: 25%;
 }
@@ -143,28 +143,21 @@ html {
 	width: 30%;
 }
 
+#card1 {
+}
+
+#card2 {
+}
+
+#card3 {
+}
+
+#cards {
+}
+
+#divprinc {
+}
+
 .loginbox {
 	background-color: rgba(184, 183, 183, 0.2);
-}
-
-
-
-
-.btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0px;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.42857;
-}
-
-.btn-circle.btn-xl {
-    width: 70px;
-    height: 70px;
-    padding: 10px 16px;
-    border-radius: 35px;
-    font-size: 24px;
-    line-height: 1.33;
 }
