@@ -2,8 +2,30 @@ html {
 	background-color: white;
 }
 
+body {
+    background-image: url("../../assets/background.jpg");
+    
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.content {
+    padding: 50px 0px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.bg-text {  
+    top: 20%;
+    z-index: 2;
+    width: 100%;
+    padding: 20px;
+}
+
 #imgbarra {
-	width: 8%;
+	height: 50px;
 }
 
 #navbarum {
@@ -48,6 +70,20 @@ html {
 
 #letrasbaixo {
 	margin-left: 25%;
+}
+
+@media screen and (min-width: 1024px) {
+
+    /* .main {
+        height: 93vh;
+    } */
+    .bg-text {
+        top: 100px;
+    }
+
+    .navbar {
+        height: 7vh;
+    }
 }
 
 /* FontAwesome for working BootSnippet :> */
