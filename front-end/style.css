@@ -33,6 +33,10 @@ html {
 	background-color: rgba(255, 255, 255, 0.42);
 }
 
+a {
+	text-decoration: none;
+}
+
 .bg-image {
 	background-image: url('assets/background.jpg');
 	background-attachment: fixed;
@@ -141,21 +145,6 @@ html {
 
 #cardtresbaixo {
 	width: 30%;
-}
-
-#card1 {
-}
-
-#card2 {
-}
-
-#card3 {
-}
-
-#cards {
-}
-
-#divprinc {
 }
 
 .loginbox {
