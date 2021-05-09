@@ -1,2 +1,5 @@
 node_modules
-node/app.js
+.vscode
+/node/app.js
+/back-end/target/
+/back-end/src/main/java/util/auth
