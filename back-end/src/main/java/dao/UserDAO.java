@@ -60,8 +60,8 @@ public class UserDAO {
         pst.setObject(8, user.getStats().getDanceability());
         pst.setObject(9, user.getStats().getEnergy());
         pst.setObject(10, user.getStats().getSpeechiness());
-        pst.setDouble(11, user.getStats().getInstrumentalness());
-
+        pst.setObject(11, user.getStats().getInstrumentalness());
+        
         return pst;
     }
 
