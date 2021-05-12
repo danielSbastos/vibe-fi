@@ -2,15 +2,21 @@ package model;
 
 import util.exceptions.InvalidSeedTypeValueException;
 
-public class vibeSeed {
+public class VibeSeed {
     private String vibeId;
     private Vibe vibe;
     private String identifier;
     private String type;
     
     
-    public vibeSeed(String identifier, String type) throws InvalidSeedTypeValueException {
-        this.identifier = identifier;
+    public VibeSeed (String identifier, String type) throws InvalidSeedTypeValueException {
+        setIdentifier(identifier);
+        setType(type);
+    }
+
+    public VibeSeed (String vibeId, String identifier, String type) throws InvalidSeedTypeValueException {
+        setVibeId(vibeId);
+        setIdentifier(identifier);
         setType(type);
     }
     
@@ -51,5 +57,4 @@ public class vibeSeed {
             throw new InvalidSeedTypeValueException(type + " is not a valid seed type.");
         }
     }
-    
 }

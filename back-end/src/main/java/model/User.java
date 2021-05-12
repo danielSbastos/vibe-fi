@@ -1,32 +1,34 @@
 package model;
 
-public class User extends Features {
+public class User {
 
     private String id;
     private String name;
+    private Features stats;
 
 
     public User(String id, String name) {
         this.id = id;
         this.name = name;
+        this.stats = new Features();
     }
     
-
-    public User(String id, String name, int popularity, float tempo, double valence, double liveness,
-            double acousticness, double danceability, double energy, double speechiness, double instrumentalness) {
+    
+    public User(String id, String name, Integer popularity, Float tempo, Double valence, Double liveness,
+            Double acousticness, Double danceability, Double energy, Double speechiness, Double instrumentalness) {
         this.id = id;
         this.name = name;
-        this.popularity = popularity;
-        this.tempo = tempo;
-        this.valence = valence;
-        this.liveness = liveness;
-        this.acousticness = acousticness;
-        this.danceability = danceability;
-        this.energy = energy;
-        this.speechiness = speechiness;
-        this.instrumentalness = instrumentalness;
+        this.stats.popularity = popularity;
+        this.stats.tempo = tempo;
+        this.stats.valence = valence;
+        this.stats.liveness = liveness;
+        this.stats.acousticness = acousticness;
+        this.stats.danceability = danceability;
+        this.stats.energy = energy;
+        this.stats.speechiness = speechiness;
+        this.stats.instrumentalness = instrumentalness;
     }
-
+    
     public String getId() {
         return this.id;
     }
@@ -43,4 +45,12 @@ public class User extends Features {
         this.name = name;
     }
 
+
+    public Features getStats() {
+        return this.stats;
+    }
+
+    public void setStats(Features stats) {
+        this.stats = stats;
+    }
 }
