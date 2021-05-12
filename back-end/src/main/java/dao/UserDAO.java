@@ -61,29 +61,29 @@ public class UserDAO {
         pst.setObject(9, user.getStats().getEnergy());
         pst.setObject(10, user.getStats().getSpeechiness());
         pst.setObject(11, user.getStats().getInstrumentalness());
-        
+
         return pst;
     }
 
     private PreparedStatement prepareGetUserSQLStatement(String id) throws SQLException {
         connect();
-
+        
         String query = "SELECT * FROM vibefi.user WHERE idSpotify = ?;";
         PreparedStatement pst = connection.prepareStatement(query);
-
+        
         pst.setString(1, id);
-
+        
         return pst;
     }
 
     private PreparedStatement prepareUpdateUserSQLStatement(User user) throws SQLException {
         connect();
-
+        
         String query = "UPDATE vibefi.user"
                 + " SET name=?, popularity=?, tempo=?, valence=?, liveness=?, acousticness=?, danceability=?, energy=?, speechiness=?, instrumentalness=?"
                 + " WHERE idSpotify=?;";
         PreparedStatement pst = connection.prepareStatement(query);
-
+        
         pst.setString(1, user.getName());
         pst.setObject(2, user.getStats().getPopularity());
         pst.setObject(3, user.getStats().getTempo());
@@ -95,13 +95,13 @@ public class UserDAO {
         pst.setObject(9, user.getStats().getSpeechiness());
         pst.setObject(10, user.getStats().getInstrumentalness());
         pst.setString(11, user.getId());
-
+        
         return pst;
     }
 
     private PreparedStatement prepareDeleteUserSQLStatement(String id) throws SQLException {
         connect();
-
+        
         String query = "DELETE FROM vibefi.user WHERE idSpotify = ?;";
         PreparedStatement pst = connection.prepareStatement(query);
 
@@ -116,9 +116,6 @@ public class UserDAO {
 
     public boolean createUser(User user) {
         boolean status = false;
-        if (connection == null) {
-            connect();
-        }
 
         try {
             PreparedStatement pst = prepareCreateUserSQLStatement(user);
@@ -134,14 +131,11 @@ public class UserDAO {
 
     public User getUser(String id) {
         User user = null;
-        if (connection == null) {
-            connect();
-        }
-
+        
         try {
             PreparedStatement pst = prepareGetUserSQLStatement(id);
             ResultSet rs = pst.executeQuery();
-
+            
             if (rs.next()) {
                 user = new User(rs.getString("idSpotify"), rs.getString("name"), (Integer) rs.getObject("popularity"),
                         (Double) rs.getObject("tempo"), (Double) rs.getObject("valence"),
@@ -158,10 +152,7 @@ public class UserDAO {
 
     public boolean updateUser(User user) {
         boolean status = false;
-        if (connection == null) {
-            connect();
-        }
-
+        
         try {
             PreparedStatement pst = prepareUpdateUserSQLStatement(user);
             pst.executeUpdate();
