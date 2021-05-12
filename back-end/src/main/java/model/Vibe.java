@@ -18,6 +18,8 @@ public class Vibe {
         this.originTemplateId = originTemplateId;
         this.name = name;
         this.description = description;
+        this.minFeatures = new Features();
+        this.maxFeatures = new Features();
     }
 
     public Vibe(String id, String userId, String originTemplateId, String name, String description,
@@ -30,24 +32,10 @@ public class Vibe {
         this.originTemplateId = originTemplateId;
         this.name = name;
         this.description = description;
-        this.minFeatures.popularity = minPopularity;
-        this.maxFeatures.popularity = maxPopularity;
-        this.minFeatures.tempo = minTempo;
-        this.maxFeatures.tempo = maxTempo;
-        this.minFeatures.valence = minValence;
-        this.maxFeatures.valence = maxValence;
-        this.minFeatures.liveness = minLiveness;
-        this.maxFeatures.liveness = maxLiveness;
-        this.minFeatures.acousticness = minAcousticness;
-        this.maxFeatures.acousticness = maxAcousticness;
-        this.minFeatures.danceability = minDanceability;
-        this.maxFeatures.danceability = maxDanceability;
-        this.minFeatures.energy = minEnergy;
-        this.maxFeatures.energy = maxEnergy;
-        this.minFeatures.speechiness = minSpeechiness;
-        this.maxFeatures.speechiness = maxSpeechiness;
-        this.minFeatures.instrumentalness = minInstrumentalness;
-        this.maxFeatures.instrumentalness = maxInstrumentalness;
+        this.minFeatures = new Features(minPopularity, minTempo, minValence, minLiveness, minAcousticness,
+                minDanceability, minEnergy, minSpeechiness, minInstrumentalness);
+        this.maxFeatures = new Features(maxPopularity, maxTempo, maxValence, maxLiveness, maxAcousticness,
+                maxDanceability, maxEnergy, maxSpeechiness, maxInstrumentalness);
     }
 
     public String getId() {

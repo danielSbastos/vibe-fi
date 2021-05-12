@@ -18,7 +18,7 @@ public class VibeSeed {
         setIdentifier(identifier);
         setType(type);
     }
-    
+
     public String getVibeId() {
         return this.vibeId;
     }
