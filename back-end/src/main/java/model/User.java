@@ -14,7 +14,7 @@ public class User {
     }
     
     
-    public User(String id, String name, Integer popularity, Float tempo, Double valence, Double liveness,
+    public User(String id, String name, Integer popularity, Double tempo, Double valence, Double liveness,
             Double acousticness, Double danceability, Double energy, Double speechiness, Double instrumentalness) {
         this.id = id;
         this.name = name;

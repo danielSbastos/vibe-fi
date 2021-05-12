@@ -2,7 +2,7 @@ package model;
 
 public class Features {
     protected Integer popularity;
-    protected Float tempo;
+    protected Double tempo;
     protected Double valence;
     protected Double liveness;
     protected Double acousticness;
@@ -10,8 +10,7 @@ public class Features {
     protected Double energy;
     protected Double speechiness;
     protected Double instrumentalness;
-    
-    
+
     public Features() {
         this.popularity = null;
         this.tempo = null;
@@ -24,8 +23,8 @@ public class Features {
         this.instrumentalness = null;
     }
 
-    public Features(int popularity, float tempo, double valence, double liveness, double acousticness,
-            double danceability, double energy, double speechiness, double instrumentalness) {
+    public Features(Integer popularity, Double tempo, Double valence, Double liveness, Double acousticness,
+            Double danceability, Double energy, Double speechiness, Double instrumentalness) {
         this.popularity = popularity;
         this.tempo = tempo;
         this.valence = valence;
@@ -45,11 +44,11 @@ public class Features {
         this.popularity = popularity;
     }
 
-    public Float getTempo() {
+    public Double getTempo() {
         return this.tempo;
     }
 
-    public void setTempo(Float tempo) {
+    public void setTempo(Double tempo) {
         this.tempo = tempo;
     }
 

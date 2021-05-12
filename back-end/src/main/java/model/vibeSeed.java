@@ -7,20 +7,18 @@ public class VibeSeed {
     private Vibe vibe;
     private String identifier;
     private String type;
-    
-    
-    public VibeSeed (String identifier, String type) throws InvalidSeedTypeValueException {
+
+    public VibeSeed(String identifier, String type) throws InvalidSeedTypeValueException {
         setIdentifier(identifier);
         setType(type);
     }
 
-    public VibeSeed (String vibeId, String identifier, String type) throws InvalidSeedTypeValueException {
+    public VibeSeed(String vibeId, String identifier, String type) throws InvalidSeedTypeValueException {
         setVibeId(vibeId);
         setIdentifier(identifier);
         setType(type);
     }
     
-
     public String getVibeId() {
         return this.vibeId;
     }
@@ -37,7 +35,7 @@ public class VibeSeed {
         this.vibe = vibe;
         this.vibeId = vibe.getId();
     }
-    
+
     public String getIdentifier() {
         return this.identifier;
     }
@@ -45,7 +43,7 @@ public class VibeSeed {
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
-    
+
     public String getType() {
         return this.type;
     }
