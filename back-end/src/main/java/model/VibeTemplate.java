@@ -8,16 +8,24 @@ public class VibeTemplate {
     private Features maxFeatures;
 
     public VibeTemplate(String id, String name) {
-        this.id = id;
+        setId(id);
         this.name = name;
     }
-
+    
     public VibeTemplate(String id, String name, String description) {
-        this.id = id;
+        setId(id);
         this.name = name;
         this.description = description;
         this.minFeatures = new Features();
         this.maxFeatures = new Features();
+    }
+
+    public VibeTemplate(String id, String name, String description, Features minFeatures, Features maxFeatures) {
+        setId(id);
+        this.name = name;
+        this.description = description;
+        this.minFeatures = minFeatures;
+        this.maxFeatures = maxFeatures;
     }
 
     public VibeTemplate(String id, String name, String description, Integer minPopularity, Integer maxPopularity,
@@ -25,7 +33,7 @@ public class VibeTemplate {
             Double maxLiveness, Double minAcousticness, Double maxAcousticness, Double minDanceability,
             Double maxDanceability, Double minEnergy, Double maxEnergy, Double minSpeechiness, Double maxSpeechiness,
             Double minInstrumentalness, Double maxInstrumentalness) {
-        this.id = id;
+        setId(id);
         this.name = name;
         this.description = description;
         this.minFeatures = new Features(minPopularity, minTempo, minValence, minLiveness, minAcousticness,
@@ -39,7 +47,7 @@ public class VibeTemplate {
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id.trim();
     }
 
     public String getName() {

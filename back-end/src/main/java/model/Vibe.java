@@ -11,9 +11,19 @@ public class Vibe {
     private Features minFeatures;
     private Features maxFeatures;
     private VibeSeed[] vibeSeeds;
+    
+    public Vibe(String id, String userId, String originTemplateId, String name) {
+        setId(id);
+        this.userId = userId;
+        this.originTemplateId = originTemplateId;
+        this.name = name;
+        this.description = "";
+        this.minFeatures = new Features();
+        this.maxFeatures = new Features();
+    }
 
     public Vibe(String id, String userId, String originTemplateId, String name, String description) {
-        this.id = id;
+        setId(id);
         this.userId = userId;
         this.originTemplateId = originTemplateId;
         this.name = name;
@@ -27,7 +37,7 @@ public class Vibe {
             Double maxValence, Double minLiveness, Double maxLiveness, Double minAcousticness, Double maxAcousticness,
             Double minDanceability, Double maxDanceability, Double minEnergy, Double maxEnergy, Double minSpeechiness,
             Double maxSpeechiness, Double minInstrumentalness, Double maxInstrumentalness) {
-        this.id = id;
+        setId(id);
         this.userId = userId;
         this.originTemplateId = originTemplateId;
         this.name = name;
@@ -43,7 +53,7 @@ public class Vibe {
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id.trim();
     }
 
     public String getUserId() {

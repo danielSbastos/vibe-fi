@@ -7,14 +7,14 @@ public class User {
     private Features stats;
 
     public User(String id, String name) {
-        this.id = id;
+        setId(id);
         this.name = name;
         this.stats = new Features();
     }
 
     public User(String id, String name, Integer popularity, Double tempo, Double valence, Double liveness,
             Double acousticness, Double danceability, Double energy, Double speechiness, Double instrumentalness) {
-        this.id = id;
+        setId(id);
         this.name = name;
         this.stats = new Features(popularity, tempo, valence, liveness, acousticness, danceability, energy, speechiness,
                 instrumentalness);
@@ -23,9 +23,9 @@ public class User {
     public String getId() {
         return this.id;
     }
-
+    
     public void setId(String id) {
-        this.id = id;
+        this.id = id.trim();
     }
 
     public String getName() {
