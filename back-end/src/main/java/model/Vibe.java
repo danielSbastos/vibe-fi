@@ -23,10 +23,10 @@ public class Vibe {
     }
 
     public Vibe(String id, String userId, String originTemplateId, String name, String description,
-            Integer minPopularity, Double minTempo, Double minValence, Double minLiveness, Double minAcousticness,
-            Double minDanceability, Double minEnergy, Double minSpeechiness, Double minInstrumentalness,
-            Integer maxPopularity, Double maxTempo, Double maxValence, Double maxLiveness, Double maxAcousticness,
-            Double maxDanceability, Double maxEnergy, Double maxSpeechiness, Double maxInstrumentalness) {
+            Integer minPopularity, Integer maxPopularity, Double minTempo, Double maxTempo, Double minValence,
+            Double maxValence, Double minLiveness, Double maxLiveness, Double minAcousticness, Double maxAcousticness,
+            Double minDanceability, Double maxDanceability, Double minEnergy, Double maxEnergy, Double minSpeechiness,
+            Double maxSpeechiness, Double minInstrumentalness, Double maxInstrumentalness) {
         this.id = id;
         this.userId = userId;
         this.originTemplateId = originTemplateId;
