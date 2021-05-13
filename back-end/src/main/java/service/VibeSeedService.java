@@ -40,11 +40,12 @@ public class VibeSeedService {
 
             for(int i = 0; i <vibeSeed.length; i++){
                 resp += "{\n\"vibeId\":\""+vibeSeed[i].getVibeId()+
-                "\n\"identifier\":\""+vibeSeed[i].getIdentifier()+
-                "\n\"type\":\""+vibeSeed[i].getType()+
-                "\n},";
+                "\",\n\"identifier\":\""+vibeSeed[i].getIdentifier()+
+                "\",\n\"type\":\""+vibeSeed[i].getType()+
+                "\"\n},";
             }
-
+            resp = resp.substring(0, resp.length() - 1);
+            resp += "]";
             return resp;
         } else {
             response.status(404); // 404 Not found
@@ -52,4 +53,24 @@ public class VibeSeedService {
         }
 
     }
+
+    public Object update(Request request, Response response) throws InvalidSeedTypeValueException {
+        String vibeId = request.params(":id");
+        String oldIdentifier = request.params("oldIdentifier");
+        String newIdentifier = request.params("newIdentifier");
+        String type = request.params("type");
+        
+		VibeSeed vibeSeed = new VibeSeed(vibeId, newIdentifier, type);
+        
+        if (vibeSeed != null) {
+
+        	vibeSeedDAO.updateVibeSeed(vibeSeed, oldIdentifier);
+            return vibeSeed.getIdentifier();
+        } else {
+            response.status(404); // 404 Not found
+            return "Produto nao encontrado.";
+        }
+
+	}
+
 }

@@ -59,6 +59,21 @@
         </form>
     </section>
 
+    <section class="section--row__responsive">
+        <h1 class="generaltext">Atualizar User</h1>
+        <form onsubmit="addIdToPath('form-update', 'http://localhost:6789//vibeseed/update/')" method="get" id="form-update">
+            <input class="input--down" type="text" id="id" value="" placeholder="id do produto...">
+            <p>oldIdentifier:</p>          
+            <input class="input--register" type="text" name="oldIdentifier" value="">
+            <p>newIdentifier:</p>          
+            <input class="input--register" type="text" name="newIdentifier" value="">
+            <p>type:</p>          
+            <input class="input--register" type="text" name="type" value="">
+        
+            <input type="submit" value="atualizar" class="input--remove__style input--button">
+        </form>
+    </section>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
         crossorigin="anonymous"></script>

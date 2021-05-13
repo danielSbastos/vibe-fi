@@ -130,7 +130,6 @@ public class VibeSeedDAO {
         try {
             PreparedStatement pst = prepareGetVibeSeedsBySeedSQLStatement(vibeIdentifier);
             ResultSet rs = pst.executeQuery();
-            System.out.println(pst+"----"+rs.getRow());
             if (rs.next()) {
                 rs.last();
                 seeds = new VibeSeed[rs.getRow()];
