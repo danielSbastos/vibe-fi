@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<script type="text/javascript">
+
+    function addIdToPath(form_name, base_url){
+        var your_form = document.getElementById(form_name);
+        console.log(your_form);
+        var id = your_form.elements.namedItem("id").value;
+        action_src = base_url + id;
+        your_form.action = action_src;
+    }
+    
+</script>
+
+<body>
+    <p>teste</p>
+    <section class="section--row__responsive">
+        <h1 class="generaltext">Detalhar produto</h1>
+        <form onsubmit="addIdToPath('form-get', 'http://localhost:6789/user/')" method="get" id="form-get">
+            <input class="input--down" type="text" id="id" value="" placeholder="id do produto..."> 
+            <input type="submit" value="consultar" class="input--button input--consult__style">
+        </form>
+    </section>
+    <section class="section--row__responsive">
+        <h1 class="generaltext">Listar produtos</h1>
+        <form action="http://localhost:6789/userProfileSource/id"  method="get" id="form-all">
+            <br><br><br>
+            <input type="submit" value="todos" class="input--consult__style input--button">
+        </form>
+    </section>
+</body>
+</html>
