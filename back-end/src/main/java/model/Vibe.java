@@ -11,7 +11,7 @@ public class Vibe {
     private Features minFeatures;
     private Features maxFeatures;
     private VibeSeed[] vibeSeeds;
-    
+
     public Vibe(String id, String userId, String originTemplateId, String name) {
         setId(id);
         this.userId = userId;
@@ -21,7 +21,7 @@ public class Vibe {
         this.minFeatures = new Features();
         this.maxFeatures = new Features();
     }
-
+    
     public Vibe(String id, String userId, String originTemplateId, String name, String description) {
         setId(id);
         this.userId = userId;
@@ -30,6 +30,17 @@ public class Vibe {
         this.description = description;
         this.minFeatures = new Features();
         this.maxFeatures = new Features();
+    }
+
+    public Vibe(String id, String userId, String originTemplateId, String name, String description,
+            Features minFeatures, Features maxFeatures) {
+        setId(id);
+        this.userId = userId;
+        this.originTemplateId = originTemplateId;
+        this.name = name;
+        this.description = description;
+        this.minFeatures = minFeatures;
+        this.maxFeatures = maxFeatures;
     }
 
     public Vibe(String id, String userId, String originTemplateId, String name, String description,

@@ -6,11 +6,11 @@ import util.db.DatabaseConnection;
 
 public class UserDAO {
     protected Connection connection;
-
+    
     public UserDAO() {
         connection = null;
     }
-
+    
     /* connection methods */
     protected boolean connect() {
         boolean status = false;
@@ -37,7 +37,7 @@ public class UserDAO {
         }
         return status;
     }
-
+    
     /******************************************************************************************/
 
     /* preparedStatement methods */
@@ -111,7 +111,7 @@ public class UserDAO {
     }
 
     /******************************************************************************************/
-
+    
     /* CRUD */
 
     public boolean createUser(User user) {

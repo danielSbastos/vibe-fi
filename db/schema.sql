@@ -89,7 +89,7 @@ CREATE TYPE SeedType AS ENUM ('track', 'artist', 'genre');
 CREATE TABLE IF NOT EXISTS vibeFi.vibeSeed (
   vibe CHAR(22) NOT NULL,
   seedIdentifier CHAR(22) NOT NULL,
-  tipo SeedType NOT NULL,
+  type SeedType NOT NULL,
   PRIMARY KEY (vibe, seedIdentifier),
   CONSTRAINT fk_vibeSeed_Vibe1
     FOREIGN KEY (vibe)
