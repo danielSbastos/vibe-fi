@@ -152,7 +152,7 @@ public class UserDAO {
 
     public boolean updateUser(User user) {
         boolean status = false;
-
+        
         try {
             PreparedStatement pst = prepareUpdateUserSQLStatement(user);
             pst.executeUpdate();
@@ -161,7 +161,7 @@ public class UserDAO {
         } catch (SQLException u) {
             throw new RuntimeException(u);
         }
-
+        
         return status;
     }
 
