@@ -20,10 +20,10 @@ public class DatabaseConnection implements Serializable {
         String mydatabase = "vibeFi";
         int porta = 5432;
         String url = "jdbc:postgresql://" + serverName + ":" + porta + "/" + mydatabase;
-        String username = "";
+        String username = "vibefi_admin@ti2-cc-vibefi";
         // String username = "postgres";
-        String password = "";
-        //String password = "admin";
+        String password = "CL6QeZTnqg8qdc6";
+        // String password = "admin";
         
         try {
             Class.forName(driverName);
