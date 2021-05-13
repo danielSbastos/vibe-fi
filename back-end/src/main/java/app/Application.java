@@ -7,6 +7,7 @@ public class Application {
 
     private static UserService userService = new UserService();
     private static VibeService vibeService = new VibeService();
+    private static VibeSeedService vibeSeedService = new VibeSeedService();
     
     public static void main(String[] args) {
         port(6789);
@@ -23,5 +24,9 @@ public class Application {
         get("/vibe/user/:userId", (request, response) -> vibeService.getFromUser(request, response));
         get("/vibe/update/:id", (request, response) -> vibeService.update(request, response));
         get("/vibe/delete/:id", (request, response) -> vibeService.remove(request, response));
+
+        //Application VibeSeed
+        post("/vibeseed", (request, response) -> vibeSeedService.add(request, response));
+        //get("/vibeseed/:id", (request, response) -> vibeSeedService.get(request, response));
     }
 }

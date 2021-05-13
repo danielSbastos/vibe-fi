@@ -51,19 +51,18 @@ public class VibeSeedDAO {
 
         pst.setString(1, vibeSeed.getVibeId());
         pst.setString(2, vibeSeed.getIdentifier());
-        pst.setObject(3, vibeSeed.getType());
+        pst.setObject(3, vibeSeed.getType(),Types.OTHER);
 
         return pst;
     }
 
     private PreparedStatement prepareGetVibeSeedsBySeedSQLStatement(String vibeIdentifier) throws SQLException {
         connect();
-
-        String query = "SELECT vibe, seedidentifier, type FROM vibefi.vibeseed WHERE vibe = ?";
+        
+        String query = "SELECT vibe, seedidentifier, type FROM vibefi.vibeseed WHERE vibe = ?;";
         PreparedStatement pst = connection.prepareStatement(query);
 
         pst.setString(1, vibeIdentifier);
-
         return pst;
     }
 
@@ -130,7 +129,7 @@ public class VibeSeedDAO {
         try {
             PreparedStatement pst = prepareGetVibeSeedsBySeedSQLStatement(vibeIdentifier);
             ResultSet rs = pst.executeQuery();
-
+            System.out.println(pst+"----"+rs.getRow());
             if (rs.next()) {
                 rs.last();
                 seeds = new VibeSeed[rs.getRow()];

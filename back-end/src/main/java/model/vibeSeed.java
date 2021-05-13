@@ -50,7 +50,7 @@ public class VibeSeed {
 
     public void setType(String type) throws InvalidSeedTypeValueException {
         type = type.trim().toLowerCase();
-        if (type == "track" || type == "artist" || type == "genre") {
+        if (type.equals("track") || type.equals("artist") || type.equals("genre")) {
             this.type = type;
         } else {
             throw new InvalidSeedTypeValueException(type + " is not a valid seed type.");

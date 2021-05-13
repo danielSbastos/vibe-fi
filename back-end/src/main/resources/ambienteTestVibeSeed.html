@@ -37,45 +37,25 @@
 </script>
 
 <body>
-    <p>teste</p>
-    <button type="button" id="test" class="btn btn-primary">Primary</button>
-    <section class="section--row__responsive">
-        <h1 class="generaltext">Detalhar Vibe</h1>
-        <form onsubmit="addIdToPath('form-get', 'http://localhost:6789/vibe/')" method="get" id="form-get">
-            <input class="input--down" type="text" id="id" value="" placeholder="id do produto...">
-            <input type="submit" value="consultar" class="input--button input--consult__style">
-        </form>
-    </section>
-
-    <section class="section--row__responsive">
-        <h1 class="generaltext">Listar vibes</h1>
-        <form onsubmit="addIdToPath('form-all', 'http://localhost:6789/vibe/user/')"  method="get" id="form-all">
-            <br><br><br>
-            <input class="input--down" type="text" id="id" value="" placeholder="id do produto...">
-            <input type="submit" value="todos" class="input--consult__style input--button">
-        </form>
-    </section>
 
     <section class="section--mainrow__responsive first--section">
-        <h1 class="generaltext">Inserir vibe</h1>
-        <form class="form--register" action="http://localhost:6789/vibe" method="post" id="form-add">
+        <h1 class="generaltext">Inserir vibeseed</h1>
+        <form class="form--register" action="http://localhost:6789/vibeseed" method="post" id="form-add">
             <p>ID:</p>          
-            <input class="input--register" type="text" name="id" value="" placeholder="">
-            <p>Nome:</p>          
-            <input class="input--register" type="text" name="name" value="" placeholder="">
-            <p>userID:</p>          
-            <input class="input--register" type="text" name="userId" value="" placeholder="">
-            <p>originTemplateId:</p>          
-            <input class="input--register" type="text" name="originTemplateId" value="" placeholder=""> 
+            <input class="input--register" type="text" name="vibeId" value="" placeholder="">
+            <p>identifier:</p>          
+            <input class="input--register" type="text" name="identifier" value="" placeholder="">
+            <p>type:</p>          
+            <input class="input--register" type="text" name="type" value="" placeholder="">
             <input type="submit" value="cadastrar" class="input--main__style input--button">
         </form>
     </section>
 
     <section class="section--row__responsive">
-        <h1 class="generaltext">Remover vibe</h1>
-        <form onsubmit="addIdToPath('form-delete', 'http://localhost:6789/vibe/delete/')" method="get" id="form-delete">
+        <h1 class="generaltext">Detalhar VibeSeeds</h1>
+        <form onsubmit="addIdToPath('form-get', 'http://localhost:6789/vibeseed/')" method="get" id="form-get">
             <input class="input--down" type="text" id="id" value="" placeholder="id do produto...">
-            <input type="submit" value="remover" class="input--remove__style input--button">
+            <input type="submit" value="consultar" class="input--button input--consult__style">
         </form>
     </section>
 
