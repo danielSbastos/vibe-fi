@@ -53,7 +53,7 @@ public class UserService {
             "]\n}";
         } else {
             response.status(404); // 404 Not found
-            return "User " + id + " nao encontrado.";
+            return "User " + id + " no encontrado.";
         }
 
     }
