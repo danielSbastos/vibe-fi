@@ -60,13 +60,31 @@ public class VibeSeedService {
 
         VibeSeed vibeSeed = new VibeSeed(vibeId, newIdentifier, type);
         
-        if (vibeSeed != null) {
+        if (vibeId != null) {
             vibeSeedDAO.updateVibeSeed(vibeSeed, oldIdentifier);
+            response.status(200); // success
             return vibeSeed.getIdentifier();
         } else {
             response.status(404); // 404 Not found
             return "Produto nao encontrado.";
         }
     }
+    public Object remove(Request request, Response response) throws InvalidSeedTypeValueException{
+        String id = (request.params(":id"));
+        String identifier = request.queryParams("identifier");
+
+        VibeSeed vibeSeed = new VibeSeed(id, identifier, "track");
+
+        if (id != null) {
+
+            vibeSeedDAO.deleteVibeSeed(vibeSeed);
+
+            response.status(200); // success
+        	return id;
+        } else {
+            response.status(404); // 404 Not found
+            return "User nao encontrado.";
+        }
+	}
 
 }

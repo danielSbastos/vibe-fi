@@ -75,7 +75,7 @@ public class VibeSeedDAO {
         PreparedStatement pst = connection.prepareStatement(query);
 
         pst.setString(1, vibeSeed.getIdentifier());
-        pst.setString(2, vibeSeed.getType());
+        pst.setObject(2, vibeSeed.getType(), Types.OTHER);
         pst.setString(3, vibeSeed.getVibeId());
         pst.setString(4, oldIdentifier);
 

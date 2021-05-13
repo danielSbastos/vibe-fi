@@ -31,6 +31,7 @@ public class Application {
         //Application VibeSeed
         post("/vibeseed", (request, response) -> vibeSeedService.add(request, response));
         get("/vibeseed/:id", (request, response) -> vibeSeedService.get(request, response));
-        post("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));
+        get("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));
+        get("/vibeseed/delete/:id", (request, response) -> vibeSeedService.remove(request, response));
     }
 }
