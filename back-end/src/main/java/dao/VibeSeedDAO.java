@@ -60,7 +60,8 @@ public class VibeSeedDAO {
         connect();
         
         String query = "SELECT vibe, seedidentifier, type FROM vibefi.vibeseed WHERE vibe = ?;";
-        PreparedStatement pst = connection.prepareStatement(query);
+        PreparedStatement pst = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY);
 
         pst.setString(1, vibeIdentifier);
         return pst;

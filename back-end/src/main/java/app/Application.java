@@ -2,6 +2,7 @@ package app;
 
 import static spark.Spark.*;
 import service.*;
+import util.cors.*;
 
 public class Application {
 
@@ -11,6 +12,8 @@ public class Application {
     
     public static void main(String[] args) {
         port(6789);
+        CorsFilter corsFilter = new CorsFilter();
+        corsFilter.apply();
         
         //Application Users
         get("/user/:id", (request, response) -> userService.get(request, response));
@@ -27,6 +30,6 @@ public class Application {
 
         //Application VibeSeed
         post("/vibeseed", (request, response) -> vibeSeedService.add(request, response));
-        //get("/vibeseed/:id", (request, response) -> vibeSeedService.get(request, response));
+        get("/vibeseed/:id", (request, response) -> vibeSeedService.get(request, response));
     }
 }
