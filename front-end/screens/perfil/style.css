@@ -17,8 +17,14 @@ body {
 	color: #000;
 }
 
+.progress{
+	width:75%;
+	margin: 0 Auto;
+	--bs-gutter-x: 0rem;
+}
+
 .statBox {
-	height: 200px;
+	min-height: 200px;
 }
 
 .ftoBox {
@@ -52,7 +58,6 @@ body {
 .stat i {
 	font-size: 50px;
 	height: 100%;
-	width: 100%;
 	border-radius: 50%;
 }
 
@@ -141,11 +146,6 @@ body {
 	background-color: white;
 }
 
-#carduml {
-	margin-top: -120%;
-	margin-bottom: 10%;
-	margin-left: 20%;
-}
 
 #letrasbaixo {
 	text-align: center;
@@ -154,25 +154,5 @@ body {
 #cardumbaixo {
 	width: 30%;
 	margin-left: 0%;
-}
-
-#carddoisbaixo {
-	width: 30%;
-}
-
-#cardtresbaixo {
-	width: 30%;
-}
-
-#card1 {
-	max-width: 23%;
-}
-
-#card2 {
-	max-width: 23%;
-}
-
-#card3 {
-	max-width: 23%;
 }
 
