@@ -1,6 +1,5 @@
 package service;
 
-import java.io.IOException;
 import dao.*;
 import model.*;
 import spark.Request;
