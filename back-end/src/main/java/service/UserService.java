@@ -37,19 +37,19 @@ public class UserService {
 
             // return "\n<user>\n" + "\t<id>" + user.getId() + "</id>\n" + "\t<nome>" + user.getName() + "</nome>\n"
             //         + "</user>\n";
-            return "{\n\"id\":\""+user.getId()+
-            "\",\n\"user\":\""+user.getName()+
-            "\",\n\"stats\":["+
-            "\n\"popularity\":\""+user.getStats().getPopularity()+
-            "\",\n\"tempo\":\""+user.getStats().getTempo()+
-            "\",\n\"valence\":\""+user.getStats().getValence()+
-            "\",\n\"liveness\":\""+user.getStats().getLiveness()+
-            "\",\n\"acousticness\":\""+user.getStats().getAcousticness()+
-            "\",\n\"danceability\":\""+user.getStats().getDanceability()+
-            "\",\n\"energy\":\""+user.getStats().getEnergy()+
-            "\",\n\"speechiness\":\""+user.getStats().getSpeechiness()+
-            "\",\n\"instrumentalness\":\""+user.getStats().getInstrumentalness()+
-            "]\n}";
+            return "{\"id\":\""+user.getId()+
+            "\",\"user\":\""+user.getName()+
+            "\",\"stats\":{"+
+            "\"popularity\":"+user.getStats().getPopularity()+
+            ",\"tempo\":"+user.getStats().getTempo()+
+            ",\"valence\":"+user.getStats().getValence()+
+            ",\"liveness\":"+user.getStats().getLiveness()+
+            ",\"acousticness\":"+user.getStats().getAcousticness()+
+            ",\"danceability\":"+user.getStats().getDanceability()+
+            ",\"energy\":"+user.getStats().getEnergy()+
+            ",\"speechiness\":"+user.getStats().getSpeechiness()+
+            ",\"instrumentalness\":"+user.getStats().getInstrumentalness()+
+            "}}";
         } else {
             response.status(404); // 404 Not found
             return "User " + id + " no encontrado.";
