@@ -38,11 +38,9 @@ public class VibeSeedService {
             response.header("Content-Type", "application/json");
             response.header("Content-Encoding", "UTF-8");
 
-            for(int i = 0; i <vibeSeed.length; i++){
-                resp += "{\n\"vibeId\":\""+vibeSeed[i].getVibeId()+
-                "\",\n\"identifier\":\""+vibeSeed[i].getIdentifier()+
-                "\",\n\"type\":\""+vibeSeed[i].getType()+
-                "\"\n},";
+            for (int i = 0; i < vibeSeed.length; i++) {
+                resp += "{\n\"vibeId\":\"" + vibeSeed[i].getVibeId() + "\",\n\"identifier\":\""
+                        + vibeSeed[i].getIdentifier() + "\",\n\"type\":\"" + vibeSeed[i].getType() + "\"\n},";
             }
             resp = resp.substring(0, resp.length() - 1);
             resp += "]";
@@ -54,23 +52,21 @@ public class VibeSeedService {
 
     }
 
-    public Object update(Request request, Response response) throws InvalidSeedTypeValueException {
+    public String update(Request request, Response response) throws InvalidSeedTypeValueException {
         String vibeId = request.params(":id");
-        String oldIdentifier = request.params("oldIdentifier");
-        String newIdentifier = request.params("newIdentifier");
-        String type = request.params("type");
-        
-		VibeSeed vibeSeed = new VibeSeed(vibeId, newIdentifier, type);
+        String oldIdentifier = request.queryParams("oldIdentifier");
+        String newIdentifier = request.queryParams("newIdentifier");
+        String type = request.queryParams("type");
+
+        VibeSeed vibeSeed = new VibeSeed(vibeId, newIdentifier, type);
         
         if (vibeSeed != null) {
-
-        	vibeSeedDAO.updateVibeSeed(vibeSeed, oldIdentifier);
+            vibeSeedDAO.updateVibeSeed(vibeSeed, oldIdentifier);
             return vibeSeed.getIdentifier();
         } else {
             response.status(404); // 404 Not found
             return "Produto nao encontrado.";
         }
-
-	}
+    }
 
 }

@@ -51,14 +51,14 @@ public class VibeSeedDAO {
 
         pst.setString(1, vibeSeed.getVibeId());
         pst.setString(2, vibeSeed.getIdentifier());
-        pst.setObject(3, vibeSeed.getType(),Types.OTHER);
+        pst.setObject(3, vibeSeed.getType(), Types.OTHER);
 
         return pst;
     }
 
     private PreparedStatement prepareGetVibeSeedsBySeedSQLStatement(String vibeIdentifier) throws SQLException {
         connect();
-        
+
         String query = "SELECT vibe, seedidentifier, type FROM vibefi.vibeseed WHERE vibe = ?;";
         PreparedStatement pst = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_READ_ONLY);
@@ -71,7 +71,7 @@ public class VibeSeedDAO {
             throws SQLException {
         connect();
 
-        String query = "UPDATE vibefi.vibeseed SET seedidentifier=?, tipo=? WHERE vibe=? AND seedidentifier=?;";
+        String query = "UPDATE vibefi.vibeseed SET seedidentifier=?, type=? WHERE vibe=? AND seedidentifier=?;";
         PreparedStatement pst = connection.prepareStatement(query);
 
         pst.setString(1, vibeSeed.getIdentifier());
@@ -81,7 +81,7 @@ public class VibeSeedDAO {
 
         return pst;
     }
-    
+
     private PreparedStatement prepareDeleteVibeSeedSQLStatement(VibeSeed vibeSeed) throws SQLException {
         connect();
 
@@ -93,13 +93,13 @@ public class VibeSeedDAO {
 
         return pst;
     }
-    
+
     private PreparedStatement prepareDeleteAllVibeSeedsFromVibeSQLStatement(String vibeIdentifier) throws SQLException {
         connect();
 
         String query = "DELETE FROM vibefi.vibeseed	WHERE vibe=?;";
         PreparedStatement pst = connection.prepareStatement(query);
-        
+
         pst.setString(1, vibeIdentifier);
 
         return pst;
@@ -123,7 +123,7 @@ public class VibeSeedDAO {
         }
         return status;
     }
-    
+
     public VibeSeed[] getVibeSeedsByVibe(String vibeIdentifier) {
         VibeSeed[] seeds = null;
 
