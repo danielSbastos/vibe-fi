@@ -1,6 +1,6 @@
 const params = new URLSearchParams(window.location.search)
 const vibeId = params.get('vibeId')
-
+var playlist = [];
 window.onload = () => {
 
     $.ajax({
@@ -9,9 +9,24 @@ window.onload = () => {
         dataType: "json",
     })
         .done(function (data) {
+            playlist = data;
             setSliders(data)
             setDesc(data)
         });
+
+    $('#saveChanges').click(()=>{
+        playlist.name = $("#exampleFormControlInput1").val() == ""? playlist.name : $("#exampleFormControlInput1").val()
+        playlist.description = $("#exampleFormControlTextarea1").val() == ""? playlist.description : $("#exampleFormControlTextarea1").val()
+        
+        $.ajax({
+            url: `http://localhost:6789/vibe/update/${vibeId}?`,
+            type: "GET",
+            data: playlist
+        })
+            .done(function (data) {
+                console.log(data)
+            });
+    })
 
 }
 
@@ -25,6 +40,8 @@ function setSliders(data){
             values: [data.minFeatures.popularity/200, data.maxFeatures.popularity/200],
             slide: function (event, ui) {
                 $("#pop-amount").val(Math.round(ui.values[0] * 100) + "% - " + Math.round(ui.values[1] * 100) + "%");
+                playlist.minFeatures.popularity = Math.round(ui.values[0] * 200);
+                playlist.maxFeatures.popularity = Math.round(ui.values[1] * 200);
             }
         });
         $("#pop-amount").val($("#popularity-range").slider("values", 0) * 100 + "% - " + $("#popularity-range").slider("values", 1) * 100 + "%");
@@ -39,6 +56,8 @@ function setSliders(data){
             values: [data.minFeatures.valence, data.maxFeatures.valence],
             slide: function (event, ui) {
                 $("#happy-amount").val(Math.round(ui.values[0] * 100) + "% - " + Math.round(ui.values[1] * 100) + "%");
+                playlist.minFeatures.valence = ui.values[0];
+                playlist.maxFeatures.valence = ui.values[1];
             }
         });
         $("#happy-amount").val($("#happy-range").slider("values", 0) * 100 + "% - " + $("#happy-range").slider("values", 1) * 100 + "%");
@@ -53,6 +72,8 @@ function setSliders(data){
             values: [data.minFeatures.energy, data.maxFeatures.energy],
             slide: function (event, ui) {
                 $("#energy-amount").val(Math.round(ui.values[0] * 100) + "% - " + Math.round(ui.values[1] * 100) + "%");
+                playlist.minFeatures.energy = ui.values[0];
+                playlist.maxFeatures.energy = ui.values[1];
             }
         });
         $("#energy-amount").val($("#energy-range").slider("values", 0) * 100 + "% - " + $("#energy-range").slider("values", 1) * 100 + "%");
@@ -67,6 +88,8 @@ function setSliders(data){
             values: [data.minFeatures.tempo, data.maxFeatures.tempo],
             slide: function (event, ui) {
                 $("#bpm-amount").val(Math.round(ui.values[0]) + " - " + Math.round(ui.values[1]));
+                playlist.minFeatures.tempo = ui.values[0];
+                playlist.maxFeatures.tempo = ui.values[1];
             }
         });
         $("#bpm-amount").val($("#bpm-range").slider("values", 0) + " - " + $("#bpm-range").slider("values", 1));
@@ -81,6 +104,8 @@ function setSliders(data){
             values: [data.minFeatures.danceability, data.maxFeatures.danceability],
             slide: function (event, ui) {
                 $("#danceability-amount").val(Math.round(ui.values[0] * 100) + "% - " + Math.round(ui.values[1] * 100) + "%");
+                playlist.minFeatures.danceability = ui.values[0];
+                playlist.maxFeatures.danceability = ui.values[1];
             }
         });
         $("#danceability-amount").val($("#danceability-range").slider("values", 0) * 100 + "% - " + $("#danceability-range").slider("values", 1) * 100 + "%");
@@ -95,6 +120,8 @@ function setSliders(data){
             values: [data.minFeatures.acousticness, data.maxFeatures.acousticness],
             slide: function (event, ui) {
                 $("#acoustic-amount").val(Math.round(ui.values[0] * 100) + "% - " + Math.round(ui.values[1] * 100) + "%");
+                playlist.minFeatures.acousticness = ui.values[0];
+                playlist.maxFeatures.acousticness = ui.values[1];
             }
         });
         $("#acoustic-amount").val($("#acoustic-range").slider("values", 0) * 100 + "% - " + $("#acoustic-range").slider("values", 1) * 100 + "%");

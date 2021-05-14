@@ -146,24 +146,26 @@ public class VibeService {
             vibe.setOriginTemplateId(request.queryParams("originTemplateId"));
             vibe.setDescription(request.queryParams("description"));
 
-            vibe.getMinFeatures().setPopularity(Integer.parseInt(request.queryParams("popularity")));
-            vibe.getMinFeatures().setTempo(Double.parseDouble(request.queryParams("tempo")));
-            vibe.getMinFeatures().setValence(Double.parseDouble(request.queryParams("valence")));
-            vibe.getMinFeatures().setLiveness(Double.parseDouble(request.queryParams("liveness")));
-            vibe.getMinFeatures().setAcousticness(Double.parseDouble(request.queryParams("acousticness")));
-            vibe.getMinFeatures().setDanceability(Double.parseDouble(request.queryParams("danceability")));
-            vibe.getMinFeatures().setEnergy(Double.parseDouble(request.queryParams("energy")));
-            vibe.getMinFeatures().setSpeechiness(Double.parseDouble(request.queryParams("speechiness")));
-            vibe.getMinFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("instrumentalness")));
-            vibe.getMaxFeatures().setPopularity(Integer.parseInt(request.queryParams("popularity")));
-            vibe.getMaxFeatures().setTempo(Double.parseDouble(request.queryParams("tempo")));
-            vibe.getMaxFeatures().setValence(Double.parseDouble(request.queryParams("valence")));
-            vibe.getMaxFeatures().setLiveness(Double.parseDouble(request.queryParams("liveness")));
-            vibe.getMaxFeatures().setAcousticness(Double.parseDouble(request.queryParams("acousticness")));
-            vibe.getMaxFeatures().setDanceability(Double.parseDouble(request.queryParams("danceability")));
-            vibe.getMaxFeatures().setEnergy(Double.parseDouble(request.queryParams("energy")));
-            vibe.getMaxFeatures().setSpeechiness(Double.parseDouble(request.queryParams("speechiness")));
-            vibe.getMaxFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("instrumentalness")));
+            System.out.println(request.queryParams("minFeatures[tempo]") == "" ? 0 : request.queryParams("minFeatures[tempo]"));
+
+            vibe.getMinFeatures().setPopularity(Integer.parseInt(request.queryParams("minFeatures[popularity]") == "" ? "0" : request.queryParams("minFeatures[popularity]")));
+            vibe.getMinFeatures().setTempo(Double.parseDouble(request.queryParams("minFeatures[tempo]") == "" ? "0" : request.queryParams("minFeatures[tempo]")));
+            vibe.getMinFeatures().setValence(Double.parseDouble(request.queryParams("minFeatures[valence]") == "" ? "0" : request.queryParams("minFeatures[valence]")));
+            vibe.getMinFeatures().setLiveness(Double.parseDouble(request.queryParams("minFeatures[liveness]") == "" ? "0" : request.queryParams("minFeatures[liveness]")));
+            vibe.getMinFeatures().setAcousticness(Double.parseDouble(request.queryParams("minFeatures[acousticness]") == "" ? "0" : request.queryParams("minFeatures[acousticness]")));
+            vibe.getMinFeatures().setDanceability(Double.parseDouble(request.queryParams("minFeatures[danceability]") == "" ? "0" : request.queryParams("minFeatures[danceability]")));
+            vibe.getMinFeatures().setEnergy(Double.parseDouble(request.queryParams("minFeatures[energy]") == "" ? "0" : request.queryParams("minFeatures[energy]")));
+            vibe.getMinFeatures().setSpeechiness(Double.parseDouble(request.queryParams("minFeatures[speechiness]") == "" ? "0" : request.queryParams("minFeatures[speechiness]")));
+            vibe.getMinFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("minFeatures[instrumentalness]") == "" ? "0" : request.queryParams("minFeatures[instrumentalness]")));
+            vibe.getMaxFeatures().setPopularity(Integer.parseInt(request.queryParams("maxFeatures[popularity]") == "" ? "0" : request.queryParams("maxFeatures[popularity]")));
+            vibe.getMaxFeatures().setTempo(Double.parseDouble(request.queryParams("maxFeatures[tempo]") == "" ? "0" : request.queryParams("maxFeatures[tempo]")));
+            vibe.getMaxFeatures().setValence(Double.parseDouble(request.queryParams("maxFeatures[valence]") == "" ? "0" : request.queryParams("maxFeatures[valence]")));
+            vibe.getMaxFeatures().setLiveness(Double.parseDouble(request.queryParams("maxFeatures[liveness]") == "" ? "0" : request.queryParams("maxFeatures[liveness]")));
+            vibe.getMaxFeatures().setAcousticness(Double.parseDouble(request.queryParams("maxFeatures[acousticness]") == "" ? "0" : request.queryParams("maxFeatures[acousticness]")));
+            vibe.getMaxFeatures().setDanceability(Double.parseDouble(request.queryParams("maxFeatures[danceability]") == "" ? "0" : request.queryParams("maxFeatures[danceability]")));
+            vibe.getMaxFeatures().setEnergy(Double.parseDouble(request.queryParams("maxFeatures[energy]") == "" ? "0" : request.queryParams("maxFeatures[energy]")));
+            vibe.getMaxFeatures().setSpeechiness(Double.parseDouble(request.queryParams("maxFeatures[speechiness]") == "" ? "0" : request.queryParams("maxFeatures[speechiness]")));
+            vibe.getMaxFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("maxFeatures[instrumentalness]") == "" ? "0" : request.queryParams("maxFeatures[instrumentalness]")));
 
         	vibeDAO.updateVibe(vibe);
         	
