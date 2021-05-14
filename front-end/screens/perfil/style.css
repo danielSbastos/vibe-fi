@@ -18,10 +18,15 @@ body {
 }
 
 .progress{
-	width:75%;
 	margin: 0 Auto;
 	--bs-gutter-x: 0rem;
 }
+
+.progress-bar{
+	background-color: #1DB954;
+}
+
+.statDesc{color: #FFFFFF;}
 
 .statBox {
 	min-height: 200px;
