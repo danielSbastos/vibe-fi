@@ -17,8 +17,7 @@ window.onload = () => {
         dataType: "json",
     })
         .done(function (data) {
-            console.log(data);
-            playlist = data;
+            setCards(data);
         });
 
 }
@@ -39,4 +38,22 @@ function setStats(userData) {
     $('#pbSmile')
         .attr('aria-valuenow', userData.stats.valence)
         .width(userData.stats.valence * 100 + '%');
+}
+
+function setCards(data){
+    cards = "";
+    data.forEach((e) => {       
+        cards+= `<div class="col-12 col-md-6">
+                    <div class="card vibecard">
+                        <div class="card-body">
+                            <h5 class="card-img-top">
+                                <img src="../../assets/VibefiFull.png" alt="">${e.name}
+                            </h5>
+                            <p class="card-text">${e.description}</p>
+                            <a href="../vibe/" class="btn btn-lg float-end btn-success">Editar</a>
+                        </div>
+                    </div>
+                </div>`
+    });
+    $('#divprinc').html(cards);
 }
