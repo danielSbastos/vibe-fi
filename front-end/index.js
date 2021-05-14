@@ -26,13 +26,10 @@ function loadhome (data){
             <div class="card-body">
                 <h5 class="card-title">${data[i].name}</h5>
                 <p class="card-text">${data[i].description}</p>
-                <a href="screens/vibe/" class="btn btn-primary">Visitar</a>
+                <a href="screens/vibe/?vibeId=${data[i].id}" class="btn btn-primary">Visitar</a>
             </div>
         </div>`    
     } 
     document.getElementById("divprinc").innerHTML = cards
-                  
-
-
 
 }

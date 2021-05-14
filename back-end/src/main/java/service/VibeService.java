@@ -37,33 +37,32 @@ public class VibeService {
             response.header("Content-Type", "application/json");
             response.header("Content-Encoding", "UTF-8");
 
-            return "{\n\"id\":\""+vibe.getId()+
-            "\",\n\"userId\":\""+vibe.getUserId()+
-            "\",\n\"originTemplateId\":\""+vibe.getOriginTemplateId()+
-            "\",\n\"name\":\""+vibe.getName()+
-            "\",\n\"description\":\""+vibe.getDescription()+
-            "\",\n\"minFeatures\":["+
-            "\n\"popularity\":\""+vibe.getMinFeatures().getPopularity()+
-            "\",\n\"tempo\":\""+vibe.getMinFeatures().getTempo()+
-            "\",\n\"valence\":\""+vibe.getMinFeatures().getValence()+
-            "\",\n\"liveness\":\""+vibe.getMinFeatures().getLiveness()+
-            "\",\n\"acousticness\":\""+vibe.getMinFeatures().getAcousticness()+
-            "\",\n\"danceability\":\""+vibe.getMinFeatures().getDanceability()+
-            "\",\n\"energy\":\""+vibe.getMinFeatures().getEnergy()+
-            "\",\n\"speechiness\":\""+vibe.getMinFeatures().getSpeechiness()+
-            "\",\n\"instrumentalness\":\""+vibe.getMinFeatures().getInstrumentalness()+
-            "\"\n],\n\"maxFeatures\":["+
-            "\n\"popularity\":\""+vibe.getMaxFeatures().getPopularity()+
-            "\",\n\"tempo\":\""+vibe.getMaxFeatures().getTempo()+
-            "\",\n\"valence\":\""+vibe.getMaxFeatures().getValence()+
-            "\",\n\"liveness\":\""+vibe.getMaxFeatures().getLiveness()+
-            "\",\n\"acousticness\":\""+vibe.getMaxFeatures().getAcousticness()+
-            "\",\n\"danceability\":\""+vibe.getMaxFeatures().getDanceability()+
-            "\",\n\"energy\":\""+vibe.getMaxFeatures().getEnergy()+
-            "\",\n\"speechiness\":\""+vibe.getMaxFeatures().getSpeechiness()+
-            "\",\n\"instrumentalness\":\""+vibe.getMaxFeatures().getInstrumentalness()+
-            "\"\n]"+
-            "\n}";
+            return "{\"id\":\""+vibe.getId()+
+            "\",\"userId\":\""+vibe.getUserId()+
+            "\",\"originTemplateId\":\""+vibe.getOriginTemplateId()+
+            "\",\"name\":\""+vibe.getName()+
+            "\",\"description\":\""+vibe.getDescription()+
+            "\",\"minFeatures\":{"+
+            "\"popularity\":"+vibe.getMinFeatures().getPopularity()+
+            ",\"tempo\":"+vibe.getMinFeatures().getTempo()+
+            ",\"valence\":"+vibe.getMinFeatures().getValence()+
+            ",\"liveness\":"+vibe.getMinFeatures().getLiveness()+
+            ",\"acousticness\":"+vibe.getMinFeatures().getAcousticness()+
+            ",\"danceability\":"+vibe.getMinFeatures().getDanceability()+
+            ",\"energy\":"+vibe.getMinFeatures().getEnergy()+
+            ",\"speechiness\":"+vibe.getMinFeatures().getSpeechiness()+
+            ",\"instrumentalness\":"+vibe.getMinFeatures().getInstrumentalness()+
+            "},\"maxFeatures\":{"+
+            "\"popularity\":"+vibe.getMaxFeatures().getPopularity()+
+            ",\"tempo\":"+vibe.getMaxFeatures().getTempo()+
+            ",\"valence\":"+vibe.getMaxFeatures().getValence()+
+            ",\"liveness\":"+vibe.getMaxFeatures().getLiveness()+
+            ",\"acousticness\":"+vibe.getMaxFeatures().getAcousticness()+
+            ",\"danceability\":"+vibe.getMaxFeatures().getDanceability()+
+            ",\"energy\":"+vibe.getMaxFeatures().getEnergy()+
+            ",\"speechiness\":"+vibe.getMaxFeatures().getSpeechiness()+
+            ",\"instrumentalness\":"+vibe.getMaxFeatures().getInstrumentalness()+
+            "}}";
         } else {
             response.status(404); // 404 Not found
             return "User " + id + " nao encontrado.";

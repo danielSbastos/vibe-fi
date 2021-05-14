@@ -50,7 +50,7 @@ function setCards(data){
                                 <img src="../../assets/VibefiFull.png" alt="">${e.name}
                             </h5>
                             <p class="card-text">${e.description}</p>
-                            <a href="../vibe/" class="btn btn-lg float-end btn-success">Editar</a>
+                            <a href="../vibe/?vibeId=${e.id}" class="btn btn-lg float-end btn-success">Editar</a>
                         </div>
                     </div>
                 </div>`
