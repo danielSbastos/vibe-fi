@@ -2,19 +2,31 @@ package app;
 
 import static spark.Spark.*;
 import service.*;
+import spark.Request;
+import spark.Response;
 import util.cors.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class Application {
 
     private static UserService userService = new UserService();
     private static VibeService vibeService = new VibeService();
     private static VibeSeedService vibeSeedService = new VibeSeedService();
-    
+    private static AuthService authService = new AuthService();
+
     public static void main(String[] args) {
         port(6789);
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
-        
+
+        get("/login", (request, response) -> authService.login(request, response));
+
         //Application Users
         get("/user/:id", (request, response) -> userService.get(request, response));
         get("/user/update/:id", (request, response) -> userService.update(request, response));
@@ -34,4 +46,5 @@ public class Application {
         get("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));
         get("/vibeseed/delete/:id", (request, response) -> vibeSeedService.remove(request, response));
     }
+
 }
