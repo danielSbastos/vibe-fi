@@ -2,16 +2,7 @@ package app;
 
 import static spark.Spark.*;
 import service.*;
-import spark.Request;
-import spark.Response;
 import util.cors.*;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class Application {
 
@@ -21,11 +12,12 @@ public class Application {
     private static AuthService authService = new AuthService();
 
     public static void main(String[] args) {
-        port(6789);
+        port(8888);
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
 
         get("/login", (request, response) -> authService.login(request, response));
+        get("/callback", (request, response) -> authService.callback(request, response));
 
         //Application Users
         get("/user/:id", (request, response) -> userService.get(request, response));
@@ -46,5 +38,4 @@ public class Application {
         get("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));
         get("/vibeseed/delete/:id", (request, response) -> vibeSeedService.remove(request, response));
     }
-
 }
