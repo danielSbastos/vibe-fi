@@ -18,6 +18,7 @@ window.onload = () => {
     })
         .done(function (data) {
             console.log(data);
+            playlist = data;
         });
 
 }
