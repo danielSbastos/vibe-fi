@@ -12,7 +12,9 @@ public class Application {
     private static AuthService authService = new AuthService();
 
     public static void main(String[] args) {
-        port(6789);
+        String systemPort = System.getenv("PORT");
+        int port = systemPort != null ? Integer.parseInt(systemPort) : 6789;
+        port(port);
 
         staticFiles.location("/public");
 
