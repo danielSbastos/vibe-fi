@@ -12,7 +12,7 @@
                 <configuration>
                     <appName>vibe-fi</appName>
                     <processTypes>
-                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* Application</web>
+                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* app.Application</web>
                     </processTypes>
                 </configuration>
             </plugin>
