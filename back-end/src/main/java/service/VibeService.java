@@ -37,33 +37,32 @@ public class VibeService {
             response.header("Content-Type", "application/json");
             response.header("Content-Encoding", "UTF-8");
 
-            return "{\n\"id\":\""+vibe.getId()+
-            "\",\n\"userId\":\""+vibe.getUserId()+
-            "\",\n\"originTemplateId\":\""+vibe.getOriginTemplateId()+
-            "\",\n\"name\":\""+vibe.getName()+
-            "\",\n\"description\":\""+vibe.getDescription()+
-            "\",\n\"minFeatures\":["+
-            "\n\"popularity\":\""+vibe.getMinFeatures().getPopularity()+
-            "\",\n\"tempo\":\""+vibe.getMinFeatures().getTempo()+
-            "\",\n\"valence\":\""+vibe.getMinFeatures().getValence()+
-            "\",\n\"liveness\":\""+vibe.getMinFeatures().getLiveness()+
-            "\",\n\"acousticness\":\""+vibe.getMinFeatures().getAcousticness()+
-            "\",\n\"danceability\":\""+vibe.getMinFeatures().getDanceability()+
-            "\",\n\"energy\":\""+vibe.getMinFeatures().getEnergy()+
-            "\",\n\"speechiness\":\""+vibe.getMinFeatures().getSpeechiness()+
-            "\",\n\"instrumentalness\":\""+vibe.getMinFeatures().getInstrumentalness()+
-            "\"\n],\n\"maxFeatures\":["+
-            "\n\"popularity\":\""+vibe.getMaxFeatures().getPopularity()+
-            "\",\n\"tempo\":\""+vibe.getMaxFeatures().getTempo()+
-            "\",\n\"valence\":\""+vibe.getMaxFeatures().getValence()+
-            "\",\n\"liveness\":\""+vibe.getMaxFeatures().getLiveness()+
-            "\",\n\"acousticness\":\""+vibe.getMaxFeatures().getAcousticness()+
-            "\",\n\"danceability\":\""+vibe.getMaxFeatures().getDanceability()+
-            "\",\n\"energy\":\""+vibe.getMaxFeatures().getEnergy()+
-            "\",\n\"speechiness\":\""+vibe.getMaxFeatures().getSpeechiness()+
-            "\",\n\"instrumentalness\":\""+vibe.getMaxFeatures().getInstrumentalness()+
-            "\"\n]"+
-            "\n}";
+            return "{\"id\":\""+vibe.getId()+
+            "\",\"userId\":\""+vibe.getUserId()+
+            "\",\"originTemplateId\":\""+vibe.getOriginTemplateId()+
+            "\",\"name\":\""+vibe.getName()+
+            "\",\"description\":\""+vibe.getDescription()+
+            "\",\"minFeatures\":{"+
+            "\"popularity\":"+vibe.getMinFeatures().getPopularity()+
+            ",\"tempo\":"+vibe.getMinFeatures().getTempo()+
+            ",\"valence\":"+vibe.getMinFeatures().getValence()+
+            ",\"liveness\":"+vibe.getMinFeatures().getLiveness()+
+            ",\"acousticness\":"+vibe.getMinFeatures().getAcousticness()+
+            ",\"danceability\":"+vibe.getMinFeatures().getDanceability()+
+            ",\"energy\":"+vibe.getMinFeatures().getEnergy()+
+            ",\"speechiness\":"+vibe.getMinFeatures().getSpeechiness()+
+            ",\"instrumentalness\":"+vibe.getMinFeatures().getInstrumentalness()+
+            "},\"maxFeatures\":{"+
+            "\"popularity\":"+vibe.getMaxFeatures().getPopularity()+
+            ",\"tempo\":"+vibe.getMaxFeatures().getTempo()+
+            ",\"valence\":"+vibe.getMaxFeatures().getValence()+
+            ",\"liveness\":"+vibe.getMaxFeatures().getLiveness()+
+            ",\"acousticness\":"+vibe.getMaxFeatures().getAcousticness()+
+            ",\"danceability\":"+vibe.getMaxFeatures().getDanceability()+
+            ",\"energy\":"+vibe.getMaxFeatures().getEnergy()+
+            ",\"speechiness\":"+vibe.getMaxFeatures().getSpeechiness()+
+            ",\"instrumentalness\":"+vibe.getMaxFeatures().getInstrumentalness()+
+            "}}";
         } else {
             response.status(404); // 404 Not found
             return "User " + id + " nao encontrado.";
@@ -147,24 +146,26 @@ public class VibeService {
             vibe.setOriginTemplateId(request.queryParams("originTemplateId"));
             vibe.setDescription(request.queryParams("description"));
 
-            vibe.getMinFeatures().setPopularity(Integer.parseInt(request.queryParams("popularity")));
-            vibe.getMinFeatures().setTempo(Double.parseDouble(request.queryParams("tempo")));
-            vibe.getMinFeatures().setValence(Double.parseDouble(request.queryParams("valence")));
-            vibe.getMinFeatures().setLiveness(Double.parseDouble(request.queryParams("liveness")));
-            vibe.getMinFeatures().setAcousticness(Double.parseDouble(request.queryParams("acousticness")));
-            vibe.getMinFeatures().setDanceability(Double.parseDouble(request.queryParams("danceability")));
-            vibe.getMinFeatures().setEnergy(Double.parseDouble(request.queryParams("energy")));
-            vibe.getMinFeatures().setSpeechiness(Double.parseDouble(request.queryParams("speechiness")));
-            vibe.getMinFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("instrumentalness")));
-            vibe.getMaxFeatures().setPopularity(Integer.parseInt(request.queryParams("popularity")));
-            vibe.getMaxFeatures().setTempo(Double.parseDouble(request.queryParams("tempo")));
-            vibe.getMaxFeatures().setValence(Double.parseDouble(request.queryParams("valence")));
-            vibe.getMaxFeatures().setLiveness(Double.parseDouble(request.queryParams("liveness")));
-            vibe.getMaxFeatures().setAcousticness(Double.parseDouble(request.queryParams("acousticness")));
-            vibe.getMaxFeatures().setDanceability(Double.parseDouble(request.queryParams("danceability")));
-            vibe.getMaxFeatures().setEnergy(Double.parseDouble(request.queryParams("energy")));
-            vibe.getMaxFeatures().setSpeechiness(Double.parseDouble(request.queryParams("speechiness")));
-            vibe.getMaxFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("instrumentalness")));
+            System.out.println(request.queryParams("minFeatures[tempo]") == "" ? 0 : request.queryParams("minFeatures[tempo]"));
+
+            vibe.getMinFeatures().setPopularity(Integer.parseInt(request.queryParams("minFeatures[popularity]") == "" ? "0" : request.queryParams("minFeatures[popularity]")));
+            vibe.getMinFeatures().setTempo(Double.parseDouble(request.queryParams("minFeatures[tempo]") == "" ? "0" : request.queryParams("minFeatures[tempo]")));
+            vibe.getMinFeatures().setValence(Double.parseDouble(request.queryParams("minFeatures[valence]") == "" ? "0" : request.queryParams("minFeatures[valence]")));
+            vibe.getMinFeatures().setLiveness(Double.parseDouble(request.queryParams("minFeatures[liveness]") == "" ? "0" : request.queryParams("minFeatures[liveness]")));
+            vibe.getMinFeatures().setAcousticness(Double.parseDouble(request.queryParams("minFeatures[acousticness]") == "" ? "0" : request.queryParams("minFeatures[acousticness]")));
+            vibe.getMinFeatures().setDanceability(Double.parseDouble(request.queryParams("minFeatures[danceability]") == "" ? "0" : request.queryParams("minFeatures[danceability]")));
+            vibe.getMinFeatures().setEnergy(Double.parseDouble(request.queryParams("minFeatures[energy]") == "" ? "0" : request.queryParams("minFeatures[energy]")));
+            vibe.getMinFeatures().setSpeechiness(Double.parseDouble(request.queryParams("minFeatures[speechiness]") == "" ? "0" : request.queryParams("minFeatures[speechiness]")));
+            vibe.getMinFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("minFeatures[instrumentalness]") == "" ? "0" : request.queryParams("minFeatures[instrumentalness]")));
+            vibe.getMaxFeatures().setPopularity(Integer.parseInt(request.queryParams("maxFeatures[popularity]") == "" ? "0" : request.queryParams("maxFeatures[popularity]")));
+            vibe.getMaxFeatures().setTempo(Double.parseDouble(request.queryParams("maxFeatures[tempo]") == "" ? "0" : request.queryParams("maxFeatures[tempo]")));
+            vibe.getMaxFeatures().setValence(Double.parseDouble(request.queryParams("maxFeatures[valence]") == "" ? "0" : request.queryParams("maxFeatures[valence]")));
+            vibe.getMaxFeatures().setLiveness(Double.parseDouble(request.queryParams("maxFeatures[liveness]") == "" ? "0" : request.queryParams("maxFeatures[liveness]")));
+            vibe.getMaxFeatures().setAcousticness(Double.parseDouble(request.queryParams("maxFeatures[acousticness]") == "" ? "0" : request.queryParams("maxFeatures[acousticness]")));
+            vibe.getMaxFeatures().setDanceability(Double.parseDouble(request.queryParams("maxFeatures[danceability]") == "" ? "0" : request.queryParams("maxFeatures[danceability]")));
+            vibe.getMaxFeatures().setEnergy(Double.parseDouble(request.queryParams("maxFeatures[energy]") == "" ? "0" : request.queryParams("maxFeatures[energy]")));
+            vibe.getMaxFeatures().setSpeechiness(Double.parseDouble(request.queryParams("maxFeatures[speechiness]") == "" ? "0" : request.queryParams("maxFeatures[speechiness]")));
+            vibe.getMaxFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("maxFeatures[instrumentalness]") == "" ? "0" : request.queryParams("maxFeatures[instrumentalness]")));
 
         	vibeDAO.updateVibe(vibe);
         	
