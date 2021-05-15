@@ -12,7 +12,10 @@ public class Application {
     private static AuthService authService = new AuthService();
 
     public static void main(String[] args) {
-        port(8888);
+        port(6789);
+
+        staticFiles.externalLocation("../front-end");
+
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
 
