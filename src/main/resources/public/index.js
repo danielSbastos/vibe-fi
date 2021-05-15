@@ -1,5 +1,7 @@
 
 window.onload = () => {
+    configureLoginUrl();
+
     alterLoginText();
 
     playlist = [];
@@ -57,4 +59,8 @@ function alterLoginText() {
         document.getElementById("login").innerText = "Visitar perfil";
         document.getElementById("login").href = `http://${window.location.host}/screens/perfil/`;
     }
+}
+
+function configureLoginUrl() {
+    document.getElementById("login").href = `${window.location.protocol}//${window.location.host}/login`;
 }
