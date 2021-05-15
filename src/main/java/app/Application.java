@@ -14,7 +14,7 @@ public class Application {
     public static void main(String[] args) {
         port(6789);
 
-        staticFiles.externalLocation("../front-end");
+        staticFiles.location("/public");
 
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();

@@ -1,8 +1,7 @@
 node_modules
 .vscode
-/node/app.js
-/back-end/target/
+target/
 
-back-end/.idea/
-back-end/.metadata/
-back-end/vibefi.crud.iml
+.idea/
+.metadata/
+vibefi.crud.iml
