@@ -6,7 +6,7 @@ window.onload = () => {
     const userId = getCookie("user_id");
 
     $.ajax({
-        url: `http://${window.location.host}/vibe/user/${userId}`,
+        url: `${window.location.protocol}//${window.location.host}/vibe/user/${userId}`,
         type: "GET",
         dataType: "json",
     })

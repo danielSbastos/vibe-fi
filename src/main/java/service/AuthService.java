@@ -21,8 +21,8 @@ public class AuthService {
     private static final String CLIENT_ID = "3a382d598de845c1a8db261c24be5d63";
     private static final String CLIENT_SECRET = "269ad429b52b47be94781ee6d1949f56";
 
-    private static final String HOST = System.getenv("HOST") != null ? System.getenv("HOST") : "localhost:6789";
-    private static final String REDIRECT_URL = "http://" + HOST + "/callback";
+    private static final String HOST = System.getenv("HOST") != null ? "https://" + System.getenv("HOST") : "http://localhost:6789";
+    private static final String REDIRECT_URL = HOST + "/callback";
     private static final String AUTHORIZE_URL = "https://accounts.spotify.com/authorize";
     private static final String ACCOUNT_URL = "https://api.spotify.com/v1/me";
     private static final String TOKEN_URL = "https://accounts.spotify.com/api/token";

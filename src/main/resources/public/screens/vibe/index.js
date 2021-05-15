@@ -4,7 +4,7 @@ var playlist = [];
 window.onload = () => {
 
     $.ajax({
-        url: `http://${window.location.host}/vibe/${vibeId}?`,
+        url: `${window.location.protocol}//${window.location.host}/vibe/${vibeId}?`,
         type: "GET",
         dataType: "json",
     })
@@ -19,7 +19,7 @@ window.onload = () => {
         playlist.description = $("#exampleFormControlTextarea1").val() == ""? playlist.description : $("#exampleFormControlTextarea1").val()
         
         $.ajax({
-            url: `http://${window.location.host}/vibe/update/${vibeId}?`,
+            url: `${window.location.protocol}//${window.location.host}/vibe/update/${vibeId}?`,
             type: "GET",
             data: playlist
         })
