@@ -2,4 +2,7 @@ node_modules
 .vscode
 /node/app.js
 /back-end/target/
-/back-end/src/main/java/util/auth
+
+back-end/.idea/
+back-end/.metadata/
+back-end/vibefi.crud.iml

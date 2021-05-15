@@ -9,12 +9,20 @@ public class Application {
     private static UserService userService = new UserService();
     private static VibeService vibeService = new VibeService();
     private static VibeSeedService vibeSeedService = new VibeSeedService();
-    
+    private static AuthService authService = new AuthService();
+
     public static void main(String[] args) {
         port(6789);
+
+        staticFiles.externalLocation("../front-end");
+
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
-        
+
+        //Login
+        get("/login", (request, response) -> authService.login(request, response));
+        get("/callback", (request, response) -> authService.callback(request, response));
+
         //Application Users
         get("/user/:id", (request, response) -> userService.get(request, response));
         get("/user/update/:id", (request, response) -> userService.update(request, response));
