@@ -16,6 +16,7 @@ public class Application {
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
 
+        //Login
         get("/login", (request, response) -> authService.login(request, response));
         get("/callback", (request, response) -> authService.callback(request, response));
 
