@@ -25,6 +25,7 @@ window.onload = () => {
         })
             .done(function (data) {
                 console.log(data)
+                window.location = window.location
             });
     })
 

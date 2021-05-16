@@ -1,3 +1,5 @@
+const SPARK_PORT = 6789;
+
 
 window.onload = () => {
     configureLoginUrl();
@@ -62,5 +64,5 @@ function alterLoginText() {
 }
 
 function configureLoginUrl() {
-    document.getElementById("login").href = `${window.location.protocol}//${window.location.host}/login`;
+    document.getElementById("login").href = `${window.location.protocol}//${window.location.hostname}:${SPARK_PORT}/login`;
 }
