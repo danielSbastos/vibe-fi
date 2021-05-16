@@ -1,5 +1,3 @@
-const SPARK_PORT = 6789;
-
 window.onload = () => {
     configureLoginUrl();
     alterLoginText();
@@ -63,7 +61,7 @@ function alterLoginText() {
 }
 
 function configureLoginUrl() {
-    document.getElementById("login").href = `${window.location.protocol}//${window.location.hostname}:${SPARK_PORT}/login`;
+    document.getElementById("login").href = `${window.location.protocol}//${window.location.hostname}/login`;
 }
 
 function setNoCards(){
