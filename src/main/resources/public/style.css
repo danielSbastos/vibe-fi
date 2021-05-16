@@ -8,6 +8,8 @@ html,body {
 
 #divprinc, #letrasbaixo {color: white}
 
+#divprinc .card{ color: #212529 !important;}
+
 #bottomimg {
 	z-index: 3;
 	margin-top: 15%;
