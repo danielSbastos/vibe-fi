@@ -41,6 +41,7 @@ public class AuthService {
 
     public Object callback(Request request, Response response) {
         HttpClient client = HttpClient.newHttpClient();
+        int stat = 0;
 
         String code = request.queryMap("code").value();
         HttpRequest tokenRequest = tokenRequest(code);
@@ -58,7 +59,7 @@ public class AuthService {
                 if (accountResponse.statusCode() == 200) {
                     Map<String, Object> accountBody = responseMapBody(accountResponse.body());
 
-                    createUser((String) accountBody.get("id"), (String) accountBody.get("display_name"));
+                    stat = createUser((String) accountBody.get("id"), (String) accountBody.get("display_name"));
 
                     response.cookie("user_id", (String) accountBody.get("id"));
                     response.cookie("access_token", (String) tokenBody.get("access_token"), Math.toIntExact((Long) tokenBody.get("expires_in")));
@@ -68,22 +69,29 @@ public class AuthService {
         } catch (Exception err) {
             err.printStackTrace();
         }
+        if (stat == 1){
+            response.redirect("/screens/selecionarvibes/index.html");
+        }else response.redirect("/screens/perfil/index.html");
 
-        response.redirect("/index.html");
         return "ok";
     }
-
-    private boolean createUser(String id, String nome) {
+    /*
+    createUser() @return
+        0 - erro ao criar user
+        1 - user criado com sucesso
+        2 - user ja existente
+    */
+    private int createUser(String id, String nome) {
         UserDAO userDAO = new UserDAO();
 
         User user;
         user = userDAO.getUser(id);
         if (user == null) {
             user = new User(id, nome);
-            return userDAO.createUser(user);
+            return (userDAO.createUser(user)) ? 1 : 0;
         }
 
-        return true;
+        return 2;
     }
 
     private HttpRequest accountRequest(String accessToken) {

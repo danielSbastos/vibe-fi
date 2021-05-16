@@ -61,7 +61,7 @@ function alterLoginText() {
 }
 
 function configureLoginUrl() {
-    document.getElementById("login").href = `${window.location.protocol}//${window.location.hostname}/login`;
+    document.getElementById("login").href = `${window.location.protocol}//${window.location.host}/login`;
 }
 
 function setNoCards(){
