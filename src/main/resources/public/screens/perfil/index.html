@@ -15,6 +15,23 @@
 
 </head>
 <header>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Deletar Vibe</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Deseja realmente deletar essa vibe? Essa ação não pode ser revertida!
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+              <button type="button" id="btnConfDel" class="btn btn-danger">Deletar</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <nav id="navbarum" class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid container">
             <a href="../../index.html"><img id="imgbarra" src="../../assets/VibefiFull.png" alt=""></a>
@@ -40,7 +57,6 @@
             </div>
         </div>
     </nav>
-
 </header>
 
 <main class="container main-container pb-3 mb-3">

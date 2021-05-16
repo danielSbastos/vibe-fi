@@ -89,7 +89,6 @@ function setStats(userData) {
         .width(userData.stats.liveness * 100 + '%');
     $('#perLive').text(userData.stats.liveness * 100);
     if(userData.stats.liveness < 0.5){
-        console.log('aaaaa')
         $('i.fa-volume-up')
         .toggleClass('fa-volume-up')
         .toggleClass('fa-volume-down');
@@ -117,11 +116,35 @@ function setCards(data){
                             </h5>
                             <p class="card-text">${e.description}</p>
                             <a href="../vibe/?vibeId=${e.id}" class="btn btn-lg float-end btn-success">Editar</a>
+                            <button type="button" onclick="setModal('${e.id}')"  class="btn btn-lg btn-danger float-end me-2"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i id="deleteVibe" class="far fa-trash-alt "></i>
+                            </button>
                         </div>
                     </div>
                 </div>`
     });
     $('#divprinc').html(cards);
+}
+
+function setModal(id){
+    document.getElementById("btnConfDel").removeEventListener("click", delVibe);
+    $('#btnConfDel').click(() => {
+        delVibe(id);
+    })
+}
+
+function delVibe(id){
+    $.ajax({
+        url: `${window.location.protocol}//${window.location.host}/vibe/delete/${id}?`,
+        type: "GET",
+        dataType: "json",
+    })
+        .done(function (data) {
+            console.log("Delete successfuly");
+
+        })
+    window.location = window.location
 }
 
 function setNoCards(){

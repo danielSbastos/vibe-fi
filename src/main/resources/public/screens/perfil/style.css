@@ -60,6 +60,10 @@ body {
 	border-radius: 50%;
 }
 
+#deleteVibe{
+	font-size:20px;
+}
+
 .stat i {
 	font-size: 50px;
 	height: 100%;
