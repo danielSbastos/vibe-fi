@@ -16,9 +16,10 @@ public class VibeService {
     public Object add(Request request, Response response) {
         String name = request.queryParams("name");
         String id = request.queryParams("id");
+        String description = request.queryParams("description");
         String userId = request.queryParams("userId");
         String originTemplateId = request.queryParams("originTemplateId");
-        Vibe vibe = new Vibe(id, userId, originTemplateId, name);
+        Vibe vibe = new Vibe(userId, originTemplateId, name, description);
 
         if (vibeDAO.createVibe(vibe)) {
             response.status(201);

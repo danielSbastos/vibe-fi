@@ -20,6 +20,7 @@ window.onload = () => {
     })
     .fail(function (xhr, status, error) {
 	       console.log(error);
+           setNoCards();
     });
 }
 
@@ -65,4 +66,9 @@ function alterLoginText() {
 
 function configureLoginUrl() {
     document.getElementById("login").href = `${window.location.protocol}//${window.location.hostname}:${SPARK_PORT}/login`;
+}
+
+function setNoCards(){
+    content = `<div class="display-6 text-center p-5">Parece que você ainda não possui nenhuma playlist :(</div>`
+    $('#divprinc').html(content);
 }

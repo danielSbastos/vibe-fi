@@ -118,4 +118,13 @@ public class AuthService {
 
         return hm;
     }
+
+    public Object logout(Request request, Response response){
+        response.removeCookie("user_id");
+        response.removeCookie("refresh_token");
+        response.removeCookie("access_token");
+        response.redirect("/");
+        return null;
+
+    }
 }

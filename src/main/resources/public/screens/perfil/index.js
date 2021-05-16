@@ -1,7 +1,6 @@
-const userId = 'id'
-
 window.onload = () => {
     playlist = []
+    const userId = getCookie("user_id");
     $.ajax({
         url: `${window.location.protocol}//${window.location.host}/user/${userId}?`,
         type: "GET",
@@ -18,8 +17,37 @@ window.onload = () => {
     })
         .done(function (data) {
             setCards(data);
+        })
+        .fail(()=>{
+            setNoCards();
         });
 
+    $('#logout').click(()=>{
+        $.ajax({
+            url: `${window.location.protocol}//${window.location.host}/logout`,
+            type: "GET",
+        })
+            .done(()=>{
+                console.log("Deslogado com sucesso")
+                window.location = window.location
+            })
+    })
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
 
 function setStats(userData) {
@@ -92,3 +120,9 @@ function setCards(data){
     });
     $('#divprinc').html(cards);
 }
+
+function setNoCards(){
+    content = `<div class="display-6 text-center p-5">Parece que você ainda não possui nenhuma playlist :(</div>`
+    $('#divprinc').html(content);
+}
+

@@ -6,6 +6,8 @@ html,body {
     color: rgba(255, 255, 255, 0.42);
 }
 
+#divprinc, #letrasbaixo {color: white}
+
 #bottomimg {
 	z-index: 3;
 	margin-top: 15%;

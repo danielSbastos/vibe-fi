@@ -1,5 +1,6 @@
 const params = new URLSearchParams(window.location.search)
-const vibeId = params.get('vibeId')
+const vibeId = params.get('vibeId');
+const userId = getCookie("user_id");
 var playlist = [];
 window.onload = () => {
 
@@ -10,8 +11,12 @@ window.onload = () => {
     })
         .done(function (data) {
             playlist = data;
-            setSliders(data)
-            setDesc(data)
+            if(data.userId == userId){
+                setSliders(data)
+                setDesc(data)
+            }else{
+                setNoAcess();
+            }
         });
 
     $('#saveChanges').click(()=>{
@@ -134,4 +139,25 @@ function setDesc(data){
     $('#exampleFormControlTextarea1').attr('placeholder', data.description);
     $('#playlist-name > h1').text(data.name);
     $('#playlist-name > h3').text(data.description);
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function setNoAcess(){
+    content = `<div class="display-6 text-center p-5">Parece que você não possui acesso a essa Vibe :(</div>`;
+    $('.vibe-container').html(content);
 }
