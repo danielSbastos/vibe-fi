@@ -1,5 +1,7 @@
 package service;
 
+import dao.UserDAO;
+import model.User;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import spark.Request;
@@ -19,7 +21,8 @@ public class AuthService {
     private static final String CLIENT_ID = "3a382d598de845c1a8db261c24be5d63";
     private static final String CLIENT_SECRET = "269ad429b52b47be94781ee6d1949f56";
 
-    private static final String REDIRECT_URL = "http://localhost:6789/callback";
+    private static final String HOST = System.getenv("HOST") != null ? "https://" + System.getenv("HOST") : "http://localhost:6789";
+    private static final String REDIRECT_URL = HOST + "/callback";
     private static final String AUTHORIZE_URL = "https://accounts.spotify.com/authorize";
     private static final String ACCOUNT_URL = "https://api.spotify.com/v1/me";
     private static final String TOKEN_URL = "https://accounts.spotify.com/api/token";
@@ -55,6 +58,8 @@ public class AuthService {
                 if (accountResponse.statusCode() == 200) {
                     Map<String, Object> accountBody = responseMapBody(accountResponse.body());
 
+                    createUser((String) accountBody.get("id"), (String) accountBody.get("display_name"));
+
                     response.cookie("user_id", (String) accountBody.get("id"));
                     response.cookie("access_token", (String) tokenBody.get("access_token"), Math.toIntExact((Long) tokenBody.get("expires_in")));
                     response.cookie("refresh_token", (String) tokenBody.get("refresh_token"));
@@ -66,6 +71,19 @@ public class AuthService {
 
         response.redirect("/index.html");
         return "ok";
+    }
+
+    private boolean createUser(String id, String nome) {
+        UserDAO userDAO = new UserDAO();
+
+        User user;
+        user = userDAO.getUser(id);
+        if (user == null) {
+            user = new User(id, nome);
+            return userDAO.createUser(user);
+        }
+
+        return true;
     }
 
     private HttpRequest accountRequest(String accessToken) {

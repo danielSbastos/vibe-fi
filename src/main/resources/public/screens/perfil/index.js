@@ -3,7 +3,7 @@ const userId = 'id'
 window.onload = () => {
     playlist = []
     $.ajax({
-        url: `http://localhost:6789/user/${userId}?`,
+        url: `${window.location.protocol}//${window.location.host}/user/${userId}?`,
         type: "GET",
         dataType: "json",
     })
@@ -12,7 +12,7 @@ window.onload = () => {
         });
 
     $.ajax({
-        url: `http://localhost:6789/vibe/user/${userId}?`,
+        url: `${window.location.protocol}//${window.location.host}/vibe/user/${userId}?`,
         type: "GET",
         dataType: "json",
     })
