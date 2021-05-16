@@ -1,9 +1,7 @@
 const SPARK_PORT = 6789;
 
-
 window.onload = () => {
     configureLoginUrl();
-
     alterLoginText();
 
     playlist = [];

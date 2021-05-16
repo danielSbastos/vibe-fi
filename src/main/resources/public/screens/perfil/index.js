@@ -1,6 +1,9 @@
 window.onload = () => {
-    playlist = []
     const userId = getCookie("user_id");
+
+    updateContent(userId);
+
+    playlist = []
     $.ajax({
         url: `${window.location.protocol}//${window.location.host}/user/${userId}?`,
         type: "GET",
@@ -126,3 +129,11 @@ function setNoCards(){
     $('#divprinc').html(content);
 }
 
+function updateContent(userId) {
+    if (userId === "") {
+        $("#perfil-stats").html("");
+
+        content = `<div class="display-6 text-center p-5">Parece que você não está logado :(</div>`
+        $("#perfil-vibes").html(content);
+    }
+}
