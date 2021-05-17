@@ -6,11 +6,11 @@ import util.db.DatabaseConnection;
 
 public class UserDAO {
     protected Connection connection;
-    
+
     public UserDAO() {
         connection = null;
     }
-    
+
     /* connection methods */
     protected boolean connect() {
         boolean status = false;
@@ -37,7 +37,7 @@ public class UserDAO {
         }
         return status;
     }
-    
+
     /******************************************************************************************/
 
     /* preparedStatement methods */
@@ -46,8 +46,8 @@ public class UserDAO {
         connect();
 
         String query = "INSERT INTO vibefi.user("
-                + "idSpotify, name, popularity, tempo, valence, liveness, acousticness, danceability, energy, speechiness, instrumentalness)"
-                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                + "idSpotify, name, popularity, tempo, valence, liveness, acousticness, danceability, energy, speechiness, instrumentalness, imageURL)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement pst = connection.prepareStatement(query);
 
         pst.setString(1, user.getId());
@@ -61,6 +61,7 @@ public class UserDAO {
         pst.setObject(9, user.getStats().getEnergy());
         pst.setObject(10, user.getStats().getSpeechiness());
         pst.setObject(11, user.getStats().getInstrumentalness());
+        pst.setObject(12, user.getImageURL());
 
         return pst;
     }
@@ -80,7 +81,7 @@ public class UserDAO {
         connect();
 
         String query = "UPDATE vibefi.user"
-                + " SET name=?, popularity=?, tempo=?, valence=?, liveness=?, acousticness=?, danceability=?, energy=?, speechiness=?, instrumentalness=?"
+                + " SET name=?, popularity=?, tempo=?, valence=?, liveness=?, acousticness=?, danceability=?, energy=?, speechiness=?, instrumentalness=?, imageURL=?"
                 + " WHERE idSpotify=?;";
         PreparedStatement pst = connection.prepareStatement(query);
 
@@ -94,7 +95,8 @@ public class UserDAO {
         pst.setObject(8, user.getStats().getEnergy());
         pst.setObject(9, user.getStats().getSpeechiness());
         pst.setObject(10, user.getStats().getInstrumentalness());
-        pst.setString(11, user.getId());
+        pst.setObject(11, user.getImageURL());
+        pst.setString(12, user.getId());
 
         return pst;
     }
@@ -111,7 +113,7 @@ public class UserDAO {
     }
 
     /******************************************************************************************/
-    
+
     /* CRUD */
 
     public boolean createUser(User user) {
@@ -137,7 +139,8 @@ public class UserDAO {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                user = new User(rs.getString("idSpotify"), rs.getString("name"), (Integer) rs.getObject("popularity"),
+                user = new User(rs.getString("idSpotify"), rs.getString("name"), (String) rs.getObject("imageURL"),
+                        (Timestamp) rs.getObject("lastUpdateDate"), (Integer) rs.getObject("popularity"),
                         (Double) rs.getObject("tempo"), (Double) rs.getObject("valence"),
                         (Double) rs.getObject("liveness"), (Double) rs.getObject("acousticness"),
                         (Double) rs.getObject("danceability"), (Double) rs.getObject("energy"),
@@ -152,7 +155,7 @@ public class UserDAO {
 
     public boolean updateUser(User user) {
         boolean status = false;
-        
+
         try {
             PreparedStatement pst = prepareUpdateUserSQLStatement(user);
             pst.executeUpdate();
@@ -161,7 +164,7 @@ public class UserDAO {
         } catch (SQLException u) {
             throw new RuntimeException(u);
         }
-        
+
         return status;
     }
 

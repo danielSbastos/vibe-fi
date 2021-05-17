@@ -10,6 +10,7 @@ window.onload = () => {
         dataType: "json",
     })
         .done(function (data) {
+            setProfile(data)
             setStats(data);
         });
 
@@ -51,6 +52,16 @@ function getCookie(cname) {
         }
     }
     return "";
+}
+
+function setProfile(userData) {
+    console.log(userData)
+    $("#displayName").text(userData.user)
+    if (userData.imageURL) {
+        $("#profilePic").html(
+			`<img src=${userData.imageURL} width=100%>`
+		)
+    }
 }
 
 function setStats(userData) {

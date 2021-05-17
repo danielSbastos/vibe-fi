@@ -51,13 +51,20 @@ body {
 	width: 200px;
 	margin: 0 auto;
 	text-align: center;
+	position: relative;
+  overflow: hidden;
+  border-radius: 50%;
 }
 
-.ftoperfil > img, i {
-	font-size: 200px;
-	height: 100%;
-	width: 100%;
-	border-radius: 50%;
+.ftoperfil > i {
+	font-size: 175px;
+}
+
+.ftoperfil > img {
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
 }
 
 #deleteVibe{

@@ -3,6 +3,7 @@ package service;
 import dao.UserDAO;
 import model.User;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 import spark.Request;
 import spark.Response;
@@ -11,9 +12,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.HashMap;
+
 import java.util.Map;
+
 
 public class AuthService {
     private static final String STATE_KEY = "spotify_auth_state";
@@ -57,9 +62,9 @@ public class AuthService {
                 HttpResponse<String> accountResponse = client.send(accountRequest, HttpResponse.BodyHandlers.ofString());
 
                 if (accountResponse.statusCode() == 200) {
-                    Map<String, Object> accountBody = responseMapBody(accountResponse.body());
-
-                    stat = createUser((String) accountBody.get("id"), (String) accountBody.get("display_name"));
+                    JSONObject accountBody = new JSONObject(responseMapBody(accountResponse.body()));
+                    
+                    stat = createUser(accountBody);
 
                     response.cookie("user_id", (String) accountBody.get("id"));
                     response.cookie("access_token", (String) tokenBody.get("access_token"), Math.toIntExact((Long) tokenBody.get("expires_in")));
@@ -81,13 +86,17 @@ public class AuthService {
         1 - user criado com sucesso
         2 - user ja existente
     */
-    private int createUser(String id, String nome) {
+    private int createUser(JSONObject userAccount) {
         UserDAO userDAO = new UserDAO();
+        String id = (String) userAccount.get("id");
+        String name = (String) userAccount.get("display_name");
+        JSONArray images = (JSONArray) userAccount.get("images");
+        String imageURL = images!=null ? (String) ((JSONObject) images.get(0)).get("url") : null;
 
         User user;
         user = userDAO.getUser(id);
-        if (user == null) {
-            user = new User(id, nome);
+        if (user == null || user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(7)))) {
+            user = new User(id, name, imageURL);
             return (userDAO.createUser(user)) ? 1 : 0;
         }
 
