@@ -85,6 +85,7 @@ public class AuthService {
         0 - erro ao criar user
         1 - user criado com sucesso
         2 - user ja existente
+        3 - user atualizado
     */
     private int createUser(JSONObject userAccount) {
         UserDAO userDAO = new UserDAO();
@@ -95,9 +96,13 @@ public class AuthService {
 
         User user;
         user = userDAO.getUser(id);
-        if (user == null || user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(7)))) {
+        if (user == null) {
             user = new User(id, name, imageURL);
             return (userDAO.createUser(user)) ? 1 : 0;
+        } else if (user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(7)))) {
+            user.setName(name);
+            user.setImageURL(imageURL);
+            return (userDAO.updateUser(user)) ? 3 : 0;
         }
 
         return 2;
