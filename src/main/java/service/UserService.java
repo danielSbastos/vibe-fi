@@ -39,8 +39,8 @@ public class UserService {
             //         + "</user>\n";
             return "{\"id\":\""+user.getId()+
             "\",\"user\":\""+user.getName()+
-            "\",\"imageURL\":\""+user.getImageURL()+
-            "\",\"stats\":{"+
+            "\",\"imageURL\":" + (user.getImageURL() == null ? null : ("\""+user.getImageURL()+
+            "\""))+",\"stats\":{"+
             "\"popularity\":"+user.getStats().getPopularity()+
             ",\"tempo\":"+user.getStats().getTempo()+
             ",\"valence\":"+user.getStats().getValence()+
