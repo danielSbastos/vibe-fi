@@ -10,6 +10,7 @@ public class Application {
     private static VibeService vibeService = new VibeService();
     private static VibeSeedService vibeSeedService = new VibeSeedService();
     private static AuthService authService = new AuthService();
+    private static SpotifyService spotifyService = new SpotifyService();
 
     public static void main(String[] args) {
         String systemPort = System.getenv("PORT");
@@ -20,26 +21,29 @@ public class Application {
 
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
-
-        //Login
+        
+        get("/userTop", "application/json",
+                (request, response) -> spotifyService.getUserTop(request, response));
+        
+        // Login
         get("/login", (request, response) -> authService.login(request, response));
         get("/callback", (request, response) -> authService.callback(request, response));
         get("/logout", (request, response) -> authService.logout(request, response));
-
-        //Application Users
+        
+        // Application Users
         get("/user/:id", (request, response) -> userService.get(request, response));
         get("/user/update/:id", (request, response) -> userService.update(request, response));
         post("/user", (request, response) -> userService.add(request, response));
         get("/user/delete/:id", (request, response) -> userService.remove(request, response));
 
-        //Application Vibes
+        // Application Vibes
         post("/vibe", (request, response) -> vibeService.add(request, response));
         get("/vibe/:id", (request, response) -> vibeService.get(request, response));
         get("/vibe/user/:userId", (request, response) -> vibeService.getFromUser(request, response));
         get("/vibe/update/:id", (request, response) -> vibeService.update(request, response));
         get("/vibe/delete/:id", (request, response) -> vibeService.remove(request, response));
 
-        //Application VibeSeed
+        // Application VibeSeed
         post("/vibeseed", (request, response) -> vibeSeedService.add(request, response));
         get("/vibeseed/:id", (request, response) -> vibeSeedService.get(request, response));
         get("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));

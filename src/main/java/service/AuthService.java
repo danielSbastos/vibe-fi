@@ -35,7 +35,7 @@ public class AuthService {
     public Object login(Request request, Response response) {
         String state = "skdhfsidufhsfhuegfuywgefwe";
 
-        String scope = "user-read-private user-read-email";
+        String scope = "user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private";
         String query = "?client_id=" + CLIENT_ID + "&scope=" + scope + "&redirect_uri=" + REDIRECT_URL + "&state="
                 + state + "&response_type=code";
 
@@ -122,10 +122,10 @@ public class AuthService {
                         .ofString("code=" + code + "&redirect_uri=" + REDIRECT_URL + "&grant_type=authorization_code"))
                 .build();
     }
-
+    
     private Map<String, Object> responseMapBody(String body) {
         Map<String, Object> hm = new HashMap<>();
-
+        
         Object obj = JSONValue.parse(body);
         JSONObject jsonObject = (JSONObject) obj;
 
@@ -133,7 +133,7 @@ public class AuthService {
             String key = (String) o;
             hm.put(key, jsonObject.get(key));
         }
-
+        
         return hm;
     }
 
