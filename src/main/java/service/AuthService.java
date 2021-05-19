@@ -98,7 +98,7 @@ public class AuthService {
         if (user == null) {
             user = new User(id, name, imageURL);
             return (userDAO.createUser(user)) ? 1 : 0;
-        } else if (user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(7)))) {
+        } else if (user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(1)))) {
             user.setName(name);
             user.setImageURL(imageURL);
             return (userDAO.updateUser(user)) ? 3 : 0;
