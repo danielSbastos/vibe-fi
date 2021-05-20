@@ -68,18 +68,16 @@ function setStats(userData) {
     $('#pbAcoustic')
         .attr('aria-valuenow', userData.stats.acousticness)
         .width(userData.stats.acousticness * 100 + '%');
-    $('#perAcoustic').text(userData.stats.acousticness * 100);
-    if(userData.stats.valence < 0.5){
-        $('i.fa-guitar')
-        .toggleClass('fa-guitar')
-        .toggleClass('fa-hdd');
-    }
+    $("#perAcoustic").text(Math.round(userData.stats.acousticness * 100))
+    if (userData.stats.acousticness < 0.5) {
+		$("i.fa-guitar").toggleClass("fa-guitar").toggleClass("fa-hdd")
+	}
 
     $('#pbPop')
         .attr('aria-valuenow', userData.stats.popularity)
-        .width(userData.stats.popularity / 2 + '%');
-    $('#perPop').text(userData.stats.popularity/2);
-    if(userData.stats.popularity < 100){
+        .width(userData.stats.popularity + '%');
+    $('#perPop').text(userData.stats.popularity);
+    if(userData.stats.popularity < 50){
         $('i.fa-fire-alt')
         .toggleClass('fa-fire-alt')
         .toggleClass('fa-meh-blank');
@@ -88,7 +86,7 @@ function setStats(userData) {
     $('#pbEnergy')
         .attr('aria-valuenow', userData.stats.energy)
         .width(userData.stats.energy * 100 + '%');
-    $('#perEnergy').text(userData.stats.energy * 100);
+    $("#perEnergy").text(Math.round(userData.stats.energy * 100))
     if(userData.stats.energy < 0.5){
         $('i.fa-bolt')
         .toggleClass('fa-bolt')
@@ -98,7 +96,7 @@ function setStats(userData) {
     $('#pbLive')
         .attr('aria-valuenow', userData.stats.liveness)
         .width(userData.stats.liveness * 100 + '%');
-    $('#perLive').text(userData.stats.liveness * 100);
+    $("#perLive").text(Math.round(userData.stats.liveness * 100))
     if(userData.stats.liveness < 0.5){
         $('i.fa-volume-up')
         .toggleClass('fa-volume-up')
@@ -108,7 +106,7 @@ function setStats(userData) {
     $('#pbSmile')
         .attr('aria-valuenow', userData.stats.valence)
         .width(userData.stats.valence * 100 + '%');
-    $('#perSmile').text(userData.stats.valence * 100);
+    $("#perSmile").text(Math.round(userData.stats.valence * 100))
     if(userData.stats.valence < 0.5){
         $('i.fa-smile-beam')
         .toggleClass('fa-smile-beam')

@@ -1,6 +1,7 @@
 package service;
 
 import dao.UserDAO;
+import model.Features;
 import model.User;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -63,7 +64,7 @@ public class AuthService {
                 if (accountResponse.statusCode() == 200) {
                     JSONObject accountBody = new JSONObject(responseMapBody(accountResponse.body()));
 
-                    stat = createUser(accountBody);
+                    stat = createUser(accountBody, (String) tokenBody.get("access_token"));
 
                     response.cookie("user_id", (String) accountBody.get("id"));
                     response.cookie("access_token", (String) tokenBody.get("access_token"),
@@ -86,8 +87,9 @@ public class AuthService {
      * createUser() @return 0 - erro ao criar user 1 - user criado com sucesso 2 -
      * user ja existente 3 - user atualizado
      */
-    private int createUser(JSONObject userAccount) {
+    private int createUser(JSONObject userAccount, String authToken) {
         UserDAO userDAO = new UserDAO();
+        SpotifyService spotifyService = new SpotifyService();
         String id = (String) userAccount.get("id");
         String name = (String) userAccount.get("display_name");
         JSONArray images = (JSONArray) userAccount.get("images");
@@ -96,15 +98,26 @@ public class AuthService {
         User user;
         user = userDAO.getUser(id);
         if (user == null) {
-            user = new User(id, name, imageURL);
+            Features uFeatures = parseFeatures((JSONObject) spotifyService.getUserTop(authToken).get("avgFeatures"));
+            user = new User(id, name, imageURL, uFeatures);
             return (userDAO.createUser(user)) ? 1 : 0;
-        } else if (user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(1)))) {
+        } else if (user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(0)))) {
+            Features uFeatures = parseFeatures((JSONObject) spotifyService.getUserTop(authToken).get("avgFeatures"));
             user.setName(name);
             user.setImageURL(imageURL);
+            user.setStats(uFeatures);
             return (userDAO.updateUser(user)) ? 3 : 0;
         }
 
         return 2;
+    }
+
+    private Features parseFeatures(JSONObject userFeatures) {
+        return new Features((Integer) userFeatures.get("popularity"), (Double) userFeatures.get("tempo"),
+                (Double) userFeatures.get("valence"), (Double) userFeatures.get("liveness"),
+                (Double) userFeatures.get("acousticness"), (Double) userFeatures.get("danceability"),
+                (Double) userFeatures.get("energy"), (Double) userFeatures.get("speechiness"),
+                (Double) userFeatures.get("instrumentalness"));
     }
 
     private HttpRequest accountRequest(String accessToken) {
@@ -122,10 +135,10 @@ public class AuthService {
                         .ofString("code=" + code + "&redirect_uri=" + REDIRECT_URL + "&grant_type=authorization_code"))
                 .build();
     }
-    
+
     private Map<String, Object> responseMapBody(String body) {
         Map<String, Object> hm = new HashMap<>();
-        
+
         Object obj = JSONValue.parse(body);
         JSONObject jsonObject = (JSONObject) obj;
 
@@ -133,7 +146,7 @@ public class AuthService {
             String key = (String) o;
             hm.put(key, jsonObject.get(key));
         }
-        
+
         return hm;
     }
 

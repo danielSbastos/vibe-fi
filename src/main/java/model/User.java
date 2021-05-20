@@ -23,6 +23,13 @@ public class User {
         this.stats = new Features();
     }
 
+    public User(String id, String name, String imageURL, Features stats) {
+        this.id = id;
+        this.name = name;
+        this.imageURL = imageURL;
+        this.stats = stats;
+    }
+    
     public User(String id, String name, String imageURL, Timestamp lastUpdateDate, Features stats) {
         this.id = id;
         this.name = name;

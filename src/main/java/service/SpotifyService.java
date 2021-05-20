@@ -32,15 +32,33 @@ public class SpotifyService {
                 "Accept", "application/json", "Content-Type", "application/json").GET().build();
     }
 
-    public Object getUserTop(Request request, Response response) {
-        HttpClient client = HttpClient.newHttpClient();
+    public JSONObject getUserTop(Request request, Response response) {
         String authorization = request.headers("Authorization");
         String timeRange = request.queryParams("timeRange") != null ? request.queryParams("timeRange") : "medium_term";
         int limit = request.queryParams("limit") != null ? Integer.parseInt(request.queryParams("limit")) : 50;
 
-        JSONObject returnJSON = new JSONObject();
+        return getUserTop(authorization, timeRange, limit);
+    }
 
-        returnJSON = requestTopTracks(client, authorization, timeRange, limit);
+    public JSONObject getUserTop(String authToken) {
+        String authorization = "Bearer " + authToken;
+        String timeRange = "medium_term";
+        int limit = 50;
+
+        return getUserTop(authorization, timeRange, limit);
+    }
+    
+    private JSONObject getUserTop(String authorization, String timeRange, int limit) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        JSONObject returnJSON = new JSONObject();
+        JSONObject tracksJSON = new JSONObject();
+        JSONObject artistsJSON = new JSONObject();
+
+        tracksJSON = requestTopTracks(client, authorization, timeRange, limit);
+        artistsJSON = requestTopArtists(client, authorization, timeRange, limit);
+
+        returnJSON = mergeJSONs(tracksJSON, artistsJSON);
 
         return returnJSON;
     }
@@ -60,6 +78,141 @@ public class SpotifyService {
         }
 
         return ids;
+    }
+
+    private JSONObject mergeJSONs(JSONObject tracksJSON, JSONObject artistsJSON) {
+        Map<String, Object> returnObj = new HashMap<>();
+
+        returnObj = convertJSONtoMap(tracksJSON);
+        returnObj.putAll(convertJSONtoMap(artistsJSON));
+
+        returnObj.put("avgFeatures", calculateUserFeatures(returnObj));
+
+        return new JSONObject(returnObj);
+    }
+
+    @SuppressWarnings("unchecked")
+    private JSONObject calculateUserFeatures(Map<String, Object> returnObj) {
+        Integer popularity = 0;
+        Double tempo = 0.0;
+        Double valence = 0.0;
+        Double liveness = 0.0;
+        Double acousticness = 0.0;
+        Double danceability = 0.0;
+        Double energy = 0.0;
+        Double speechiness = 0.0;
+        Double instrumentalness = 0.0;
+
+        for (Object track : (JSONArray) returnObj.get("tracks")) {
+            JSONObject trackJSON = (JSONObject) track;
+            JSONObject trackFeaturesJSON = new JSONObject((Map<String, Object>) trackJSON.get("features"));
+
+            tempo += (Double) (trackFeaturesJSON.get("tempo") == null ? 0 : trackFeaturesJSON.get("tempo"));
+            valence += (Double) (trackFeaturesJSON.get("valence") == null ? 0 : trackFeaturesJSON.get("valence"));
+            liveness += (Double) (trackFeaturesJSON.get("liveness") == null ? 0 : trackFeaturesJSON.get("liveness"));
+            acousticness += (Double) (trackFeaturesJSON.get("acousticness") == null ? 0
+                    : trackFeaturesJSON.get("acousticness"));
+            danceability += (Double) (trackFeaturesJSON.get("danceability") == null ? 0
+                    : trackFeaturesJSON.get("danceability"));
+            energy += (Double) (trackFeaturesJSON.get("energy") == null ? 0 : trackFeaturesJSON.get("energy"));
+            speechiness += (Double) (trackFeaturesJSON.get("speechiness") == null ? 0
+                    : trackFeaturesJSON.get("speechiness"));
+            instrumentalness += (Double) (trackFeaturesJSON.get("instrumentalness") == null ? 0
+                    : trackFeaturesJSON.get("instrumentalness"));
+        }
+
+        for (Object artist : (JSONArray) returnObj.get("artists")) {
+            JSONObject artistSON = (JSONObject) artist;
+
+            popularity += (Integer) (artistSON.get("popularity") == null ? 0 : artistSON.get("popularity"));
+        }
+
+        popularity = popularity / (Integer) returnObj.get("totalArtists");
+        tempo = tempo / (Integer) returnObj.get("totalTracks");
+        valence = valence / (Integer) returnObj.get("totalTracks");
+        liveness = liveness / (Integer) returnObj.get("totalTracks");
+        acousticness = acousticness / (Integer) returnObj.get("totalTracks");
+        danceability = danceability / (Integer) returnObj.get("totalTracks");
+        energy = energy / (Integer) returnObj.get("totalTracks");
+        speechiness = speechiness / (Integer) returnObj.get("totalTracks");
+        instrumentalness = instrumentalness / (Integer) returnObj.get("totalTracks");
+
+        Map<String, Object> avgFeatures = new HashMap<>();
+
+        avgFeatures.put("popularity", popularity);
+        avgFeatures.put("tempo", tempo);
+        avgFeatures.put("valence", valence);
+        avgFeatures.put("liveness", liveness);
+        avgFeatures.put("acousticness", acousticness);
+        avgFeatures.put("danceability", danceability);
+        avgFeatures.put("energy", energy);
+        avgFeatures.put("speechiness", speechiness);
+        avgFeatures.put("instrumentalness", instrumentalness);
+
+        return new JSONObject(avgFeatures);
+    }
+
+    private Map<String, Object> convertJSONtoMap(JSONObject jsonObject) {
+        Map<String, Object> hm = new HashMap<>();
+
+        for (Object o : jsonObject.keySet()) {
+            String key = (String) o;
+            hm.put(key, jsonObject.get(key));
+        }
+
+        return hm;
+    }
+
+    private JSONObject requestTopArtists(HttpClient client, String authorization, String timeRange, int limit) {
+        JSONObject returnJSON = new JSONObject();
+
+        try {
+            HttpRequest http = userTopRequest("artists", authorization, timeRange, limit);
+            HttpResponse<String> spotifyResponse = client.send(http, HttpResponse.BodyHandlers.ofString());
+
+            if (spotifyResponse.statusCode() == 200) {
+                JSONObject topArtists = (JSONObject) JSONValue.parse(spotifyResponse.body());
+                returnJSON = parseArtists(topArtists);
+            } else {
+                returnJSON = (JSONObject) JSONValue.parse(spotifyResponse.body());
+            }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+        return new JSONObject(returnJSON);
+    }
+
+    @SuppressWarnings("unchecked")
+    private JSONObject parseArtists(JSONObject topArtists) {
+        Map<String, Object> returnObj = new HashMap<>();
+
+        JSONArray artists = new JSONArray();
+        int total = 0;
+
+        for (Object artist : (JSONArray) topArtists.get("items")) {
+            if (artist instanceof JSONObject) {
+                artists.add(parseArtist((JSONObject) artist));
+
+                total++;
+            }
+        }
+
+        returnObj.put("artists", artists);
+        returnObj.put("totalArtists", total);
+
+        return new JSONObject(returnObj);
+    }
+
+    private JSONObject parseArtist(JSONObject artist) {
+        Map<String, Object> artistMap = new HashMap<>();
+
+        artistMap.put("id", artist.get("id"));
+        artistMap.put("name", artist.get("name"));
+        artistMap.put("genres", artist.get("genres"));
+        artistMap.put("popularity", ((Number) artist.get("popularity")).intValue());
+
+        return new JSONObject(artistMap);
     }
 
     private JSONObject requestTopTracks(HttpClient client, String authorization, String timeRange, int limit) {
@@ -118,7 +271,7 @@ public class SpotifyService {
         }
 
         returnObj.put("tracks", tracks);
-        returnObj.put("total", total);
+        returnObj.put("totalTracks", total);
 
         return new JSONObject(returnObj);
     }
@@ -143,14 +296,14 @@ public class SpotifyService {
             JSONObject audioFeatures = (JSONObject) responseIterator.next();
             Map<String, Object> features = new HashMap<>();
 
-            features.put("tempo", audioFeatures.get("tempo"));
-            features.put("valence", audioFeatures.get("valence"));
-            features.put("liveness", audioFeatures.get("liveness"));
-            features.put("acousticness", audioFeatures.get("acousticness"));
-            features.put("danceability", audioFeatures.get("danceability"));
-            features.put("energy", audioFeatures.get("energy"));
-            features.put("speechiness", audioFeatures.get("speechiness"));
-            features.put("instrumentalness", audioFeatures.get("instrumentalness"));
+            features.put("tempo", ((Number) audioFeatures.get("tempo")).doubleValue());
+            features.put("valence", ((Number) audioFeatures.get("valence")).doubleValue());
+            features.put("liveness", ((Number) audioFeatures.get("liveness")).doubleValue());
+            features.put("acousticness", ((Number) audioFeatures.get("acousticness")).doubleValue());
+            features.put("danceability", ((Number) audioFeatures.get("danceability")).doubleValue());
+            features.put("energy", ((Number) audioFeatures.get("energy")).doubleValue());
+            features.put("speechiness", ((Number) audioFeatures.get("speechiness")).doubleValue());
+            features.put("instrumentalness", ((Number) audioFeatures.get("instrumentalness")).doubleValue());
 
             returnObj.put((String) audioFeatures.get("id"), features);
         }
