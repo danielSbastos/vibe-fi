@@ -10,6 +10,7 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>3.0.4</version>
                 <configuration>
+                    <logProgress>true</logProgress>
                     <appName>vibe-fi</appName>
                     <processTypes>
                         <web>java $JAVA_OPTS -Dserver.port=$PORT -cp target/classes:target/dependency/* app.Application</web>
@@ -20,6 +21,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <source>11</source>
                     <target>11</target>
