@@ -1,6 +1,7 @@
 package service;
 
 import dao.UserDAO;
+import dao.VibeDAO;
 import model.Features;
 import model.User;
 import org.json.simple.JSONObject;
@@ -100,7 +101,13 @@ public class AuthService {
         if (user == null) {
             Features uFeatures = parseFeatures((JSONObject) spotifyService.getUserTop(authToken).get("avgFeatures"));
             user = new User(id, name, imageURL, uFeatures);
-            return (userDAO.createUser(user)) ? 1 : 0;
+            if (userDAO.createUser(user)) {
+                VibeDAO vDao = new VibeDAO();
+                vDao.createVibesFromTemplates(user.getId());
+                return 1;
+            } else {
+                return 0;
+            }
         } else if (user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(0)))) {
             Features uFeatures = parseFeatures((JSONObject) spotifyService.getUserTop(authToken).get("avgFeatures"));
             user.setName(name);

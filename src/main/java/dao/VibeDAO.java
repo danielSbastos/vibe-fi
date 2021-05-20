@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.*;
 import model.Vibe;
+import model.VibeTemplate;
 import util.db.DatabaseConnection;
 
 public class VibeDAO {
@@ -255,7 +256,45 @@ public class VibeDAO {
         } catch (SQLException u) {
             throw new RuntimeException(u);
         }
+        
+        return status;
+    }
+    
+    /******************************************************************************************/
+    /* extra */
+
+    public boolean createVibesFromTemplate(String userId, VibeTemplate template) {
+        boolean status = false;
+        
+        try {
+            Vibe vibe = new Vibe(userId, template);
+            PreparedStatement pst = prepareCreateVibeSQLStatement(vibe);
+            pst.executeUpdate();
+            pst.close();
+            status = true;
+        } catch (SQLException u) {
+            throw new RuntimeException(u);
+        }
+
+        return status;
+    }
+    
+    public boolean createVibesFromTemplates(String userId) {
+        boolean status = false;
+        VibeTemplateDAO vtDao = new VibeTemplateDAO();
+        
+        try {
+            VibeTemplate[] vibeTemplates = vtDao.getNVibeTemplates(10);
+            for (int i = 0; i<vibeTemplates.length; i++) {
+                createVibesFromTemplate(userId, vibeTemplates[i]);
+            }
+            status = true;
+        } catch (Exception u) {
+            throw new RuntimeException(u);
+        }
 
         return status;
     }
 }
+
+

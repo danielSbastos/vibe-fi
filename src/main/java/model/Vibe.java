@@ -34,6 +34,16 @@ public class Vibe {
         this.maxFeatures = new Features();
     }
 
+    public Vibe(String userId, VibeTemplate originTemplate) {
+        setId(UUID.randomUUID().toString());
+        this.userId = userId;
+        this.originTemplateId = originTemplate.getId();
+        this.name = originTemplate.getName();
+        this.description = originTemplate.getDescription();
+        this.minFeatures = originTemplate.getMinFeatures();
+        this.maxFeatures = originTemplate.getMaxFeatures();
+    }
+
     public Vibe(String id, String userId, String originTemplateId, String name, String description,
             Features minFeatures, Features maxFeatures) {
         setId(id);
