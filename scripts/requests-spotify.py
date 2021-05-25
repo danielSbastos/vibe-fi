@@ -30,7 +30,7 @@ def tracks_attributes(klass, tracks_ids):
     content = response.json()
 
     if content.get("error"):
-        sleep(response["retry-after"])
+        sleep(int(response.headers["retry-after"]))
         response = requests.get(features_url, headers=headers(TOKEN), params=params(tracks_ids))
         content = response.json()
 
@@ -50,7 +50,7 @@ def playlist_tracks_ids(klass, url):
     content = response.json()
 
     if content.get("error"):
-        sleep(response["retry-after"])
+        sleep(int(response.headers["retry-after"]))
 
     next_url = content["next"] 
     ids = list(map(lambda track: track["track"]["id"], content["items"])) 
