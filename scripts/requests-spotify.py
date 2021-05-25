@@ -16,30 +16,97 @@ PIDS_CLASSES = [
         { "ids": ["7xmpNYZ15D6b43BHzYQCLt"], "class": "foco"},
 ]
 
-PARAMS = { "fields" : "limit,offset,total,next,items(track(id))", "market": "BR" }
-
-url = lambda pid: f"https://api.spotify.com/v1/playlists/{pid}/tracks"
 headers = lambda token: { "Authorization": f"Bearer {token}" }
 
-def playlist_tracks_ids(url):
-    response = requests.get(url, headers=headers(TOKEN), params=PARAMS)
+url = lambda pid: f"https://api.spotify.com/v1/playlists/{pid}/tracks"
+features_url = "https://api.spotify.com/v1/audio-features"
+
+# For each batch of tracks_ids, fetch their features and transduce it
+# into a hash with the track id, its features and the class
+# returns = <same return from playlists_tracks_ids>
+def tracks_attributes(klass, tracks_ids):
+    params = lambda ids: { "ids" : f"{','.join(ids)}" }
+    response = requests.get(features_url, headers=headers(TOKEN), params=params(tracks_ids))
     content = response.json()
 
     if content.get("error"):
-        sleep(response["error"]["retry-after"])
+        sleep(response["retry-after"])
+        response = requests.get(features_url, headers=headers(TOKEN), params=params(tracks_ids))
+        content = response.json()
+
+    keys = ['id', 'valence', 'energy', 'tempo', 'danceability', 'acousticness']
+    droped_nan = [c for c in content["audio_features"] if c is not None]
+    features = list(map(lambda audio: {"class": klass, **{key: audio[key] for key in keys}}, droped_nan))
+
+    return features
+
+# For each playlist track url, fetch the tracks ids features recursevely until the "next"
+# response content is null, e.i., there are no more tracks to be paginated.
+# If there is a rate api limit error, sleep with the specified retry-after amount
+# returns = <same return from playlists_tracks_ids>
+def playlist_tracks_ids(klass, url):
+    params = { "fields" : "limit,offset,total,next,items(track(id))", "market": "BR" }
+    response = requests.get(url, headers=headers(TOKEN), params=params)
+    content = response.json()
+
+    if content.get("error"):
+        sleep(response["retry-after"])
 
     next_url = content["next"] 
     ids = list(map(lambda track: track["track"]["id"], content["items"])) 
+    attributes = tracks_attributes(klass, ids) 
 
     if next_url is None:
-        return ids
-    return ids + playlist_tracks_ids(next_url)
+        return attributes
+    return attributes + playlist_tracks_ids(klass, next_url)
 
-def playlists_tracks_ids(playlists_ids):
-    return list(reduce(lambda acc, cur: acc + playlist_tracks_ids(url(cur)), playlists_ids, []))
+# For each array of playlist ids, find their respective tracks ids and merge them together
+# returns = [
+#     { 
+#         "class": "dormir",
+#         "id": "17dxXweuShPwv4eXAqJMXz",
+#         "valence": 0.117,
+#         "energy": 0.0273,
+#         "tempo": 68.322,
+#         "danceability": 0.0999,
+#         "acousticness": 0.91  
+#     },
+#     { 
+#         "class": "dormir",
+#         "id": "6TYZYNqAoYfE64csvrZyoy",
+#         "valence": 0.033,
+#         "energy": 0.00274,
+#         "tempo": 134.727,
+#         "danceability": 0.153,
+#         "acousticness": 0.977 
+#     },
+# ]
+def playlists_tracks_ids(klass, ids):
+    return list(reduce(lambda acc, cur: acc + playlist_tracks_ids(klass, url(cur)), ids, []))
 
+# For each entry in PIDS_CLASSES, return each of the tracks attributes in a flat list
+# returns = [
+#    {
+#        "class": "dormir",
+#        "id": "17dxXweuShPwv4eXAqJMXz",
+#        "valence": 0.117,
+#        "energy": 0.0273,
+#        "tempo": 68.322,
+#        "danceability": 0.0999,
+#        "acousticness": 0.91
+#    }, {
+#         "class": "foco",
+#         "id": "1RJ82uG8wlF9y7twIWTOTA",
+#         "valence": 0.341, 
+#         "energy": 0.149, 
+#         "tempo": 144.506,
+#         "danceability": 0.473,
+#         "acousticness": 0.905
+#    }
+# ]
 def all_tracks_ids():
-    return list(map(lambda cur: { **cur, "tracks_ids": playlists_tracks_ids(cur["ids"]) }, PIDS_CLASSES))
+    return list(map(lambda cur: playlists_tracks_ids(cur["class"], cur["ids"]), PIDS_CLASSES))
 
 with open('result.json', 'w') as fp:
-    json.dump(all_tracks_ids(), fp, indent=4)
+    data = all_tracks_ids()
+    json.dump(data, fp, indent=4)
