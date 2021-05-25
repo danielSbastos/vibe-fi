@@ -40,8 +40,8 @@ def tracks_attributes(klass, tracks_ids):
 
     return features
 
-# For each playlist track url, fetch the tracks ids features recursevely until the "next"
-# response content is null, e.i., there are no more tracks to be paginated.
+# For each playlist track url, fetch the tracks ids features recursively until the "next"
+# response content is null, i.e., there are no more tracks to be paginated.
 # If there is a rate api limit error, sleep with the specified retry-after amount
 # returns = <same return from playlists_tracks_ids>
 def playlist_tracks_ids(klass, url):
