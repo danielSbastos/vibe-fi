@@ -1,156 +1,36 @@
 html {
 	background-color: white;
 }
-
-#bottomimg {
-	z-index: 3;
-	margin-top: 15%;
-	margin-left: 37%;
-	position: absolute;
-	width: 25%;
-	height: 10%;
-	top: 22%;
-	background-color: rgb(42, 92, 167);
-	font-family: monospace;
-}
-
-#carouselExampleSlidesOnly {
-	position: absolute;
-	width: 100%;
-	height: 0%;
-	left: 0%;
-	top: 10%;
-	
-	background: rgba(0, 0, 0, 0.3);
-}
-
 #imgbarra {
 	height: 50px;
 }
 
-
-.vibe-pic img {
-  height: 100%;
-  width: 100%;
+.select-card{
+    margin-top:10px;
+}
+.select-card .card-img-block {
+    width: 91%;
+    margin: 0 auto;
+    position: relative;
+    top: -20px;
+    
+}
+.select-card .card-img-block img{
+    border-radius:5px;
+    box-shadow:0 0 10px rgba(0,0,0,0.63);
+}
+.fotoActive{
+	filter: grayscale(100%);
+}
+.select-card h5{
+    color:#4E5E30;
+    font-weight:600;
+}
+.select-card p{
+    font-size:14px;
+    font-weight:300;
 }
 
-.content {
-	height: 300px;
-	background-color: rgba(255, 255, 255, 0.42);
-}
-
-/* .bg-text {
-	color: #035203;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: 2;
-	width: 80%;
-	padding: 20px;
-} */
-
-@media screen and (min-width: 1024px) {
-	/* .navbar {
-                   height: 7vh;
-               } */
-}
-
-#navbarum {
-	background-color: rgba(184, 183, 183, 0.986);
-}
-
-#cardum {
-	position: absolute;
-	width: 50%;
-	height: 30%;
-	left: 5%;
-	top: 20%;
-
-	background: rgba(184, 183, 183, 0.986);
-}
-
-#body {
-	background-color: white;
-}
-
-#carouselExampleSlidesOnly {
-	margin-top: 5%;
-	margin-left: 5%;
-	width: 50%;
-}
-
-#imgquadro {
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-top: 2%;
-
-	width: 90%;
-	height: 20%;
-}
-
-#letreirooo {
-	margin-top: 10%;
-	margin-left: 15%;
-	z-index: 3;
-	background-color: rgba(184, 183, 183, 0.986);
-}
-
-#imgquebec {
-	max-width: 100%;
-
-	padding-bottom: 20%;
-}
-
-#logopit {
-	z-index: 3;
-	margin-bottom: 80%;
-}
-
-#cardzaum {
-	z-index: 3;
-}
-
-#footer {
-	background-color: white;
-}
-
-#letrasbaixo {
-	margin-left: 25%;
-}
-
-#cardumbaixo {
-	width: 30%;
-	margin-left: 0%;
-}
-
-#carddoisbaixo {
-	width: 30%;
-}
-
-#cardtresbaixo {
-	width: 30%;
-}
-
-.loginbox {
-	background-color: rgba(184, 183, 183, 0.2);
-}
-
-.btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0px;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.42857;
-}
-
-.btn-circle.btn-xl {
-    width: 70px;
-    height: 70px;
-    padding: 10px 16px;
-    border-radius: 35px;
-    font-size: 24px;
-    line-height: 1.33;
+.cardActive{
+	box-shadow: 0 4px 8px 0 #1DB954, 0 6px 20px 0 #1DB954;
 }
