@@ -10,7 +10,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Classifier {
@@ -21,7 +23,7 @@ public class Classifier {
         this.features = features;
     }
 
-    public void classify() {
+    public List<Map<String, Object>> classify() {
         HttpClient client = HttpClient.newHttpClient();
 
         StringBuilder json = new StringBuilder().append("[");
@@ -36,31 +38,60 @@ public class Classifier {
                 .build();
 
         HttpResponse<String> response = null;
+
+        Map<String, Object> hm;
+        List<Map<String, Object>> res = new ArrayList<>();
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            JSONObject obj = new JSONObject(responseMapBody(response.body()));
-            System.out.println(obj);
+            List<Map<String, Object>> objs = responseMapBody(response.body());
+
+            Features responsefeature;
+            for (Features feature : features) {
+                for (Map<String, Object> classifiedObj : objs) {
+                    responsefeature = new Features(
+                            1,
+                            (Double) classifiedObj.get("tempo"),
+                            (Double) classifiedObj.get("valence"),
+                            (Double) classifiedObj.get("liveness"),
+                            (Double) classifiedObj.get("acousticness"),
+                            (Double) classifiedObj.get("danceability"),
+                            (Double) classifiedObj.get("energy"),
+                            (Double) classifiedObj.get("speechiness"),
+                            (Double) classifiedObj.get("instrumentalness"));
+
+                    if (responsefeature.equals(feature)) {
+                        hm = new HashMap<>();
+                        hm.put("class", classifiedObj.get("Scored Labels"));
+                        hm.put("feature", feature);
+                        res.add(hm);
+                    }
+                }
+            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
+        return res;
     }
 
-    private Map<String, Object> responseMapBody(String body) {
-        Map<String, Object> hm = new HashMap<>();
+    private List<Map<String, Object>> responseMapBody(String body) {
+        Map<String, Object> hm;
+        List<Map<String, Object>> res = new ArrayList<>();
 
         Object obj = JSONValue.parse(body);
         JSONObject jsonObject = (JSONObject) obj;
-        JSONObject[] objs = (JSONObject[]) jsonObject.get("items");
+        JSONArray objs = (JSONArray) jsonObject.get("result");
 
-        for (JSONObject _obj : objs) {
-            for (Object o : _obj.keySet()) {
+        for (Object _obj : objs) {
+            hm = new HashMap<>();
+            for (Object o : ((JSONObject) _obj).keySet()) {
                 String key = (String) o;
-                hm.put(key, jsonObject.get(key));
+                hm.put(key, ((JSONObject) _obj).get(key));
             }
+            res.add(hm);
         }
 
-        return hm;
+        return res;
     }
 
 }

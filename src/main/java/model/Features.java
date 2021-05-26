@@ -124,4 +124,28 @@ public class Features {
 
         return obj.toString();
     }
+
+    @Override
+    public String toString() {
+        return asJsonString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        return getPopularity().equals(((Features) o).getPopularity()) &&
+                getTempo().equals(((Features) o).getTempo()) &&
+                getValence().equals(((Features) o).getValence()) &&
+                getLiveness().equals(((Features) o).getLiveness()) &&
+                getDanceability().equals(((Features) o).getDanceability()) &&
+                getEnergy().equals(((Features) o).getEnergy()) &&
+                getSpeechiness().equals(((Features) o).getSpeechiness()) &&
+                getInstrumentalness().equals(((Features) o).getInstrumentalness());
+    }
 }
