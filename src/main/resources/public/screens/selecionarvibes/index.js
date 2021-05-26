@@ -1,7 +1,7 @@
 window.onload = () =>{
     $.ajax({
-        //url: `${window.location.protocol}//${window.location.host}/vibetemplate/all?`,
-        url: `http://localhost:6789/vibetemplate/all`,
+        url: `${window.location.protocol}//${window.location.host}/vibetemplate/all`,
+        //url: `http://localhost:6789/vibetemplate/all`,
         type: "GET",
         dataType: "json",
     })
