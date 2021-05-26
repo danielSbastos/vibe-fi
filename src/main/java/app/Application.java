@@ -1,6 +1,9 @@
 package app;
 
 import static spark.Spark.*;
+
+import lib.Classifier;
+import model.Features;
 import service.*;
 import util.cors.*;
 
@@ -21,7 +24,13 @@ public class Application {
 
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
-        
+
+        Features[] features = new Features[2];
+        features[0] = new Features(1, 125.515, 0.036, 0.0996, 0.898, 0.228, 0.0243, 0.0486, 0.89);
+        features[1] = new Features(1, 125.515, 0.036, 0.0996, 0.898, 0.228, 0.0243, 0.0486, 0.89);
+        Classifier classifier = new Classifier(features);
+        classifier.classify();
+
         get("/userTop", "application/json",
                 (request, response) -> spotifyService.getUserTop(request, response));
         

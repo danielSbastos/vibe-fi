@@ -34,7 +34,7 @@ def tracks_attributes(klass, tracks_ids):
         response = requests.get(features_url, headers=headers(TOKEN), params=params(tracks_ids))
         content = response.json()
 
-    keys = ['id', 'valence', 'energy', 'tempo', 'danceability', 'acousticness']
+    keys = ['id', 'liveness', 'speechiness', 'instrumentalness', 'valence', 'energy', 'tempo', 'danceability', 'acousticness']
     droped_nan = [c for c in content["audio_features"] if c is not None]
     features = list(map(lambda audio: {"class": klass, **{key: audio[key] for key in keys}}, droped_nan))
 
