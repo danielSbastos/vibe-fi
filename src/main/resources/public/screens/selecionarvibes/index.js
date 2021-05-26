@@ -1,7 +1,7 @@
 window.onload = () =>{
     $.ajax({
-        url: `${window.location.protocol}//${window.location.host}/vibetemplate/all`,
-        //url: `http://localhost:6789/vibetemplate/all`,
+        //url: `${window.location.protocol}//${window.location.host}/vibetemplate/all`,
+        url: `http://localhost:6789/vibetemplate/all`,
         type: "GET",
         dataType: "json",
     })
@@ -15,7 +15,7 @@ function createCard(data){
     cards = "";
     data.templates.forEach((e) => {
         cards += `<div class="col-md-4" onclick="toggleActive(this)">
-                    <div class="card select-card cardActive">
+                    <div class="card select-card cardActive" id="${e.id}">
                         <div class="card-img-block">
                             <img class="card-img-top" src="https://picsum.photos/200/150/"
                                 alt="Card image cap">
@@ -37,5 +37,9 @@ function toggleActive(div){
 }
 
 function genVibes(){
-    //PRECISA IMPLEMENTAR
+    let selected = []
+    selected = (document.getElementsByClassName("cardActive"));
+    for (let i = 0; i < selected.length; i++) {
+        console.log(selected[i].id);     
+    }
 }
