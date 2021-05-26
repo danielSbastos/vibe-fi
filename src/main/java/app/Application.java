@@ -14,6 +14,7 @@ public class Application {
     private static VibeSeedService vibeSeedService = new VibeSeedService();
     private static AuthService authService = new AuthService();
     private static SpotifyService spotifyService = new SpotifyService();
+    private static TemplateService templateService = new TemplateService();
 
     public static void main(String[] args) {
         String systemPort = System.getenv("PORT");
@@ -61,5 +62,8 @@ public class Application {
         get("/vibeseed/:id", (request, response) -> vibeSeedService.get(request, response));
         get("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));
         get("/vibeseed/delete/:id", (request, response) -> vibeSeedService.remove(request, response));
+
+        // Application VibeTemplate
+        get("/vibetemplate/all", (request, response) -> templateService.getDescription(request, response));
     }
 }
