@@ -1,19 +1,9 @@
 package service;
 
 import dao.*;
-import lib.Classifier;
 import model.*;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class VibeService {
 
@@ -21,93 +11,6 @@ public class VibeService {
 
     public VibeService() {
         vibeDAO = new VibeDAO();
-    }
-    
-    @SuppressWarnings("unchecked")
-    public Object generate(Request request, Response response) {
-        SpotifyService spotifyService = new SpotifyService();
-
-        List<String> templateIds = new ArrayList<>();
-
-        String[] parts = request.body().split("=|&");
-        for (int i = 1; i < parts.length; i += 2) {
-            templateIds.add(parts[i]);
-        }
-
-        JSONArray tracks = (JSONArray) spotifyService.getUserTopTracks(request.cookie("access_token")).get("tracks");
-
-        Features[] features = new Features[tracks.size()];
-        int i = 0;
-        for (Object track : tracks) {
-            JSONObject jsonFeatures = new JSONObject((HashMap<String, Object>) ((JSONObject) track).get("features"));
-
-            Features _features = new Features(
-                    null,
-                    (Double) jsonFeatures.get("tempo"),
-                    (Double) jsonFeatures.get("valence"),
-                    (Double) jsonFeatures.get("liveness"),
-                    (Double) jsonFeatures.get("acousticness"),
-                    (Double) jsonFeatures.get("danceability"),
-                    (Double) jsonFeatures.get("energy"),
-                    (Double) jsonFeatures.get("speechiness"),
-                    (Double) jsonFeatures.get("instrumentalness")
-            );
-            _features.trackId = (String) ((JSONObject) track).get("id");
-            features[i] = _features;
-            i++;
-        }
-
-        Classifier classifier = new Classifier(features);
-        List<Map<String, Object>> result = classifier.classify();
-        List<Map<String, Object>> filteredResult = result.stream().filter((r) ->  templateIds.contains((String) r.get("class"))).collect(Collectors.toList());
-
-        String userId = request.cookie("user_id");
-        VibeDAO vibeDAO = new VibeDAO();
-        VibeTemplateDAO vibeTemplateDAO = new VibeTemplateDAO();
-        VibeSeedDAO vibeSeedDAO = new VibeSeedDAO();
-
-        VibeTemplate vibeTemplate;
-        Vibe vibe;
-        VibeSeed vibeSeed;
-        List<Vibe> filteredVibes;
-
-        Vibe[] vibes = vibeDAO.getUserVibes(userId);
-        for (String templateId : templateIds) {
-            vibeTemplate = vibeTemplateDAO.getVibeTemplate(templateId);
-            VibeTemplate finalVibeTemplate = vibeTemplate;
-
-            filteredVibes = Arrays.stream(vibes).filter((v) -> v.getOriginTemplateId().equals(finalVibeTemplate.getId())).collect(Collectors.toList());
-            boolean createVibe = filteredVibes.isEmpty();
-            if (createVibe) {
-                vibe = new Vibe(
-                        userId, vibeTemplate.getId(), vibeTemplate.getName(),
-                        vibeTemplate.getDescription(), vibeTemplate.getMinFeatures(),
-                        vibeTemplate.getMinFeatures()
-                );
-                vibeDAO.createVibe(vibe);
-                filteredVibes.add(vibe);
-            }
-
-            VibeSeed[] vibeSeedsByVibe = vibeSeedDAO.getVibeSeedsByVibe(filteredVibes.get(0).getId());
-            if (vibeSeedsByVibe == null) {
-                for (Map<String, Object> features1 : filteredResult) {
-                    if (features1.get("class").equals(templateId)) {
-                        try {
-                            vibeSeed = new VibeSeed(
-                                    filteredVibes.get(0).getId(),
-                                    ((Features) features1.get("feature")).trackId,
-                                    "track"
-                            );
-                            vibeSeedDAO.createVibeSeed(vibeSeed);
-                        } catch (Exception err) {
-                            err.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
-
-        return 0;
     }
 
     public Object add(Request request, Response response) {

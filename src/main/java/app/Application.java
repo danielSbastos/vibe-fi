@@ -6,13 +6,13 @@ import service.*;
 import util.cors.*;
 
 public class Application {
-
     private static UserService userService = new UserService();
     private static VibeService vibeService = new VibeService();
     private static VibeSeedService vibeSeedService = new VibeSeedService();
     private static AuthService authService = new AuthService();
     private static SpotifyService spotifyService = new SpotifyService();
     private static TemplateService templateService = new TemplateService();
+    private static VibeClassificationService vibeClassificationService = new VibeClassificationService();
 
     public static void main(String[] args) {
         String systemPort = System.getenv("PORT");
@@ -27,7 +27,7 @@ public class Application {
         get("/userTop", "application/json",
                 (request, response) -> spotifyService.getUserTop(request, response));
 
-        post("/vibe/generate", (request, response) -> vibeService.generate(request, response));
+        post("/vibe/generate", (request, response) -> vibeClassificationService.generate(request, response));
 
         // Login
         get("/login", (request, response) -> authService.login(request, response));

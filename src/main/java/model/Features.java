@@ -141,8 +141,7 @@ public class Features {
             return false;
         }
 
-        return getPopularity().equals(((Features) o).getPopularity()) &&
-                getTempo().equals(((Features) o).getTempo()) &&
+        return getTempo().equals(((Features) o).getTempo()) &&
                 getValence().equals(((Features) o).getValence()) &&
                 getLiveness().equals(((Features) o).getLiveness()) &&
                 getDanceability().equals(((Features) o).getDanceability()) &&

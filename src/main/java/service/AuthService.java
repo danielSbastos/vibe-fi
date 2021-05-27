@@ -106,8 +106,8 @@ public class AuthService {
             Features uFeatures = parseFeatures((JSONObject) spotifyService.getUserTop(authToken).get("avgFeatures"));
             user = new User(id, name, imageURL, uFeatures);
             if (userDAO.createUser(user)) {
-                VibeDAO vDao = new VibeDAO();
-                vDao.createVibesFromTemplates(user.getId());
+                //VibeDAO vDao = new VibeDAO();
+                //vDao.createVibesFromTemplates(user.getId());
                 return 1;
             } else {
                 return 0;
