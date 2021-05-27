@@ -1,6 +1,11 @@
 package app;
 
 import static spark.Spark.*;
+
+import dao.VibeTemplateDAO;
+import lib.Classifier;
+import model.Features;
+import model.VibeTemplate;
 import service.*;
 import util.cors.*;
 
@@ -22,10 +27,23 @@ public class Application {
 
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
-        
+
+//        Features[] features = new Features[5];
+//        features[0] = new Features(1,68.322,0.117,0.11,0.91,0.0999,0.0273,0.0405,0.66); //dormir
+//        features[1] = new Features(1,100.036,0.432,0.0754,0.00576,0.954,0.696,0.204,0.000498); // correr
+//        features[2] = new Features(1, 147.486,0.246,0.107,0.82,0.536,0.311,0.0288,0.0000165); // triste
+//        features[3] = new Features(1,139.898,0.132,0.149,0.131,0.333,0.637,0.0581,0.000018); // feliz
+//        features[4] = new Features(1, 109.885,0.052,0.0948,0.99,0.367,0.00888,0.0532,0.914); // calmo
+//
+//        Classifier classifier = new Classifier(features);
+//        System.out.println(classifier.classify());
+
         get("/userTop", "application/json",
                 (request, response) -> spotifyService.getUserTop(request, response));
-        
+
+        get("/vibe/generate","application/json",
+                 (request, response) -> vibeService.generate(request, response));
+
         // Login
         get("/login", (request, response) -> authService.login(request, response));
         get("/callback", (request, response) -> authService.callback(request, response));

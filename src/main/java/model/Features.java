@@ -1,5 +1,7 @@
 package model;
 
+import org.json.simple.JSONObject;
+
 public class Features {
     protected Integer popularity;
     protected Double tempo;
@@ -10,6 +12,7 @@ public class Features {
     protected Double energy;
     protected Double speechiness;
     protected Double instrumentalness;
+    public String trackId;
 
     public Features() {
         this.popularity = null;
@@ -108,4 +111,42 @@ public class Features {
         this.instrumentalness = instrumentalness;
     }
 
+    public String asJsonString() {
+        JSONObject obj = new JSONObject();
+        obj.put("class", "");
+        obj.put("tempo", tempo);
+        obj.put("valence", valence);
+        obj.put("liveness", liveness);
+        obj.put("acousticness", acousticness);
+        obj.put("danceability", danceability);
+        obj.put("energy", energy);
+        obj.put("speechiness", speechiness);
+        obj.put("instrumentalness", instrumentalness);
+
+        return obj.toString();
+    }
+
+    @Override
+    public String toString() {
+        return asJsonString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        return getPopularity().equals(((Features) o).getPopularity()) &&
+                getTempo().equals(((Features) o).getTempo()) &&
+                getValence().equals(((Features) o).getValence()) &&
+                getLiveness().equals(((Features) o).getLiveness()) &&
+                getDanceability().equals(((Features) o).getDanceability()) &&
+                getEnergy().equals(((Features) o).getEnergy()) &&
+                getSpeechiness().equals(((Features) o).getSpeechiness()) &&
+                getInstrumentalness().equals(((Features) o).getInstrumentalness());
+    }
 }

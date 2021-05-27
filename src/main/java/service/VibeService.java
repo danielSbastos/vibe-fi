@@ -1,9 +1,17 @@
 package service;
 
 import dao.*;
+import lib.Classifier;
 import model.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class VibeService {
 
@@ -11,6 +19,47 @@ public class VibeService {
 
     public VibeService() {
         vibeDAO = new VibeDAO();
+    }
+
+    public Object generate(Request request, Response response) {
+        SpotifyService spotifyService = new SpotifyService();
+
+        List<String> templateIds = new ArrayList<>();
+        templateIds.add("dormir");
+        templateIds.add("correr");
+
+        JSONArray tracks = (JSONArray) spotifyService.getUserTopTracks(request.cookie("access_token")).get("tracks");
+
+        Features[] features = new Features[tracks.size()];
+        int i = 0;
+        for (Object track : tracks) {
+            Map<String, Object> jsonFeatures = (Map<String, Object>) ((JSONObject) track).get("features");
+
+            Features _features = new Features(
+                    1,
+                    (Double) jsonFeatures.get("tempo"),
+                    (Double) jsonFeatures.get("valence"),
+                    (Double) jsonFeatures.get("liveness"),
+                    (Double) jsonFeatures.get("acousticness"),
+                    (Double) jsonFeatures.get("danceability"),
+                    (Double) jsonFeatures.get("energy"),
+                    (Double) jsonFeatures.get("speechiness"),
+                    (Double) jsonFeatures.get("instrumentalness")
+            );
+            _features.trackId = (String) ((JSONObject) track).get("id");
+            features[i] = _features;
+            i++;
+        }
+
+        Classifier classifier = new Classifier(features);
+        List<Map<String, Object>> result = classifier.classify();
+
+        List<Map<String, Object>> _result = result.stream().filter((r) ->  templateIds.contains((String) r.get("class"))).collect(Collectors.toList());
+        // criar vibeseed para cada item de cada classe
+        // criar uma vibe para cada classe
+        System.out.println(_result);
+
+        return 0;
     }
 
     public Object add(Request request, Response response) {

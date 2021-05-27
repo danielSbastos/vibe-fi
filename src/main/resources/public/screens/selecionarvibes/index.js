@@ -42,4 +42,13 @@ function genVibes(){
     for (let i = 0; i < selected.length; i++) {
         console.log(selected[i].id);     
     }
+
+    $.ajax({
+        url: `http://localhost:6789/vibe/generate`,
+        type: "GET",
+        dataType: "json",
+    })
+        .done(function (data) {
+            console.log(data);
+    });
 }

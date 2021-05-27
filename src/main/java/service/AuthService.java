@@ -2,6 +2,7 @@ package service;
 
 import dao.UserDAO;
 import dao.VibeDAO;
+import lib.Classifier;
 import model.Features;
 import model.User;
 import org.json.simple.JSONObject;
@@ -44,6 +45,7 @@ public class AuthService {
         response.cookie("/", STATE_KEY, state, 5000, false);
         response.redirect(AUTHORIZE_URL + query);
 
+
         return "success";
     }
 
@@ -57,6 +59,8 @@ public class AuthService {
             HttpResponse<String> tokenResponse = client.send(tokenRequest, HttpResponse.BodyHandlers.ofString());
             if (tokenResponse.statusCode() == 200) {
                 Map<String, Object> tokenBody = responseMapBody(tokenResponse.body());
+
+                //classifyUserTracks((String) tokenBody.get("access_token"));
 
                 HttpRequest accountRequest = accountRequest((String) tokenBody.get("access_token"));
                 HttpResponse<String> accountResponse = client.send(accountRequest,
@@ -163,6 +167,7 @@ public class AuthService {
         response.removeCookie("access_token");
         response.redirect("/");
         return null;
-
     }
+
+
 }
