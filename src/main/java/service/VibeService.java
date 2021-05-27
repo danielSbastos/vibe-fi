@@ -9,6 +9,7 @@ import spark.Request;
 import spark.Response;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,7 +21,8 @@ public class VibeService {
     public VibeService() {
         vibeDAO = new VibeDAO();
     }
-
+    
+    @SuppressWarnings("unchecked")
     public Object generate(Request request, Response response) {
         SpotifyService spotifyService = new SpotifyService();
 
@@ -33,10 +35,10 @@ public class VibeService {
         Features[] features = new Features[tracks.size()];
         int i = 0;
         for (Object track : tracks) {
-            JSONObject jsonFeatures = (JSONObject) ((JSONObject) track).get("features");
+            JSONObject jsonFeatures = new JSONObject((HashMap<String, Object>) ((JSONObject) track).get("features"));
 
             Features _features = new Features(
-                    1,
+                    null,
                     (Double) jsonFeatures.get("tempo"),
                     (Double) jsonFeatures.get("valence"),
                     (Double) jsonFeatures.get("liveness"),
