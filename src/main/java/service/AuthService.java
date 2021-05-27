@@ -45,7 +45,6 @@ public class AuthService {
         response.cookie("/", STATE_KEY, state, 5000, false);
         response.redirect(AUTHORIZE_URL + query);
 
-
         return "success";
     }
 
@@ -106,8 +105,6 @@ public class AuthService {
             Features uFeatures = parseFeatures((JSONObject) spotifyService.getUserTop(authToken).get("avgFeatures"));
             user = new User(id, name, imageURL, uFeatures);
             if (userDAO.createUser(user)) {
-                //VibeDAO vDao = new VibeDAO();
-                //vDao.createVibesFromTemplates(user.getId());
                 return 1;
             } else {
                 return 0;

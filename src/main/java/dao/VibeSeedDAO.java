@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.*;
 
+import model.Vibe;
 import model.VibeSeed;
 import util.db.DatabaseConnection;
 
@@ -105,6 +106,15 @@ public class VibeSeedDAO {
         return pst;
     }
 
+    private PreparedStatement prepareDeleteAllVibeSeedsSQLStatement() throws SQLException {
+        connect();
+
+        String query = "DELETE FROM vibefi.vibeseed";
+        PreparedStatement pst = connection.prepareStatement(query);
+
+        return pst;
+    }
+
     /******************************************************************************************/
 
     /* CRUD */
@@ -162,11 +172,10 @@ public class VibeSeedDAO {
         return status;
     }
 
-    public boolean deleteVibeSeed(VibeSeed vibeSeed) {
+   public boolean deleteAllVibeSeedFromVibe(String vibeIdentifier) {
         boolean status = false;
-
         try {
-            PreparedStatement pst = prepareDeleteVibeSeedSQLStatement(vibeSeed);
+            PreparedStatement pst = prepareDeleteAllVibeSeedsFromVibeSQLStatement(vibeIdentifier);
             pst.executeUpdate();
             pst.close();
             status = true;
@@ -177,11 +186,11 @@ public class VibeSeedDAO {
         return status;
     }
 
-    public boolean deleteAllVibeSeedFromVibe(String vibeIdentifier) {
+    public boolean deleteVibeSeed(VibeSeed vibeSeed) {
         boolean status = false;
 
         try {
-            PreparedStatement pst = prepareDeleteAllVibeSeedsFromVibeSQLStatement(vibeIdentifier);
+            PreparedStatement pst = prepareDeleteVibeSeedSQLStatement(vibeSeed);
             pst.executeUpdate();
             pst.close();
             status = true;

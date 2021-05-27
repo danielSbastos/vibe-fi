@@ -2,6 +2,8 @@ package app;
 
 import static spark.Spark.*;
 
+import dao.VibeSeedDAO;
+import model.VibeSeed;
 import service.*;
 import util.cors.*;
 
@@ -27,7 +29,10 @@ public class Application {
         get("/userTop", "application/json",
                 (request, response) -> spotifyService.getUserTop(request, response));
 
-        post("/vibe/generate", (request, response) -> vibeClassificationService.generate(request, response));
+        get("/cookies/deleteMissingClasses", (request, response) -> {
+            response.removeCookie("/", "missing-classes");
+            return 0;
+        });
 
         // Login
         get("/login", (request, response) -> authService.login(request, response));
@@ -41,6 +46,7 @@ public class Application {
         get("/user/delete/:id", (request, response) -> userService.remove(request, response));
 
         // Application Vibes
+        post("/vibe/generate", (request, response) -> vibeClassificationService.generate(request, response));
         post("/vibe", (request, response) -> vibeService.add(request, response));
         get("/vibe/:id", (request, response) -> vibeService.get(request, response));
         get("/vibe/user/:userId", (request, response) -> vibeService.getFromUser(request, response));

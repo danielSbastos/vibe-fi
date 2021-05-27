@@ -68,17 +68,22 @@ public class VibeClassificationService {
 
         VibeTemplate vibeTemplate;
         Vibe vibe;
+
+        HashSet<String> notFoundClasses = new HashSet<>();
         for (String templateId : templateIds) {
             vibeTemplate = vibeTemplateDAO.getVibeTemplate(templateId);
 
-            if (classifier.foundClasses.contains(vibeTemplate.getId())) {
-                vibe = getOrCreateVibe(userId, vibeTemplate);
-                createVibeSeeds(vibe, templateId, filteredResult);
+            if (!classifier.foundClasses.contains(vibeTemplate.getId())) {
+                notFoundClasses.add(vibeTemplate.getName());
             }
+
+            vibe = getOrCreateVibe(userId, vibeTemplate);
+            createVibeSeeds(vibe, templateId, filteredResult);
         }
 
-        response.redirect("/screens/perfil/");
-        return "ok";
+        String missing = String.join("&", notFoundClasses);
+        response.cookie("/", "missing-classes", missing, 5000, false);
+        return 200;
     }
 
     // create vibeseeds to their vibe. The seed identifier will be the track identifier from Spotify
@@ -87,17 +92,20 @@ public class VibeClassificationService {
         // go through all the features and if the current one`s class
         // is equal to the class (templateID) we are currently creating seeds
         // then create a vibeseed using passing in the vibe id, identifier (track id) and type
-        for (Map<String, Object> _features : features) {
-            if (_features.get("class").equals(classifiedClass)) {
-                try {
-                    vibeSeed = new VibeSeed(
-                            vibe.getId(),
-                            ((Features) _features.get("feature")).trackId,
-                            "track"
-                    );
-                    vibeSeedDao.createVibeSeed(vibeSeed);
-                } catch (Exception err) {
-                    err.printStackTrace();
+        VibeSeed[] vibeSeeds = vibeSeedDao.getVibeSeedsByVibe(vibe.getId());
+        if (vibeSeeds == null) {
+            for (Map<String, Object> _features : features) {
+                if (_features.get("class").equals(classifiedClass)) {
+                    try {
+                        vibeSeed = new VibeSeed(
+                                vibe.getId(),
+                                ((Features) _features.get("feature")).trackId,
+                                "track"
+                        );
+                        vibeSeedDao.createVibeSeed(vibeSeed);
+                    } catch (Exception err) {
+                        err.printStackTrace();
+                    }
                 }
             }
         }

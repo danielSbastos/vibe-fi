@@ -77,7 +77,8 @@ public class VibeService {
         Vibe vibe = (Vibe) vibeDAO.getVibe(id);
 
         if (vibe != null) {
-
+            VibeSeedDAO vibeSeedDAO = new VibeSeedDAO();
+            vibeSeedDAO.deleteAllVibeSeedFromVibe(vibe.getId());
             vibeDAO.deleteTemplate(vibe.getId());
 
             response.status(200); // success

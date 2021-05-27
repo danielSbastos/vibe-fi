@@ -48,11 +48,13 @@ function genVibes(){
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
+        timeout: 11000, // sets timeout to 3 seconds
         data: {
            templateIds: ids,
         },
-    })
-        .done(function (data) {
-            console.log(data);
+    }).done(function(data)  {
+         console.log("OK");
+    }).fail(function()  {
+         alert("Sorry. Server unavailable. ");
     });
 }

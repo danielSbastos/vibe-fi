@@ -2,6 +2,17 @@ window.onload = () => {
     const userId = getCookie("user_id");
 
     updateContent(userId);
+    setAlertMessage();
+
+    $( "#incompleteVibeGeneration" ).bind( "hidden.bs.modal", function() {
+        $.ajax({
+            url: `${window.location.protocol}//${window.location.host}/cookies/deleteMissingClasses`,
+            type: "GET",
+        })
+        .done(function (data) {
+            console.log("deleted");
+        });
+    });
 
     playlist = []
     $.ajax({
@@ -169,3 +180,13 @@ function updateContent(userId) {
         $("#perfil-vibes").html(content);
     }
 }
+
+function setAlertMessage() {
+    let missingClasses = getCookie('missing-classes')
+    if (missingClasses !== "") {
+        missingClasses = missingClasses.split("&").join(", ")
+        $('#incompleteModalBody').html(`Não conseguimos encontrar músicas que você escuta para as Vibes ${missingClasses}. Você pode usar esta sua página de perfil para atualizá-las`)
+        $('#incompleteVibeGeneration').modal('show')
+    }
+}
+
