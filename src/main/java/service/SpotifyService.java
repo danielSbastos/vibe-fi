@@ -47,7 +47,23 @@ public class SpotifyService {
 
         return getUserTop(authorization, timeRange, limit);
     }
-    
+
+    public JSONObject getUserTopTracks(String authToken) {
+        String authorization = "Bearer " + authToken;
+        String timeRange = "medium_term";
+        int limit = 50;
+
+        return getUserTopTracks(authorization, timeRange, limit);
+    }
+
+    private JSONObject getUserTopTracks(String authorization, String timeRange, int limit) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        JSONObject tracksJSON;
+        tracksJSON = requestTopTracks(client, authorization, timeRange, limit);
+
+        return tracksJSON;
+    }
     private JSONObject getUserTop(String authorization, String timeRange, int limit) {
         HttpClient client = HttpClient.newHttpClient();
 
