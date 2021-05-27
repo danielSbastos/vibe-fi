@@ -2,8 +2,6 @@ package app;
 
 import static spark.Spark.*;
 
-import dao.VibeSeedDAO;
-import model.VibeSeed;
 import service.*;
 import util.cors.*;
 

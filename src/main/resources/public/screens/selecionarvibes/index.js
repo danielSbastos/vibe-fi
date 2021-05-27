@@ -54,6 +54,7 @@ function genVibes(){
         },
     }).done(function(data)  {
          console.log("OK");
+         window.location = `${window.location.protocol}//${window.location.host}/screens/perfil/`;
     }).fail(function()  {
          alert("Sorry. Server unavailable. ");
     });
