@@ -169,32 +169,5 @@ public class AuthService {
         return null;
     }
 
-    private void classifyUserTracks(String accessToken) {
-        SpotifyService spotifyService = new SpotifyService();
-        JSONArray tracks = (JSONArray) spotifyService.getUserTopTracks(accessToken).get("tracks");
 
-        Features[] features = new Features[tracks.size()];
-        int i = 0;
-        for (Object track : tracks) {
-            Map<String, Object> jsonFeatures = (Map<String, Object>) ((JSONObject) track).get("features");
-
-            Features _features = new Features(
-                    1,
-                    (Double) jsonFeatures.get("tempo"),
-                    (Double) jsonFeatures.get("valence"),
-                    (Double) jsonFeatures.get("liveness"),
-                    (Double) jsonFeatures.get("acousticness"),
-                    (Double) jsonFeatures.get("danceability"),
-                    (Double) jsonFeatures.get("energy"),
-                    (Double) jsonFeatures.get("speechiness"),
-                    (Double) jsonFeatures.get("instrumentalness")
-            );
-            features[i] = _features;
-            i++;
-        }
-
-        Classifier classifier = new Classifier(features);
-        System.out.println(classifier.classify());
-
-    }
 }

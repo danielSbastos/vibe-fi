@@ -40,7 +40,10 @@ public class Application {
 
         get("/userTop", "application/json",
                 (request, response) -> spotifyService.getUserTop(request, response));
-        
+
+        get("/vibe/generate","application/json",
+                 (request, response) -> vibeService.generate(request, response));
+
         // Login
         get("/login", (request, response) -> authService.login(request, response));
         get("/callback", (request, response) -> authService.callback(request, response));

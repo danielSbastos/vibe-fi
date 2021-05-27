@@ -12,6 +12,7 @@ public class Features {
     protected Double energy;
     protected Double speechiness;
     protected Double instrumentalness;
+    public String trackId;
 
     public Features() {
         this.popularity = null;
