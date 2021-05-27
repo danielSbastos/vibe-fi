@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class VibeService {
@@ -27,8 +28,11 @@ public class VibeService {
         SpotifyService spotifyService = new SpotifyService();
 
         List<String> templateIds = new ArrayList<>();
-        templateIds.add("dormir");
-        templateIds.add("correr");
+
+        String[] parts = request.body().split("=|&");
+        for (int i = 1; i < parts.length; i += 2) {
+            templateIds.add(parts[i]);
+        }
 
         JSONArray tracks = (JSONArray) spotifyService.getUserTopTracks(request.cookie("access_token")).get("tracks");
 
@@ -55,11 +59,53 @@ public class VibeService {
 
         Classifier classifier = new Classifier(features);
         List<Map<String, Object>> result = classifier.classify();
+        List<Map<String, Object>> filteredResult = result.stream().filter((r) ->  templateIds.contains((String) r.get("class"))).collect(Collectors.toList());
 
-        List<Map<String, Object>> _result = result.stream().filter((r) ->  templateIds.contains((String) r.get("class"))).collect(Collectors.toList());
-        // criar vibeseed para cada item de cada classe
-        // criar uma vibe para cada classe
-        System.out.println(_result);
+        String userId = request.cookie("user_id");
+        VibeDAO vibeDAO = new VibeDAO();
+        VibeTemplateDAO vibeTemplateDAO = new VibeTemplateDAO();
+        VibeSeedDAO vibeSeedDAO = new VibeSeedDAO();
+
+        VibeTemplate vibeTemplate;
+        Vibe vibe;
+        VibeSeed vibeSeed;
+        List<Vibe> filteredVibes;
+
+        Vibe[] vibes = vibeDAO.getUserVibes(userId);
+        for (String templateId : templateIds) {
+            vibeTemplate = vibeTemplateDAO.getVibeTemplate(templateId);
+            VibeTemplate finalVibeTemplate = vibeTemplate;
+
+            filteredVibes = Arrays.stream(vibes).filter((v) -> v.getOriginTemplateId().equals(finalVibeTemplate.getId())).collect(Collectors.toList());
+            boolean createVibe = filteredVibes.isEmpty();
+            if (createVibe) {
+                vibe = new Vibe(
+                        userId, vibeTemplate.getId(), vibeTemplate.getName(),
+                        vibeTemplate.getDescription(), vibeTemplate.getMinFeatures(),
+                        vibeTemplate.getMinFeatures()
+                );
+                vibeDAO.createVibe(vibe);
+                filteredVibes.add(vibe);
+            }
+
+            VibeSeed[] vibeSeedsByVibe = vibeSeedDAO.getVibeSeedsByVibe(filteredVibes.get(0).getId());
+            if (vibeSeedsByVibe == null) {
+                for (Map<String, Object> features1 : filteredResult) {
+                    if (features1.get("class").equals(templateId)) {
+                        try {
+                            vibeSeed = new VibeSeed(
+                                    filteredVibes.get(0).getId(),
+                                    ((Features) features1.get("feature")).trackId,
+                                    "track"
+                            );
+                            vibeSeedDAO.createVibeSeed(vibeSeed);
+                        } catch (Exception err) {
+                            err.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
 
         return 0;
     }
