@@ -110,7 +110,8 @@ public class Features {
     public void setInstrumentalness(Double instrumentalness) {
         this.instrumentalness = instrumentalness;
     }
-
+    
+    @SuppressWarnings("unchecked")
     public String asJsonString() {
         JSONObject obj = new JSONObject();
         obj.put("class", "");

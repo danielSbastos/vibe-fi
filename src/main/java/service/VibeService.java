@@ -33,7 +33,7 @@ public class VibeService {
         Features[] features = new Features[tracks.size()];
         int i = 0;
         for (Object track : tracks) {
-            Map<String, Object> jsonFeatures = (Map<String, Object>) ((JSONObject) track).get("features");
+            JSONObject jsonFeatures = (JSONObject) ((JSONObject) track).get("features");
 
             Features _features = new Features(
                     1,
