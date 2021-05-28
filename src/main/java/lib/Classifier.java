@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.HashSet;
 
 public class Classifier {
-    private static final String MODEL_URL = "http://2652d983-01d3-4cde-9313-462c2d1df8f8.eastus2.azurecontainer.io/score";
+    private static final String MODEL_URL = "http://07c1027e-9a11-4b22-9f4d-cf7dee42adf0.eastus2.azurecontainer.io/score";
     private Features[] features;
     public HashSet<String> foundClasses;
 
@@ -34,6 +34,7 @@ public class Classifier {
         try {
             HttpResponse<String> response  = client.send(request, HttpResponse.BodyHandlers.ofString());
             List<Map<String, Object>> classification = responseMapBody(response.body());
+            System.out.println(classification);
             classifiedFeatures = classifiedFeatures(classification);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
