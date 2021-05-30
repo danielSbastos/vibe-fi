@@ -43,7 +43,7 @@ public class VibeService {
             "\",\"originTemplateId\":\""+vibe.getOriginTemplateId()+
             "\",\"name\":\""+vibe.getName()+
             "\",\"description\":\""+vibe.getDescription()+
-            "\",\"minFeatures\":{"+
+            "\",\"features\":{"+
             "\"popularity\":"+vibe.getFeatures().getPopularity()+
             ",\"tempo\":"+vibe.getFeatures().getTempo()+
             ",\"valence\":"+vibe.getFeatures().getValence()+

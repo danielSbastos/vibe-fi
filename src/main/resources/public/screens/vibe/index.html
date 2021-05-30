@@ -11,7 +11,6 @@
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://kit.fontawesome.com/41ca258699.js" crossorigin="anonymous"></script>
@@ -24,12 +23,13 @@
 <body>
 
     <header>
-        
+
         <nav id="navbarum" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid container">
                 <a href="../../index.html"><img id="imgbarra" src="../../assets/VibefiFull.png" alt=""></a>
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -72,54 +72,122 @@
                         <img src="../../assets/VibefiFull.png" alt="">
                     </div>
                     <div class="col-lg-7 vibe-text">
-                        <label for="exampleFormControlInput1">Nome Vibe</label>
-                        <input type="email" class="form-control" id="exampleFormControlInput1">
+                        <label for="vibeName">Nome Vibe</label>
+                        <input type="text" class="form-control" id="vibeName">
 
-                        <label for="exampleFormControlTextarea1">Descrição Vibe</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <label for="vibeDescription">Descrição Vibe</label>
+                        <textarea type="text" class="form-control" id="vibeDescription" rows="3"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="sliders-config container">
+                    <div class="row feature-row popularity-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-popularity" class="toggle-feature"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="popularity-range" class="form-label">Popularidade: <span
+                                    id="popularity-amount"></span>%</label>
+                            <input id="popularity-range" type="range" class="form-range feature-range" min="0" max="1"
+                                step="0.01">
+                        </div>
                     </div>
 
-                </div>
-                <div class="sliders-config">
-                    <p>
-                        <label for="pop-amount">Popularidade:</label>
-                        <input type="text" id="pop-amount" readonly style="border:0; color:#006900; font-weight:bold;">
-                    </p>
-                    <div id="popularity-range"></div>
+                    <div class="row feature-row tempo-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-tempo" class="toggle-feature"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="tempo-range" class="form-label">BPM: <span id="tempo-amount"></span> BPM</label>
+                            <input id="tempo-range" type="range" class="form-range feature-range" min="60" max="220"
+                                step="1">
+                        </div>
+                    </div>
 
-                    <p>
-                        <label for="happy-amount">Felicidade:</label>
-                        <input type="text" id="happy-amount" readonly
-                            style="border:0; color:#006900; font-weight:bold;">
-                    </p>
-                    <div id="happy-range"></div>
+                    <div class="row feature-row valence-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-valence" class="toggle-feature"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="valence-range" class="form-label">Felicidade: <span
+                                    id="valence-amount"></span>%</label>
+                            <input id="valence-range" type="range" class="form-range feature-range" min="0" max="1"
+                                step="0.01">
+                        </div>
+                    </div>
 
-                    <p>
-                        <label for="energy-amount">Energia:</label>
-                        <input type="text" id="energy-amount" readonly
-                            style="border:0; color:#006900; font-weight:bold;">
-                    </p>
-                    <div id="energy-range"></div>
+                    <div class="row feature-row liveness-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-liveness" class="toggle-feature"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="liveness-range" class="form-label">Vivacidade: <span
+                                    id="liveness-amount"></span>%</label>
+                            <input id="liveness-range" type="range" class="form-range feature-range" min="0" max="1"
+                                step="0.01">
+                        </div>
+                    </div>
 
-                    <p>
-                        <label for="bpm-amount">BPM:</label>
-                        <input type="text" id="bpm-amount" readonly style="border:0; color:#006900; font-weight:bold;">
-                    </p>
-                    <div id="bpm-range"></div>
+                    <div class="row feature-row acousticness-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-acousticness" class="toggle-feature"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="acousticness-range" class="form-label">Acusticidade: <span
+                                    id="acousticness-amount"></span>%</label>
+                            <input id="acousticness-range" type="range" class="form-range feature-range" min="0" max="1"
+                                step="0.01">
+                        </div>
+                    </div>
 
-                    <p>
-                        <label for="danceability-amount">Dancabilidade:</label>
-                        <input type="text" id="danceability-amount" readonly
-                            style="border:0; color:#006900; font-weight:bold;">
-                    </p>
-                    <div id="danceability-range"></div>
+                    <div class="row feature-row danceability-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-danceability" class="toggle-feature"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="danceability-range" class="form-label">Dançabilidade: <span
+                                    id="danceability-amount"></span>%</label>
+                            <input id="danceability-range" type="range" class="form-range feature-range" min="0" max="1"
+                                step="0.01">
+                        </div>
+                    </div>
 
-                    <p>
-                        <label for="acoustic-amount">Acusticidade:</label>
-                        <input type="text" id="acoustic-amount" readonly
-                            style="border:0; color:#006900; font-weight:bold;">
-                    </p>
-                    <div id="acoustic-range"></div>
+                    <div class="row feature-row energy-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-energy" class="toggle-feature"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="energy-range" class="form-label">Energia: <span
+                                    id="energy-amount"></span>%</label>
+                            <input id="energy-range" type="range" class="form-range feature-range" min="0" max="1"
+                                step="0.01">
+                        </div>
+                    </div>
+                    <div class="row feature-row speechiness-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-speechiness" class="toggle-feature"><i class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="speechiness-range" class="form-label">Cantado: <span
+                                    id="speechiness-amount"></span>%</label>
+                            <input id="speechiness-range" type="range" class="form-range feature-range" min="0" max="1"
+                                step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="row feature-row instrumentalness-row">
+                        <div class="set-feature col-2 col-md-1">
+                            <a id="toggle-instrumentalness" class="toggle-feature"><i
+                                    class="fas fa-minus-circle"></i></a>
+                        </div>
+                        <div class="set-feature col-10 col-md-11">
+                            <label for="instrumentalness-range" class="form-label">Instrumentalidade: <span
+                                    id="instrumentalness-amount"></span>%</label>
+                            <input id="instrumentalness-range" type="range" class="form-range feature-range" min="0"
+                                max="1" step="0.01">
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12 mt-3">
                     <button type="button" id="saveChanges" class="btn btn-lg btn-success">Gerar</button>
@@ -131,14 +199,14 @@
                     <div id="playlist-head" class="row">
                         <div id="playlist-name" class="col-8 p-3">
                             <h1 class="text-light">NOME VIBE</h1>
-                            <h3 class="text-light">Descricao VIBE</h3>
+                            <h5 class="text-light">Descricao VIBE</h5>
                         </div>
                         <div id="playlist-export" class="col-4 p-3">
                             <button type="button" class="btn btn-success btn-circle btn-lg btn-xl"><i
                                     class="fas fa-share-square"></i></button>
                         </div>
                     </div>
-                    <div id="playlist-body" class="p-1">
+                    <!-- div id="playlist-body" class="p-1">
                         <div class="card mb-3 bg-dark">
                             <iframe src="https://open.spotify.com/embed/track/35nsl8YiBIYw1YdNmkmhnk" width="100%" height="80" frameborder="0"
                                 allowtransparency="true" allow="encrypted-media"></iframe>
@@ -171,7 +239,7 @@
                             <iframe src="https://open.spotify.com/embed/track/35nsl8YiBIYw1YdNmkmhnk" width="100%" height="80" frameborder="0"
                                 allowtransparency="true" allow="encrypted-media"></iframe>
                         </div>
-                    </div>
+                    </div-->
                 </div>
             </section>
 
