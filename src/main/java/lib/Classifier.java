@@ -34,7 +34,7 @@ public class Classifier {
         try {
             HttpResponse<String> response  = client.send(request, HttpResponse.BodyHandlers.ofString());
             List<Map<String, Object>> classification = responseMapBody(response.body());
-            System.out.println(classification);
+            // System.out.println(classification);
             classifiedFeatures = classifiedFeatures(classification);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

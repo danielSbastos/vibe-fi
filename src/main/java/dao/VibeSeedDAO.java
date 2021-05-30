@@ -2,7 +2,6 @@ package dao;
 
 import java.sql.*;
 
-import model.Vibe;
 import model.VibeSeed;
 import util.db.DatabaseConnection;
 
@@ -172,7 +171,7 @@ public class VibeSeedDAO {
         return status;
     }
 
-   public boolean deleteAllVibeSeedFromVibe(String vibeIdentifier) {
+    public boolean deleteAllVibeSeedFromVibe(String vibeIdentifier) {
         boolean status = false;
         try {
             PreparedStatement pst = prepareDeleteAllVibeSeedsFromVibeSQLStatement(vibeIdentifier);

@@ -1,7 +1,6 @@
 package service;
 
 import dao.UserDAO;
-import dao.VibeDAO;
 // import lib.Classifier;
 import model.Features;
 import model.User;
@@ -51,7 +50,7 @@ public class AuthService {
     public Object callback(Request request, Response response) {
         HttpClient client = HttpClient.newHttpClient();
         int stat = 0;
-
+        
         String code = request.queryMap("code").value();
         HttpRequest tokenRequest = tokenRequest(code);
         try {

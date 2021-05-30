@@ -29,7 +29,7 @@ public class DatabaseConnection implements Serializable {
             Class.forName(driverName);
             connection = DriverManager.getConnection(url, username, password);
             status = (connection == null);
-            System.out.println("Conexao efetuada com o postgres!");
+            // System.out.println("Conexao efetuada com o postgres!");
         } catch (ClassNotFoundException e) {
             System.err.println("Conexao NAO efetuada com o postgres -- Driver nao encontrado -- " + e.getMessage());
         } catch (SQLException e) {
