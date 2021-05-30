@@ -33,7 +33,6 @@ window.onload = () => {
 			contentType: "application/json; charset=utf-8"
 		}).done(function (data) {
 			console.log(data)
-			window.location = window.location
 		})
 	})
 }

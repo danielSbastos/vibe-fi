@@ -4,8 +4,14 @@ import dao.*;
 import model.*;
 import spark.Request;
 import spark.Response;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
+import java.util.HashMap;
+
+import java.util.Map;
 
 public class VibeService {
 
@@ -81,10 +87,11 @@ public class VibeService {
             return "vibe nao encontrado.";
         }
 	}
-
+    
+    @SuppressWarnings("unchecked")
     public Object getFromUser(Request request, Response response) {
         String id = (request.params(":userId"));
-        String resp = "[";
+        JSONArray resp = new JSONArray();
         Vibe[] vibe = (Vibe[]) vibeDAO.getUserVibes(id);
 
         if (vibe != null) {
@@ -92,26 +99,9 @@ public class VibeService {
             response.header("Content-Encoding", "UTF-8");
 
             for(int i = 0; i <vibe.length; i++){
-                resp += "{\"id\":\""+vibe[i].getId()+
-                "\",\"userId\":\""+vibe[i].getUserId()+
-                "\",\"originTemplateId\":\""+vibe[i].getOriginTemplateId()+
-                "\",\"name\":\""+vibe[i].getName()+
-                "\",\"description\":\""+vibe[i].getDescription()+
-                "\",\"features\":{"+
-                "\"popularity\":"+vibe[i].getFeatures().getPopularity()+
-                ",\"tempo\":"+vibe[i].getFeatures().getTempo()+
-                ",\"valence\":"+vibe[i].getFeatures().getValence()+
-                ",\"liveness\":"+vibe[i].getFeatures().getLiveness()+
-                ",\"acousticness\":"+vibe[i].getFeatures().getAcousticness()+
-                ",\"danceability\":"+vibe[i].getFeatures().getDanceability()+
-                ",\"energy\":"+vibe[i].getFeatures().getEnergy()+
-                ",\"speechiness\":"+vibe[i].getFeatures().getSpeechiness()+
-                ",\"instrumentalness\":"+vibe[i].getFeatures().getInstrumentalness()+
-                "}"+
-                "},";
+                resp.add(parseVibe(vibe[i]));
             }
-            resp = resp.substring(0, resp.length() - 1);
-            resp += "]";
+            
             return resp;
         } else {
             response.status(404); // 404 Not found
@@ -147,12 +137,37 @@ public class VibeService {
 
             vibeDAO.updateVibe(vibe);
             
-            return vibe;
+            return parseVibe(vibe);
         } else {
             response.status(404); // 404 Not found
             return "Produto nao encontrado.";
         }
-
+	
 	}
+
+    public JSONObject parseVibe(Vibe vibe) {
+        Map<String, Object> vibeMap = new HashMap<>();
+        Map<String,Object> featureMap = new HashMap<>();
+        
+        vibeMap.put("id", vibe.getId());
+        vibeMap.put("userId", vibe.getUserId());
+        vibeMap.put("originTemplateId", vibe.getOriginTemplateId());
+        vibeMap.put("name", vibe.getName());
+        vibeMap.put("description", vibe.getDescription());
+
+        featureMap.put("popularity", vibe.getFeatures().getPopularity());
+        featureMap.put("tempo", vibe.getFeatures().getTempo());
+        featureMap.put("valence", vibe.getFeatures().getValence());
+        featureMap.put("liveness", vibe.getFeatures().getLiveness());
+        featureMap.put("acousticness", vibe.getFeatures().getAcousticness());
+        featureMap.put("danceability", vibe.getFeatures().getDanceability());
+        featureMap.put("energy", vibe.getFeatures().getEnergy());
+        featureMap.put("speechiness", vibe.getFeatures().getSpeechiness());
+        featureMap.put("instrumentalness", vibe.getFeatures().getInstrumentalness());
+        
+        vibeMap.put("features", featureMap);
+        
+        return new JSONObject(vibeMap);
+    }
 
 }
