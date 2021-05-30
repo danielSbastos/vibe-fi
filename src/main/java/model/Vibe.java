@@ -10,28 +10,25 @@ public class Vibe {
     private VibeTemplate originTemplate;
     private String name;
     private String description;
-    private Features minFeatures;
-    private Features maxFeatures;
+    private Features features;
     private VibeSeed[] vibeSeeds;
-    
+
     public Vibe(String id, String userId, String originTemplateId, String name, String description) {
         setId(id);
         this.userId = userId;
         this.originTemplateId = originTemplateId;
         this.name = name;
         this.description = description;
-        this.minFeatures = new Features();
-        this.maxFeatures = new Features();
+        this.features = new Features();
     }
-    
+
     public Vibe(String userId, String originTemplateId, String name, String description) {
         setId(UUID.randomUUID().toString());
         this.userId = userId;
         this.originTemplateId = originTemplateId;
         this.name = name;
         this.description = description;
-        this.minFeatures = new Features();
-        this.maxFeatures = new Features();
+        this.features = new Features();
     }
 
     public Vibe(String userId, VibeTemplate originTemplate) {
@@ -40,62 +37,49 @@ public class Vibe {
         this.originTemplateId = originTemplate.getId();
         this.name = originTemplate.getName();
         this.description = originTemplate.getDescription();
-        this.minFeatures = originTemplate.getMinFeatures();
-        this.maxFeatures = originTemplate.getMaxFeatures();
+        this.features = originTemplate.getFeatures();
     }
 
-    public Vibe(String id, String userId, String originTemplateId, String name, String description,
-            Features minFeatures, Features maxFeatures) {
+    public Vibe(String id, String userId, String originTemplateId, String name, String description, Features features) {
         setId(id);
         this.userId = userId;
         this.originTemplateId = originTemplateId;
         this.name = name;
         this.description = description;
-        this.minFeatures = minFeatures;
-        this.maxFeatures = maxFeatures;
+        this.features = features;
     }
 
-    public Vibe(String userId, String originTemplateId, String name, String description,
-            Features minFeatures, Features maxFeatures) {
+    public Vibe(String userId, String originTemplateId, String name, String description, Features features) {
         setId(UUID.randomUUID().toString());
         this.userId = userId;
         this.originTemplateId = originTemplateId;
         this.name = name;
         this.description = description;
-        this.minFeatures = minFeatures;
-        this.maxFeatures = maxFeatures;
+        this.features = features;
     }
 
-    public Vibe(String id, String userId, String originTemplateId, String name, String description,
-            Integer minPopularity, Integer maxPopularity, Double minTempo, Double maxTempo, Double minValence,
-            Double maxValence, Double minLiveness, Double maxLiveness, Double minAcousticness, Double maxAcousticness,
-            Double minDanceability, Double maxDanceability, Double minEnergy, Double maxEnergy, Double minSpeechiness,
-            Double maxSpeechiness, Double minInstrumentalness, Double maxInstrumentalness) {
+    public Vibe(String id, String userId, String originTemplateId, String name, String description, Integer popularity,
+            Double tempo, Double valence, Double liveness, Double acousticness, Double danceability, Double energy,
+            Double speechiness, Double instrumentalness) {
         setId(id);
         this.userId = userId;
         this.originTemplateId = originTemplateId;
         this.name = name;
         this.description = description;
-        this.minFeatures = new Features(minPopularity, minTempo, minValence, minLiveness, minAcousticness,
-                minDanceability, minEnergy, minSpeechiness, minInstrumentalness);
-        this.maxFeatures = new Features(maxPopularity, maxTempo, maxValence, maxLiveness, maxAcousticness,
-                maxDanceability, maxEnergy, maxSpeechiness, maxInstrumentalness);
+        this.features = new Features(popularity, tempo, valence, liveness, acousticness, danceability, energy,
+                speechiness, instrumentalness);
     }
 
-    public Vibe(String userId, String originTemplateId, String name, String description,
-            Integer minPopularity, Integer maxPopularity, Double minTempo, Double maxTempo, Double minValence,
-            Double maxValence, Double minLiveness, Double maxLiveness, Double minAcousticness, Double maxAcousticness,
-            Double minDanceability, Double maxDanceability, Double minEnergy, Double maxEnergy, Double minSpeechiness,
-            Double maxSpeechiness, Double minInstrumentalness, Double maxInstrumentalness) {
+    public Vibe(String userId, String originTemplateId, String name, String description, Integer minPopularity,
+            Integer popularity, Double tempo, Double valence, Double liveness, Double acousticness, Double danceability,
+            Double energy, Double speechiness, Double instrumentalness) {
         setId(UUID.randomUUID().toString());
         this.userId = userId;
         this.originTemplateId = originTemplateId;
         this.name = name;
         this.description = description;
-        this.minFeatures = new Features(minPopularity, minTempo, minValence, minLiveness, minAcousticness,
-                minDanceability, minEnergy, minSpeechiness, minInstrumentalness);
-        this.maxFeatures = new Features(maxPopularity, maxTempo, maxValence, maxLiveness, maxAcousticness,
-                maxDanceability, maxEnergy, maxSpeechiness, maxInstrumentalness);
+        this.features = new Features(popularity, tempo, valence, liveness, acousticness, danceability, energy,
+                speechiness, instrumentalness);
     }
 
     public String getId() {
@@ -164,11 +148,7 @@ public class Vibe {
         this.vibeSeeds = vibeSeeds;
     }
 
-    public Features getMinFeatures() {
-        return this.minFeatures;
-    }
-
-    public Features getMaxFeatures() {
-        return this.maxFeatures;
+    public Features getFeatures() {
+        return this.features;
     }
 }

@@ -44,34 +44,23 @@ public class VibeTemplateDAO {
     private PreparedStatement prepareCreateTemplateSQLStatement(VibeTemplate template) throws SQLException {
         connect();
 
-        String query = "INSERT INTO vibefi.template("
-                + "idtemplate, name, description, minpopularity, maxpopularity, mintempo, maxtempo, minvalence, maxvalence,"
-                + " minliveness, maxliveness, minacousticness, maxacousticness, mindanceability, maxdanceability, minenergy,"
-                + " maxenergy, minspeechiness, maxspeechiness, mininstrumentalness, maxinstrumentalness)"
+        String query = "INSERT INTO vibefi.template(" + "idtemplate, name, description, popularity, tempo, valence,"
+                + " liveness, acousticness, danceability, energy," + " speechiness, instrumentalness)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement pst = connection.prepareStatement(query);
 
         pst.setString(1, template.getId());
         pst.setString(2, template.getName());
         pst.setObject(3, template.getDescription());
-        pst.setObject(4, template.getMinFeatures().getPopularity());
-        pst.setObject(5, template.getMaxFeatures().getPopularity());
-        pst.setObject(6, template.getMinFeatures().getTempo());
-        pst.setObject(7, template.getMaxFeatures().getTempo());
-        pst.setObject(8, template.getMinFeatures().getValence());
-        pst.setObject(9, template.getMaxFeatures().getValence());
-        pst.setObject(10, template.getMinFeatures().getLiveness());
-        pst.setObject(11, template.getMaxFeatures().getLiveness());
-        pst.setObject(12, template.getMinFeatures().getAcousticness());
-        pst.setObject(13, template.getMaxFeatures().getAcousticness());
-        pst.setObject(14, template.getMinFeatures().getDanceability());
-        pst.setObject(15, template.getMaxFeatures().getDanceability());
-        pst.setObject(16, template.getMinFeatures().getEnergy());
-        pst.setObject(17, template.getMaxFeatures().getEnergy());
-        pst.setObject(18, template.getMinFeatures().getSpeechiness());
-        pst.setObject(19, template.getMaxFeatures().getSpeechiness());
-        pst.setObject(20, template.getMinFeatures().getInstrumentalness());
-        pst.setObject(21, template.getMaxFeatures().getInstrumentalness());
+        pst.setObject(4, template.getFeatures().getPopularity());
+        pst.setObject(5, template.getFeatures().getTempo());
+        pst.setObject(6, template.getFeatures().getValence());
+        pst.setObject(7, template.getFeatures().getLiveness());
+        pst.setObject(8, template.getFeatures().getAcousticness());
+        pst.setObject(9, template.getFeatures().getDanceability());
+        pst.setObject(10, template.getFeatures().getEnergy());
+        pst.setObject(11, template.getFeatures().getSpeechiness());
+        pst.setObject(12, template.getFeatures().getInstrumentalness());
 
         return pst;
     }
@@ -102,33 +91,22 @@ public class VibeTemplateDAO {
     private PreparedStatement prepareUpdateTemplateSQLStatement(VibeTemplate template) throws SQLException {
         connect();
 
-        String query = "UPDATE vibefi.template"
-                + " SET name=?, description=?, minpopularity=?, maxpopularity=?, mintempo=?, maxtempo=?, minvalence=?, maxvalence=?,"
-                + " minliveness=?, maxliveness=?, minacousticness=?, maxacousticness=?, mindanceability=?, maxdanceability=?,"
-                + " minenergy=?, maxenergy=?, minspeechiness=?, maxspeechiness=?, mininstrumentalness=?, maxinstrumentalness=?"
+        String query = "UPDATE vibefi.template" + " SET name=?, description=?, popularity=?, tempo=?, valence=?,"
+                + " liveness=?, acousticness=?, danceability=?," + " energy=?, speechiness=?, instrumentalness=?"
                 + " WHERE idtemplate=?;";
         PreparedStatement pst = connection.prepareStatement(query);
 
         pst.setString(1, template.getName());
         pst.setObject(2, template.getDescription());
-        pst.setObject(3, template.getMinFeatures().getPopularity());
-        pst.setObject(4, template.getMaxFeatures().getPopularity());
-        pst.setObject(5, template.getMinFeatures().getTempo());
-        pst.setObject(6, template.getMaxFeatures().getTempo());
-        pst.setObject(7, template.getMinFeatures().getValence());
-        pst.setObject(8, template.getMaxFeatures().getValence());
-        pst.setObject(9, template.getMinFeatures().getLiveness());
-        pst.setObject(10, template.getMaxFeatures().getLiveness());
-        pst.setObject(11, template.getMinFeatures().getAcousticness());
-        pst.setObject(12, template.getMaxFeatures().getAcousticness());
-        pst.setObject(13, template.getMinFeatures().getDanceability());
-        pst.setObject(14, template.getMaxFeatures().getDanceability());
-        pst.setObject(15, template.getMinFeatures().getEnergy());
-        pst.setObject(16, template.getMaxFeatures().getEnergy());
-        pst.setObject(17, template.getMinFeatures().getSpeechiness());
-        pst.setObject(18, template.getMaxFeatures().getSpeechiness());
-        pst.setObject(19, template.getMinFeatures().getInstrumentalness());
-        pst.setObject(20, template.getMaxFeatures().getInstrumentalness());
+        pst.setObject(3, template.getFeatures().getPopularity());
+        pst.setObject(4, template.getFeatures().getTempo());
+        pst.setObject(5, template.getFeatures().getValence());
+        pst.setObject(6, template.getFeatures().getLiveness());
+        pst.setObject(7, template.getFeatures().getAcousticness());
+        pst.setObject(8, template.getFeatures().getDanceability());
+        pst.setObject(9, template.getFeatures().getEnergy());
+        pst.setObject(10, template.getFeatures().getSpeechiness());
+        pst.setObject(11, template.getFeatures().getInstrumentalness());
         pst.setString(21, template.getId());
 
         return pst;
@@ -173,16 +151,11 @@ public class VibeTemplateDAO {
 
             if (rs.next()) {
                 template = new VibeTemplate(rs.getString("idTemplate"), rs.getString("name"),
-                        (String) rs.getObject("description"), (Integer) rs.getObject("minPopularity"),
-                        (Integer) rs.getObject("maxPopularity"), (Double) rs.getObject("minTempo"),
-                        (Double) rs.getObject("maxTempo"), (Double) rs.getObject("minValence"),
-                        (Double) rs.getObject("maxValence"), (Double) rs.getObject("minLiveness"),
-                        (Double) rs.getObject("maxLiveness"), (Double) rs.getObject("minAcousticness"),
-                        (Double) rs.getObject("maxAcousticness"), (Double) rs.getObject("minDanceability"),
-                        (Double) rs.getObject("maxDanceability"), (Double) rs.getObject("minEnergy"),
-                        (Double) rs.getObject("maxEnergy"), (Double) rs.getObject("minSpeechiness"),
-                        (Double) rs.getObject("maxSpeechiness"), (Double) rs.getObject("minInstrumentalness"),
-                        (Double) rs.getObject("maxInstrumentalness"));
+                        (String) rs.getObject("description"), (Integer) rs.getObject("popularity"),
+                        (Double) rs.getObject("tempo"), (Double) rs.getObject("valence"),
+                        (Double) rs.getObject("liveness"), (Double) rs.getObject("acousticness"),
+                        (Double) rs.getObject("danceability"), (Double) rs.getObject("energy"),
+                        (Double) rs.getObject("speechiness"), (Double) rs.getObject("instrumentalness"));
             }
             pst.close();
         } catch (Exception e) {
@@ -205,16 +178,11 @@ public class VibeTemplateDAO {
 
                 for (int i = 0; rs.next(); i++) {
                     templates[i] = new VibeTemplate(rs.getString("idTemplate"), rs.getString("name"),
-                            (String) rs.getObject("description"), (Integer) rs.getObject("minPopularity"),
-                            (Integer) rs.getObject("maxPopularity"), (Double) rs.getObject("minTempo"),
-                            (Double) rs.getObject("maxTempo"), (Double) rs.getObject("minValence"),
-                            (Double) rs.getObject("maxValence"), (Double) rs.getObject("minLiveness"),
-                            (Double) rs.getObject("maxLiveness"), (Double) rs.getObject("minAcousticness"),
-                            (Double) rs.getObject("maxAcousticness"), (Double) rs.getObject("minDanceability"),
-                            (Double) rs.getObject("maxDanceability"), (Double) rs.getObject("minEnergy"),
-                            (Double) rs.getObject("maxEnergy"), (Double) rs.getObject("minSpeechiness"),
-                            (Double) rs.getObject("maxSpeechiness"), (Double) rs.getObject("minInstrumentalness"),
-                            (Double) rs.getObject("maxInstrumentalness"));
+                            (String) rs.getObject("description"), (Integer) rs.getObject("popularity"),
+                            (Double) rs.getObject("tempo"), (Double) rs.getObject("valence"),
+                            (Double) rs.getObject("liveness"), (Double) rs.getObject("acousticness"),
+                            (Double) rs.getObject("danceability"), (Double) rs.getObject("energy"),
+                            (Double) rs.getObject("speechiness"), (Double) rs.getObject("instrumentalness"));
                 }
             }
 

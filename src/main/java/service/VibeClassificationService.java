@@ -43,17 +43,11 @@ public class VibeClassificationService {
         for (Object track : tracks) {
             JSONObject jsonFeatures = new JSONObject((HashMap<String, Object>) ((JSONObject) track).get("features"));
 
-            Features _features = new Features(
-                    null,
-                    (Double) jsonFeatures.get("tempo"),
-                    (Double) jsonFeatures.get("valence"),
-                    (Double) jsonFeatures.get("liveness"),
-                    (Double) jsonFeatures.get("acousticness"),
-                    (Double) jsonFeatures.get("danceability"),
-                    (Double) jsonFeatures.get("energy"),
-                    (Double) jsonFeatures.get("speechiness"),
-                    (Double) jsonFeatures.get("instrumentalness")
-            );
+            Features _features = new Features(null, (Double) jsonFeatures.get("tempo"),
+                    (Double) jsonFeatures.get("valence"), (Double) jsonFeatures.get("liveness"),
+                    (Double) jsonFeatures.get("acousticness"), (Double) jsonFeatures.get("danceability"),
+                    (Double) jsonFeatures.get("energy"), (Double) jsonFeatures.get("speechiness"),
+                    (Double) jsonFeatures.get("instrumentalness"));
             _features.trackId = (String) ((JSONObject) track).get("id");
             features[i] = _features;
             i++;
@@ -61,7 +55,8 @@ public class VibeClassificationService {
 
         Classifier classifier = new Classifier(features);
         List<Map<String, Object>> result = classifier.classify();
-        List<Map<String, Object>> filteredResult = result.stream().filter((r) ->  templateIds.contains((String) r.get("class"))).collect(Collectors.toList());
+        List<Map<String, Object>> filteredResult = result.stream()
+                .filter((r) -> templateIds.contains((String) r.get("class"))).collect(Collectors.toList());
 
         String userId = request.cookie("user_id");
         VibeTemplateDAO vibeTemplateDAO = new VibeTemplateDAO();
@@ -86,22 +81,20 @@ public class VibeClassificationService {
         return 200;
     }
 
-    // create vibeseeds to their vibe. The seed identifier will be the track identifier from Spotify
+    // create vibeseeds to their vibe. The seed identifier will be the track
+    // identifier from Spotify
     private void createVibeSeeds(Vibe vibe, String classifiedClass, List<Map<String, Object>> features) {
         VibeSeed vibeSeed;
         // go through all the features and if the current one`s class
         // is equal to the class (templateID) we are currently creating seeds
-        // then create a vibeseed using passing in the vibe id, identifier (track id) and type
+        // then create a vibeseed using passing in the vibe id, identifier (track id)
+        // and type
         VibeSeed[] vibeSeeds = vibeSeedDao.getVibeSeedsByVibe(vibe.getId());
         if (vibeSeeds == null) {
             for (Map<String, Object> _features : features) {
                 if (_features.get("class").equals(classifiedClass)) {
                     try {
-                        vibeSeed = new VibeSeed(
-                                vibe.getId(),
-                                ((Features) _features.get("feature")).trackId,
-                                "track"
-                        );
+                        vibeSeed = new VibeSeed(vibe.getId(), ((Features) _features.get("feature")).trackId, "track");
                         vibeSeedDao.createVibeSeed(vibeSeed);
                     } catch (Exception err) {
                         err.printStackTrace();
@@ -120,9 +113,8 @@ public class VibeClassificationService {
         // if otherwise, simply return the found vibe to be later
         // used on the vibeseed creation process
         if (vibes != null) {
-            List<Vibe> filteredVibes = Arrays
-                    .stream(vibes)
-                    .filter((v) -> v.getOriginTemplateId() != null && v.getOriginTemplateId().equals(vibeTemplate.getId()))
+            List<Vibe> filteredVibes = Arrays.stream(vibes).filter(
+                    (v) -> v.getOriginTemplateId() != null && v.getOriginTemplateId().equals(vibeTemplate.getId()))
                     .collect(Collectors.toList());
             if (!filteredVibes.isEmpty()) {
                 vibe = filteredVibes.get(0);
@@ -130,11 +122,8 @@ public class VibeClassificationService {
         }
 
         if (vibe == null) {
-            vibe = new Vibe(
-                    userId, vibeTemplate.getId(), vibeTemplate.getName(),
-                    vibeTemplate.getDescription(), vibeTemplate.getMinFeatures(),
-                    vibeTemplate.getMinFeatures()
-            );
+            vibe = new Vibe(userId, vibeTemplate.getId(), vibeTemplate.getName(), vibeTemplate.getDescription(),
+                    vibeTemplate.getFeatures());
             vibeDao.createVibe(vibe);
         }
 

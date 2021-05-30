@@ -6,67 +6,56 @@ public class VibeTemplate {
     private String id;
     private String name;
     private String description;
-    private Features minFeatures;
-    private Features maxFeatures;
-    
+    private Features features;
+
     public VibeTemplate(String id, String name, String description) {
         setId(id);
         this.name = name;
         this.description = description;
-        this.minFeatures = new Features();
-        this.maxFeatures = new Features();
+        this.features = new Features();
     }
 
     public VibeTemplate(String name, String description) {
         setId(UUID.randomUUID().toString());
         this.name = name;
         this.description = description;
-        this.minFeatures = new Features();
-        this.maxFeatures = new Features();
+        this.features = new Features();
+
     }
 
-    public VibeTemplate(String id, String name, String description, Features minFeatures, Features maxFeatures) {
+    public VibeTemplate(String id, String name, String description, Features features) {
         setId(id);
         this.name = name;
         this.description = description;
-        this.minFeatures = minFeatures;
-        this.maxFeatures = maxFeatures;
+        this.features = features;
     }
 
-    public VibeTemplate(String name, String description, Features minFeatures, Features maxFeatures) {
+    public VibeTemplate(String name, String description, Features features) {
         setId(UUID.randomUUID().toString());
         this.name = name;
         this.description = description;
-        this.minFeatures = minFeatures;
-        this.maxFeatures = maxFeatures;
+        this.features = features;
+
     }
-    
-    public VibeTemplate(String id, String name, String description, Integer minPopularity, Integer maxPopularity,
-            Double minTempo, Double maxTempo, Double minValence, Double maxValence, Double minLiveness,
-            Double maxLiveness, Double minAcousticness, Double maxAcousticness, Double minDanceability,
-            Double maxDanceability, Double minEnergy, Double maxEnergy, Double minSpeechiness, Double maxSpeechiness,
-            Double minInstrumentalness, Double maxInstrumentalness) {
+
+    public VibeTemplate(String id, String name, String description, Integer popularity, Double tempo, Double valence,
+            Double liveness, Double acousticness, Double danceability, Double energy, Double speechiness,
+            Double instrumentalness) {
         setId(id);
         this.name = name;
         this.description = description;
-        this.minFeatures = new Features(minPopularity, minTempo, minValence, minLiveness, minAcousticness,
-                minDanceability, minEnergy, minSpeechiness, minInstrumentalness);
-        this.maxFeatures = new Features(maxPopularity, maxTempo, maxValence, maxLiveness, maxAcousticness,
-                maxDanceability, maxEnergy, maxSpeechiness, maxInstrumentalness);
+        this.features = new Features(popularity, tempo, valence, liveness, acousticness, danceability, energy,
+                speechiness, instrumentalness);
     }
 
-    public VibeTemplate(String name, String description, Integer minPopularity, Integer maxPopularity,
-            Double minTempo, Double maxTempo, Double minValence, Double maxValence, Double minLiveness,
-            Double maxLiveness, Double minAcousticness, Double maxAcousticness, Double minDanceability,
-            Double maxDanceability, Double minEnergy, Double maxEnergy, Double minSpeechiness, Double maxSpeechiness,
-            Double minInstrumentalness, Double maxInstrumentalness) {
+    public VibeTemplate(String name, String description, Integer popularity, Double tempo, Double valence,
+            Double liveness, Double acousticness, Double danceability, Double energy, Double speechiness,
+            Double instrumentalness) {
         setId(UUID.randomUUID().toString());
         this.name = name;
         this.description = description;
-        this.minFeatures = new Features(minPopularity, minTempo, minValence, minLiveness, minAcousticness,
-                minDanceability, minEnergy, minSpeechiness, minInstrumentalness);
-        this.maxFeatures = new Features(maxPopularity, maxTempo, maxValence, maxLiveness, maxAcousticness,
-                maxDanceability, maxEnergy, maxSpeechiness, maxInstrumentalness);
+        this.features = new Features(popularity, tempo, valence, liveness, acousticness, danceability, energy,
+                speechiness, instrumentalness);
     }
 
     public String getId() {
@@ -93,11 +82,7 @@ public class VibeTemplate {
         this.description = description;
     }
 
-    public Features getMinFeatures() {
-        return this.minFeatures;
-    }
-
-    public Features getMaxFeatures() {
-        return this.maxFeatures;
+    public Features getFeatures() {
+        return this.features;
     }
 }
