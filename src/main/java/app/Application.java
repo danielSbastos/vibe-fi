@@ -48,14 +48,14 @@ public class Application {
         post("/vibe", (request, response) -> vibeService.add(request, response));
         get("/vibe/:id", (request, response) -> vibeService.get(request, response));
         get("/vibe/user/:userId", (request, response) -> vibeService.getFromUser(request, response));
-        get("/vibe/update/:id", (request, response) -> vibeService.update(request, response));
+        post("/vibe/update/:id", "application/json", (request, response) -> vibeService.update(request, response));
         get("/vibe/delete/:id", (request, response) -> vibeService.remove(request, response));
 
         // Application VibeSeed
         post("/vibeseed", (request, response) -> vibeSeedService.add(request, response));
         get("/vibeseed/:id", (request, response) -> vibeSeedService.get(request, response));
         get("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));
-        get("/vibeseed/delete/:id", (request, response) -> vibeSeedService.remove(request, response));
+        get("/vibeseed/delete/:id",  (request, response) -> vibeSeedService.remove(request, response));
 
         // Application VibeTemplate
         get("/vibetemplate/all", (request, response) -> templateService.getDescription(request, response));

@@ -20,18 +20,17 @@ window.onload = () => {
 
 	$("#saveChanges").click(() => {
 		playlist.name =
-			$("#exampleFormControlInput1").val() == ""
-				? playlist.name
-				: $("#exampleFormControlInput1").val()
+			$("#vibeName").val() == "" ? playlist.name : $("#vibeName").val()
 		playlist.description =
-			$("#exampleFormControlTextarea1").val() == ""
+			$("#vibeDescription").val() == ""
 				? playlist.description
-				: $("#exampleFormControlTextarea1").val()
+				: $("#vibeDescription").val()
 
 		$.ajax({
-			url: `${window.location.protocol}//${window.location.host}/vibe/update/${vibeId}?`,
-			type: "GET",
-			data: playlist
+			url: `${window.location.protocol}//${window.location.host}/vibe/update/${vibeId}`,
+			type: "POST",
+			data: JSON.stringify(playlist),
+			contentType: "application/json; charset=utf-8"
 		}).done(function (data) {
 			console.log(data)
 			window.location = window.location
@@ -44,29 +43,28 @@ function setSlider(param, data, percentVlaue = true) {
 		$("#toggle-" + param).addClass("add-feature")
 		$("#toggle-" + param + ">i").removeClass("fa-minus-circle")
 		$("#toggle-" + param + ">i").addClass("fa-plus-circle")
-        $("#" + param + "-range").prop("disabled", true)
+		$("#" + param + "-range").prop("disabled", true)
 
 		$("#toggle-" + param).click(evt => {
 			playlist.features[param] = $("#" + param + "-range").val()
 			setSlider(param, playlist, percentVlaue)
 		})
-
 	} else {
+		$("#" + param + "-range").val(
+			data.features[param] !== null ? data.features[param] : 0
+		)
 
-        $("#toggle-" + param).removeClass("add-feature")
-        $("#toggle-" + param + ">i").removeClass("fa-plus-circle")
-        $("#toggle-" + param + ">i").addClass("fa-minus-circle")
-        
-        $("#" + param + "-range").prop("disabled", false)
+		$("#toggle-" + param).removeClass("add-feature")
+		$("#toggle-" + param + ">i").removeClass("fa-plus-circle")
+		$("#toggle-" + param + ">i").addClass("fa-minus-circle")
+
+		$("#" + param + "-range").prop("disabled", false)
 
 		$("#toggle-" + param).click(evt => {
 			playlist.features[param] = null
 			setSlider(param, playlist, percentVlaue)
 		})
 
-		$("#" + param + "-range").val(
-			data.features[param] === null ? 0 : data.features[param]
-		)
 		$(document).on("input", "#" + param + "-range", () => {
 			$("#" + param + "-amount").text(
 				Math.round(
@@ -75,10 +73,10 @@ function setSlider(param, data, percentVlaue = true) {
 						: $("#" + param + "-range").val()
 				)
 			)
-			
+
 			playlist.features[param] = $("#" + param + "-range").val()
 		})
-		$("#popularity-amount").text(
+		$("#" + param + "-amount").text(
 			Math.round(
 				percentVlaue
 					? $("#" + param + "-range").val() * 100
@@ -89,7 +87,7 @@ function setSlider(param, data, percentVlaue = true) {
 }
 
 function setSliders(data) {
-	setSlider("popularity", data)
+	setSlider("popularity", data, false)
 	setSlider("tempo", data, false)
 	setSlider("valence", data)
 	setSlider("liveness", data)

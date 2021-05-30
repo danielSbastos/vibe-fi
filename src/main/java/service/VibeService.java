@@ -4,6 +4,8 @@ import dao.*;
 import model.*;
 import spark.Request;
 import spark.Response;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class VibeService {
 
@@ -122,28 +124,30 @@ public class VibeService {
         String id = (request.params(":id"));
         
 		Vibe vibe = (Vibe) vibeDAO.getVibe(id);
+        JSONObject requestBody = (JSONObject) JSONValue.parse(request.body());
 
         if (vibe != null) {
-            vibe.setName(request.queryParams("name"));
-            vibe.setUserId(request.queryParams("userId"));
-            vibe.setOriginTemplateId(request.queryParams("originTemplateId"));
-            vibe.setDescription(request.queryParams("description"));
-
-            // System.out.println(request.queryParams("minFeatures[tempo]") == "" ? 0 : request.queryParams("minFeatures[tempo]"));
+            vibe.setName((String) requestBody.get("name"));
+            vibe.setUserId((String) requestBody.get("userId"));
+            vibe.setOriginTemplateId((String) requestBody.get("originTemplateId"));
+            vibe.setDescription((String) requestBody.get("description"));
             
-            vibe.getFeatures().setPopularity(Integer.parseInt(request.queryParams("features[popularity]").equals("") ? "0" : request.queryParams("features[popularity]")));
-            vibe.getFeatures().setTempo(Double.parseDouble(request.queryParams("features[tempo]").equals("") ? "0" : request.queryParams("features[tempo]")));
-            vibe.getFeatures().setValence(Double.parseDouble(request.queryParams("features[valence]").equals("") ? "0" : request.queryParams("features[valence]")));
-            vibe.getFeatures().setLiveness(Double.parseDouble(request.queryParams("features[liveness]").equals("") ? "0" : request.queryParams("features[liveness]")));
-            vibe.getFeatures().setAcousticness(Double.parseDouble(request.queryParams("features[acousticness]").equals("") ? "0" : request.queryParams("features[acousticness]")));
-            vibe.getFeatures().setDanceability(Double.parseDouble(request.queryParams("features[danceability]").equals("") ? "0" : request.queryParams("features[danceability]")));
-            vibe.getFeatures().setEnergy(Double.parseDouble(request.queryParams("features[energy]").equals("") ? "0" : request.queryParams("features[energy]")));
-            vibe.getFeatures().setSpeechiness(Double.parseDouble(request.queryParams("features[speechiness]").equals("") ? "0" : request.queryParams("features[speechiness]")));
-            vibe.getFeatures().setInstrumentalness(Double.parseDouble(request.queryParams("features[instrumentalness]").equals("") ? "0" : request.queryParams("features[instrumentalness]")));
+            // System.out.println(request.queryParams("minFeatures[tempo]") == "" ? 0 : request.queryParams("minFeatures[tempo]"));
+            JSONObject features = (JSONObject) requestBody.get("features");
 
-        	vibeDAO.updateVibe(vibe);
-        	
-            return id;
+            vibe.getFeatures().setPopularity(features.get("popularity") == null ? null : Integer.valueOf(String.valueOf(features.get("popularity"))));
+            vibe.getFeatures().setTempo( features.get("tempo") == null ? null : Double.valueOf(String.valueOf( features.get("tempo"))));
+            vibe.getFeatures().setValence(features.get("valence") == null ? null : Double.valueOf(String.valueOf( features.get("valence"))));
+            vibe.getFeatures().setLiveness(features.get("liveness") == null ? null : Double.valueOf(String.valueOf( features.get("liveness"))));
+            vibe.getFeatures().setAcousticness(features.get("acousticness") == null ? null : Double.valueOf(String.valueOf( features.get("acousticness"))));
+            vibe.getFeatures().setDanceability(features.get("danceability") == null ? null : Double.valueOf(String.valueOf( features.get("danceability"))));
+            vibe.getFeatures().setEnergy( features.get("energy") == null ? null : Double.valueOf(String.valueOf( features.get("energy"))));
+            vibe.getFeatures().setSpeechiness(features.get("speechiness") == null ? null : Double.valueOf(String.valueOf( features.get("speechiness"))));
+            vibe.getFeatures().setInstrumentalness(features.get("instrumentalness") == null ? null : Double.valueOf(String.valueOf( features.get("instrumentalness"))));
+
+            vibeDAO.updateVibe(vibe);
+            
+            return vibe;
         } else {
             response.status(404); // 404 Not found
             return "Produto nao encontrado.";
