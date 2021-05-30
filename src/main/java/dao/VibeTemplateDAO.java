@@ -151,7 +151,7 @@ public class VibeTemplateDAO {
 
             if (rs.next()) {
                 template = new VibeTemplate(rs.getString("idTemplate"), rs.getString("name"),
-                        (String) rs.getObject("description"), (Integer) rs.getObject("popularity"),
+                        (String) rs.getObject("description"), (String) rs.getObject("imgUrl"), (Integer) rs.getObject("popularity"),
                         (Double) rs.getObject("tempo"), (Double) rs.getObject("valence"),
                         (Double) rs.getObject("liveness"), (Double) rs.getObject("acousticness"),
                         (Double) rs.getObject("danceability"), (Double) rs.getObject("energy"),
@@ -178,7 +178,7 @@ public class VibeTemplateDAO {
 
                 for (int i = 0; rs.next(); i++) {
                     templates[i] = new VibeTemplate(rs.getString("idTemplate"), rs.getString("name"),
-                            (String) rs.getObject("description"), (Integer) rs.getObject("popularity"),
+                            (String) rs.getObject("description"), (String) rs.getObject("imgUrl"), (Integer) rs.getObject("popularity"),
                             (Double) rs.getObject("tempo"), (Double) rs.getObject("valence"),
                             (Double) rs.getObject("liveness"), (Double) rs.getObject("acousticness"),
                             (Double) rs.getObject("danceability"), (Double) rs.getObject("energy"),

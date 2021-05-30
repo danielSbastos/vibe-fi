@@ -13,10 +13,10 @@ window.onload = () =>{
 function createCard(data){
     cards = "";
     data.templates.forEach((e) => {
-        cards += `<div class="col-md-4" onclick="toggleActive(this)">
+        cards += `<div class="col-md-4 p-4" onclick="toggleActive(this)">
                     <div class="card select-card cardActive" id="${e.id}">
                         <div class="card-img-block">
-                            <img class="card-img-top" src="https://picsum.photos/200/150/"
+                            <img class="card-img-top" src="${e.imgUrl}"
                                 alt="Card image cap">
                         </div>
                         <div class="card-body pt-0">

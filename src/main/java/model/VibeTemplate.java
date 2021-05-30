@@ -6,6 +6,7 @@ public class VibeTemplate {
     private String id;
     private String name;
     private String description;
+    private String imgUrl;
     private Features features;
 
     public VibeTemplate(String id, String name, String description) {
@@ -38,12 +39,13 @@ public class VibeTemplate {
 
     }
 
-    public VibeTemplate(String id, String name, String description, Integer popularity, Double tempo, Double valence,
+    public VibeTemplate(String id, String name, String description, String imgUrl, Integer popularity, Double tempo, Double valence,
             Double liveness, Double acousticness, Double danceability, Double energy, Double speechiness,
             Double instrumentalness) {
         setId(id);
         this.name = name;
         this.description = description;
+        this.imgUrl = imgUrl;
         this.features = new Features(popularity, tempo, valence, liveness, acousticness, danceability, energy,
                 speechiness, instrumentalness);
     }
@@ -84,5 +86,9 @@ public class VibeTemplate {
 
     public Features getFeatures() {
         return this.features;
+    }
+
+    public String getImgUrl() {
+        return this.imgUrl;
     }
 }

@@ -32,6 +32,7 @@ public class TemplateService {
                 json.put("id", template[i].getId());
                 json.put("name", template[i].getName());
                 json.put("desc", template[i].getDescription());
+                json.put("imgUrl", template[i].getImgUrl());
                 templates.add(json);
             }
             tmp.put("templates", templates);
