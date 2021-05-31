@@ -105,15 +105,6 @@ public class VibeSeedDAO {
         return pst;
     }
 
-    private PreparedStatement prepareDeleteAllVibeSeedsSQLStatement() throws SQLException {
-        connect();
-
-        String query = "DELETE FROM vibefi.vibeseed";
-        PreparedStatement pst = connection.prepareStatement(query);
-
-        return pst;
-    }
-
     /******************************************************************************************/
 
     /* CRUD */

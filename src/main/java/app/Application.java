@@ -47,6 +47,7 @@ public class Application {
         post("/vibe/generate", (request, response) -> vibeClassificationService.generate(request, response));
         post("/vibe", (request, response) -> vibeService.add(request, response));
         get("/vibe/:id", (request, response) -> vibeService.get(request, response));
+        get("/vibe/recommend/:id", (request, response) -> vibeService.recommend(request, response));
         get("/vibe/user/:userId", (request, response) -> vibeService.getFromUser(request, response));
         post("/vibe/update/:id", "application/json", (request, response) -> vibeService.update(request, response));
         get("/vibe/delete/:id", (request, response) -> vibeService.remove(request, response));
