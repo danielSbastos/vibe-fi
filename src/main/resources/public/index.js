@@ -25,7 +25,7 @@ function loadhome (data){
     for  (i = 0;i<data.length;i++){
         cards += `<div id="card" class="col-lg-4">
         <div class="card border-dark w100 vibecard">
-            <img class="card-img-top" src="assets/VibefiFull.png" alt="Imagem de capa do card">
+            <img class="card-img-top" src="${data[i].imgUrl}" alt="Imagem de capa do card">
             <div class="card-body">
                 <h5 class="card-title">${data[i].name}</h5>
                 <p class="card-text">${data[i].description}</p>

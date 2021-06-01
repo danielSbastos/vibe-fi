@@ -132,7 +132,7 @@ function setCards(data){
                     <div class="card vibecard">
                         <div class="card-body">
                             <h5 class="card-img-top">
-                                <img src="../../assets/VibefiFull.png" alt="">${e.name}
+                                <img src="${e.imgUrl}" alt="">${e.name}
                             </h5>
                             <p class="card-text">${e.description}</p>
                             <a href="../vibe/?vibeId=${e.id}" class="btn btn-lg float-end btn-success">Editar</a>

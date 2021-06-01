@@ -119,6 +119,7 @@ function setSliders(data) {
 }
 
 function setDesc(data) {
+	$('#imgbarra').attr('src',data.imgUrl);
 	$("#vibeName").attr("value", data.name)
 	$("#vibeDescription").text(data.description)
 	$("#playlist-name > h1").text(data.name)
