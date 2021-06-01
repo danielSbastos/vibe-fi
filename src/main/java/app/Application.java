@@ -60,5 +60,6 @@ public class Application {
 
         // Application VibeTemplate
         get("/vibetemplate/all", (request, response) -> templateService.getDescription(request, response));
+        get("/vibetemplate/:id", (request, response) -> templateService.getTemplateImage(request, response));
     }
 }
