@@ -5,6 +5,9 @@ import static spark.Spark.*;
 import service.*;
 import util.cors.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Application {
     private static UserService userService = new UserService();
     private static VibeService vibeService = new VibeService();
@@ -23,6 +26,13 @@ public class Application {
 
         CorsFilter corsFilter = new CorsFilter();
         corsFilter.apply();
+
+        before((request, response) -> {
+            List<String> blackListPaths = Arrays.asList("/login", "/callback", "/logout");
+            if (!blackListPaths.contains(request.pathInfo())) {
+                authService.refresh(request, response);
+            }
+        });
 
         get("/userTop", "application/json",
                 (request, response) -> spotifyService.getUserTop(request, response));

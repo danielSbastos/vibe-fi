@@ -1,7 +1,6 @@
 package service;
 
 import dao.UserDAO;
-// import lib.Classifier;
 import model.Features;
 import model.User;
 import org.json.simple.JSONObject;
@@ -47,6 +46,32 @@ public class AuthService {
         return "success";
     }
 
+    public Object refresh(Request request, Response response) {
+        String accessToken = request.cookie("access_token");
+        if (accessToken == null) {
+            String rawAuthHeader = CLIENT_ID + ':' + CLIENT_SECRET;
+            String encodedAuth = Base64.getEncoder().encodeToString(rawAuthHeader.getBytes());
+            String refreshToken = request.cookie("refresh_token");
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest refreshRequest = HttpRequest
+                    .newBuilder()
+                    .uri(URI.create(ACCOUNT_URL))
+                    .headers("Authorization", "Basic " + encodedAuth, "Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.ofString("refresh_token=" + refreshToken + "&grant_type=refresh_token"))
+                    .build();
+            try {
+                HttpResponse<String> refreshResponse = client.send(refreshRequest, HttpResponse.BodyHandlers.ofString());
+                Map<String, Object> body = responseMapBody(refreshResponse.body());
+                response.cookie("access_token", (String) body.get("access_token"),
+                        Math.toIntExact((Long) body.get("expires_in")));
+            } catch (Exception err) {
+                err.printStackTrace();
+            }
+        }
+        return "ok";
+    }
+
     public Object callback(Request request, Response response) {
         HttpClient client = HttpClient.newHttpClient();
         int stat = 0;
@@ -57,8 +82,6 @@ public class AuthService {
             HttpResponse<String> tokenResponse = client.send(tokenRequest, HttpResponse.BodyHandlers.ofString());
             if (tokenResponse.statusCode() == 200) {
                 Map<String, Object> tokenBody = responseMapBody(tokenResponse.body());
-
-                //classifyUserTracks((String) tokenBody.get("access_token"));
 
                 HttpRequest accountRequest = accountRequest((String) tokenBody.get("access_token"));
                 HttpResponse<String> accountResponse = client.send(accountRequest,
@@ -164,6 +187,4 @@ public class AuthService {
         response.redirect("/");
         return null;
     }
-
-
 }
