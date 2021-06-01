@@ -8,8 +8,9 @@ window.onload = () => {
 		url: `${window.location.protocol}//${window.location.host}/vibe/${vibeId}?`,
 		type: "GET",
 		dataType: "json"
-	}).done(data => {
+	}).done((data) => {
 		playlist = data
+		console.log(data)
 		if (data.userId == userId) {
 			setSliders(data)
 			setDesc(data)
@@ -32,7 +33,17 @@ window.onload = () => {
 			data: JSON.stringify(playlist),
 			contentType: "application/json; charset=utf-8"
 		}).done(function (data) {
-			console.log(data)
+			$.ajax({
+				url: `${window.location.protocol}//${window.location.host}/vibe/recommend/${vibeId}`,
+				type: "GET",
+				data: JSON.stringify(playlist),
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": "Bearer " + getCookie("access_token")
+				}
+			}).done(function (data) {
+				showPlaylist(JSON.parse(data))
+			})
 		})
 	})
 }
@@ -44,7 +55,7 @@ function setSlider(param, data, percentVlaue = true) {
 		$("#toggle-" + param + ">i").addClass("fa-plus-circle")
 		$("#" + param + "-range").prop("disabled", true)
 
-		$("#toggle-" + param).click(evt => {
+		$("#toggle-" + param).click((evt) => {
 			playlist.features[param] = $("#" + param + "-range").val()
 			setSlider(param, playlist, percentVlaue)
 		})
@@ -59,7 +70,7 @@ function setSlider(param, data, percentVlaue = true) {
 
 		$("#" + param + "-range").prop("disabled", false)
 
-		$("#toggle-" + param).click(evt => {
+		$("#toggle-" + param).click((evt) => {
 			playlist.features[param] = null
 			setSlider(param, playlist, percentVlaue)
 		})
@@ -83,6 +94,16 @@ function setSlider(param, data, percentVlaue = true) {
 			)
 		)
 	}
+}
+
+function showPlaylist(data) {
+	$("#playlist-body").html("");
+	data.tracks.forEach((track) => {
+		$("#playlist-body").append(`<div class="card mb-3 bg-dark">
+										<iframe src="https://open.spotify.com/embed/track/${track.id}" width="100%" height="80" frameborder="0"
+											allowtransparency="true" allow="encrypted-media"></iframe>
+									</div>`)
+	})
 }
 
 function setSliders(data) {
@@ -124,3 +145,19 @@ function setNoAcess() {
 	content = `<div class="display-6 text-center p-5">Parece que você não possui acesso a essa Vibe :(</div>`
 	$(".vibe-container").html(content)
 }
+
+/*function 
+
+function search(q) {
+    $.ajax({
+		url: "https://api.spotify.com/v1/search",
+		type: "GET",
+		data: { q: q, type: "track,artist", limit:10},
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + getCookie("access_token")
+		}
+	}).done(function (data) {
+		console.log(data)
+	})
+}*/

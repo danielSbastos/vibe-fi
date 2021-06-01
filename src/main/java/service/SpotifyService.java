@@ -64,6 +64,7 @@ public class SpotifyService {
 
         return tracksJSON;
     }
+
     private JSONObject getUserTop(String authorization, String timeRange, int limit) {
         HttpClient client = HttpClient.newHttpClient();
 
@@ -209,7 +210,7 @@ public class SpotifyService {
         for (Object artist : (JSONArray) topArtists.get("items")) {
             if (artist instanceof JSONObject) {
                 artists.add(parseArtist((JSONObject) artist));
-
+                
                 total++;
             }
         }

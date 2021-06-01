@@ -199,6 +199,32 @@ public class VibeService {
         return HttpRequest.newBuilder().uri(URI.create(baseUrl + query)).headers("Authorization", authorization,
                 "Accept", "application/json", "Content-Type", "application/json").GET().build();
     }
+    
+    @SuppressWarnings("unchecked")
+    private JSONObject parseRecommendationResponse(JSONObject recommendationResponse) {
+        Map<String, Object> playlistMap = new HashMap<>();
+        JSONArray tracks = new JSONArray();
+        int total = 0;
+    
+        for(Object track : (JSONArray) recommendationResponse.get("tracks")) {
+            if (track instanceof JSONObject) {
+                JSONObject trackJSON = (JSONObject)track;
+                Map<String, Object> trackMap = new HashMap<>();
+                
+                trackMap.put("id", trackJSON.get("id"));
+                trackMap.put("href", trackJSON.get("href"));
+                trackMap.put("uri", trackJSON.get("uri"));
+                trackMap.put("name", trackJSON.get("name"));
+
+                total++;
+                tracks.add(new JSONObject(trackMap));
+            }
+        }
+        playlistMap.put("tracks", tracks);
+        playlistMap.put("total", total);
+
+        return new JSONObject(playlistMap);
+    }
 
     public JSONObject recommend(Request request, Response response) {
         HttpClient client = HttpClient.newHttpClient();
@@ -213,7 +239,7 @@ public class VibeService {
             HttpResponse<String> spotifyResponse = client.send(http, HttpResponse.BodyHandlers.ofString());
 
             if (spotifyResponse.statusCode() == 200) {
-                returnJSON = (JSONObject) JSONValue.parse(spotifyResponse.body());
+                returnJSON = parseRecommendationResponse((JSONObject) JSONValue.parse(spotifyResponse.body()));
             } else {
                 returnJSON = (JSONObject) JSONValue.parse(spotifyResponse.body());
             }

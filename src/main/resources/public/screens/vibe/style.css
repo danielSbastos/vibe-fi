@@ -28,6 +28,19 @@ html {
 	height: 50px;
 }
 
+.playlist-tracks {
+	height: 100vh;
+	overflow: scroll;
+}
+
+.playlist-tracks {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.playlist-tracks::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
 .feature-range::-webkit-slider-thumb {
 	background: #006900;
 }
@@ -42,22 +55,22 @@ html {
 
 .toggle-feature {
 	color: #ad0000;
-    font-size: 3rem;
-    text-align: center;
+	font-size: 3rem;
+	text-align: center;
 }
 
 .toggle-feature:hover {
 	color: #dd0000;
-    font-size: 3rem;
-    text-align: center;
+	font-size: 3rem;
+	text-align: center;
 }
 
 .add-feature {
-	color: #006900
+	color: #006900;
 }
 
 .add-feature:hover {
-	color: #009600
+	color: #009600;
 }
 
 .vibe-pic img {
