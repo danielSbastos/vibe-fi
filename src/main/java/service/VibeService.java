@@ -235,9 +235,9 @@ public class VibeService {
 
         try {
             HttpRequest http = userRecommendationRequest(request.headers("Authorization"),
-                    vibeSeedDAO.getVibeSeedsByVibe(vibe.getId()), vibe.getFeatures(), 50);
+                    vibeSeedDAO.getVibeSeedsByVibe(vibe.getId()), vibe.getFeatures(), 20);
             HttpResponse<String> spotifyResponse = client.send(http, HttpResponse.BodyHandlers.ofString());
-
+            
             if (spotifyResponse.statusCode() == 200) {
                 returnJSON = parseRecommendationResponse((JSONObject) JSONValue.parse(spotifyResponse.body()));
             } else {
