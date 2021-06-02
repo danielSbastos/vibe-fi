@@ -34,8 +34,7 @@ public class Application {
             }
         });
 
-        get("/userTop", "application/json",
-                (request, response) -> spotifyService.getUserTop(request, response));
+        get("/userTop", "application/json", (request, response) -> spotifyService.getUserTop(request, response));
 
         get("/cookies/deleteMissingClasses", (request, response) -> {
             response.removeCookie("/", "missing-classes");
@@ -58,6 +57,8 @@ public class Application {
         post("/vibe", (request, response) -> vibeService.add(request, response));
         get("/vibe/:id", (request, response) -> vibeService.get(request, response));
         get("/vibe/recommend/:id", (request, response) -> vibeService.recommend(request, response));
+        post("/vibe/playlist/:userId", "application/json",
+                (request, response) -> vibeService.createPlaylist(request, response));
         get("/vibe/user/:userId", (request, response) -> vibeService.getFromUser(request, response));
         post("/vibe/update/:id", "application/json", (request, response) -> vibeService.update(request, response));
         get("/vibe/delete/:id", (request, response) -> vibeService.remove(request, response));
@@ -66,7 +67,7 @@ public class Application {
         post("/vibeseed", (request, response) -> vibeSeedService.add(request, response));
         get("/vibeseed/:id", (request, response) -> vibeSeedService.get(request, response));
         get("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));
-        get("/vibeseed/delete/:id",  (request, response) -> vibeSeedService.remove(request, response));
+        get("/vibeseed/delete/:id", (request, response) -> vibeSeedService.remove(request, response));
 
         // Application VibeTemplate
         get("/vibetemplate/all", (request, response) -> templateService.getDescription(request, response));

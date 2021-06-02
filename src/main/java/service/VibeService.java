@@ -103,7 +103,7 @@ public class VibeService {
 
     public Object update(Request request, Response response) {
         String id = (request.params(":id"));
-        
+
         Vibe vibe = (Vibe) vibeDAO.getVibe(id);
         JSONObject requestBody = (JSONObject) JSONValue.parse(request.body());
 
@@ -191,7 +191,7 @@ public class VibeService {
 
         return query;
     }
-    
+
     private HttpRequest userRecommendationRequest(String authorization, VibeSeed[] seeds, Features features,
             int limit) {
         String baseUrl = SPOTIFY_API + "recommendations";
@@ -199,18 +199,18 @@ public class VibeService {
         return HttpRequest.newBuilder().uri(URI.create(baseUrl + query)).headers("Authorization", authorization,
                 "Accept", "application/json", "Content-Type", "application/json").GET().build();
     }
-    
+
     @SuppressWarnings("unchecked")
     private JSONObject parseRecommendationResponse(JSONObject recommendationResponse) {
         Map<String, Object> playlistMap = new HashMap<>();
         JSONArray tracks = new JSONArray();
         int total = 0;
-    
-        for(Object track : (JSONArray) recommendationResponse.get("tracks")) {
+
+        for (Object track : (JSONArray) recommendationResponse.get("tracks")) {
             if (track instanceof JSONObject) {
-                JSONObject trackJSON = (JSONObject)track;
+                JSONObject trackJSON = (JSONObject) track;
                 Map<String, Object> trackMap = new HashMap<>();
-                
+
                 trackMap.put("id", trackJSON.get("id"));
                 trackMap.put("href", trackJSON.get("href"));
                 trackMap.put("uri", trackJSON.get("uri"));
@@ -234,7 +234,7 @@ public class VibeService {
         Vibe vibe = (Vibe) vibeDAO.getVibe(id);
 
         try {
-            HttpRequest http = userRecommendationRequest(request.headers("Authorization"), 
+            HttpRequest http = userRecommendationRequest(request.headers("Authorization"),
                     vibeSeedDAO.getVibeSeedsByVibe(vibe.getId()), vibe.getFeatures(), 50);
             HttpResponse<String> spotifyResponse = client.send(http, HttpResponse.BodyHandlers.ofString());
 
@@ -243,6 +243,89 @@ public class VibeService {
             } else {
                 returnJSON = (JSONObject) JSONValue.parse(spotifyResponse.body());
             }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+        return new JSONObject(returnJSON);
+    }
+
+    private HttpRequest createPlaylistRequest(String authorization, String userId, String body) {
+        String baseUrl = SPOTIFY_API + "users/" + userId + "/playlists";
+        return HttpRequest
+                .newBuilder().uri(URI.create(baseUrl)).headers("Authorization", authorization, "Accept",
+                        "application/json", "Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body)).build();
+    }
+
+    private String createPlaylistOnSpotify(HttpClient client, String userId, String authorization, String name,
+            String description) {
+        Map<String, Object> vibeMap = new HashMap<>();
+        String returnObj = "";
+
+        vibeMap.put("name", name);
+        vibeMap.put("description", description);
+
+        try {
+            HttpRequest http = createPlaylistRequest(authorization, userId, new JSONObject(vibeMap).toString());
+            HttpResponse<String> spotifyResponse = client.send(http, HttpResponse.BodyHandlers.ofString());
+            
+            if (spotifyResponse.statusCode() == 200 || spotifyResponse.statusCode() == 201) {
+                returnObj = (String) ((JSONObject) JSONValue.parse(spotifyResponse.body())).get("id");
+            } else {
+                returnObj = spotifyResponse.body();
+            }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+        return returnObj;
+    }
+
+    private HttpRequest updatePlaylistRequest(String authorization, String playlistId, String body) {
+        String baseUrl = SPOTIFY_API + "playlists/" + playlistId + "/tracks";
+        return HttpRequest
+                .newBuilder().uri(URI.create(baseUrl)).headers("Authorization", authorization, "Accept",
+                        "application/json", "Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body)).build();
+    }
+
+    private JSONObject populatePlaylistOnSpotify(HttpClient client, String playlistId, String authorization,
+            JSONArray trackUris) {
+        Map<String, Object> urisMap = new HashMap<>();
+        JSONObject returnObj = new JSONObject();
+
+        urisMap.put("uris", trackUris);
+
+        try {
+            HttpRequest http = updatePlaylistRequest(authorization, playlistId, new JSONObject(urisMap).toString());
+            HttpResponse<String> spotifyResponse = client.send(http, HttpResponse.BodyHandlers.ofString());
+
+            if (spotifyResponse.statusCode() == 200 || spotifyResponse.statusCode() == 201) {
+                returnObj = (JSONObject) JSONValue.parse(spotifyResponse.body());
+            } else {
+                returnObj = (JSONObject) JSONValue.parse(spotifyResponse.body());
+            }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+        return returnObj;
+    }
+
+    public Object createPlaylist(Request request, Response response) {
+        HttpClient client = HttpClient.newHttpClient();
+        JSONObject returnJSON = new JSONObject();
+        String userId = (request.params(":userId"));
+        String authorization = request.headers("Authorization");
+        JSONObject requestBody = (JSONObject) JSONValue.parse(request.body());
+
+        try {
+            String playlistId = createPlaylistOnSpotify(client, userId, authorization, (String) requestBody.get("name"),
+                    (String) requestBody.get("description"));
+            
+            returnJSON = populatePlaylistOnSpotify(client, playlistId, authorization, (JSONArray) requestBody.get("uris"));
+
         } catch (Exception err) {
             err.printStackTrace();
         }

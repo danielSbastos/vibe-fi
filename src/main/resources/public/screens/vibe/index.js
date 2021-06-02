@@ -96,8 +96,34 @@ function setSlider(param, data, percentVlaue = true) {
 	}
 }
 
+function getBodyForPlaylist() {
+	return {
+		name: playlist.name,
+		description: playlist.description,
+		uris: playlist.tracks.map((track) => track.uri)
+	}
+}
+
+function configureExport() {
+	$("#export-button").click(() =>
+		$.ajax({
+			url: `${window.location.protocol}//${window.location.host}/vibe/playlist/${userId}`,
+			type: "POST",
+			data: JSON.stringify(getBodyForPlaylist()),
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": "Bearer " + getCookie("access_token")
+			}
+		}).done(function (data) {
+			console.log(data)
+		})
+	)
+}
+
 function showPlaylist(data) {
-	$("#playlist-body").html("");
+	$("#playlist-body").html("")
+	playlist.tracks = data.tracks
+	configureExport(data)
 	data.tracks.forEach((track) => {
 		$("#playlist-body").append(`<div class="card mb-3 bg-dark">
 										<iframe src="https://open.spotify.com/embed/track/${track.id}" width="100%" height="80" frameborder="0"
@@ -119,9 +145,15 @@ function setSliders(data) {
 }
 
 function setDesc(data) {
-	$('#imgbarra').attr('src',data.imgUrl);
+	$("#imgbarra").attr("src", data.imgUrl)
 	$("#vibeName").attr("value", data.name)
+	$("#vibeName").change(() =>
+		$("#playlist-name > h1").text($("#vibeName").val())
+	)
 	$("#vibeDescription").text(data.description)
+	$("#vibeDescription").change(() =>
+		$("#playlist-name > h5").text($("#vibeDescription").val())
+	)
 	$("#playlist-name > h1").text(data.name)
 	$("#playlist-name > h5").text(data.description)
 }
