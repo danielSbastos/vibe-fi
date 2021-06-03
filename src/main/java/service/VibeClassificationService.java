@@ -19,10 +19,12 @@ import java.util.stream.Collectors;
 public class VibeClassificationService {
     private final VibeDAO vibeDao;
     private final VibeSeedDAO vibeSeedDao;
-
+    private final VibeTemplateDAO vibeTemplateDAO;
+    
     public VibeClassificationService() {
         this.vibeDao = new VibeDAO();
         this.vibeSeedDao = new VibeSeedDAO();
+        this.vibeTemplateDAO = new VibeTemplateDAO();
     }
 
     @SuppressWarnings("unchecked")
@@ -59,11 +61,11 @@ public class VibeClassificationService {
                 .filter((r) -> templateIds.contains((String) r.get("class"))).collect(Collectors.toList());
 
         String userId = request.cookie("user_id");
-        VibeTemplateDAO vibeTemplateDAO = new VibeTemplateDAO();
-
+        vibeDao.deleteAllUserVibes(userId);
+        
         VibeTemplate vibeTemplate;
         Vibe vibe;
-
+        
         HashSet<String> notFoundClasses = new HashSet<>();
         for (String templateId : templateIds) {
             vibeTemplate = vibeTemplateDAO.getVibeTemplate(templateId);

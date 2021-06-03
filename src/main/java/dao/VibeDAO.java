@@ -118,8 +118,19 @@ public class VibeDAO {
 
     private PreparedStatement prepareDeleteVibeSQLStatement(String id) throws SQLException {
         connect();
-
+        
         String query = "DELETE FROM vibefi.vibe WHERE idvibe = ?;";
+        PreparedStatement pst = connection.prepareStatement(query);
+
+        pst.setString(1, id);
+        
+        return pst;
+    }
+
+    private PreparedStatement prepareDeleteVibeFromUserSQLStatement(String id) throws SQLException {
+        connect();
+        
+        String query = "DELETE FROM vibefi.vibe WHERE iduser = ?;";
         PreparedStatement pst = connection.prepareStatement(query);
 
         pst.setString(1, id);
@@ -217,9 +228,24 @@ public class VibeDAO {
     
     public boolean deleteVibe(String id) {
         boolean status = false;
-
+        
         try {
             PreparedStatement pst = prepareDeleteVibeSQLStatement(id);
+            pst.executeUpdate();
+            pst.close();
+            status = true;
+        } catch (SQLException u) {
+            throw new RuntimeException(u);
+        }
+
+        return status;
+    }
+
+    public boolean deleteAllUserVibes(String id) {
+        boolean status = false;
+
+        try {
+            PreparedStatement pst = prepareDeleteVibeFromUserSQLStatement(id);
             pst.executeUpdate();
             pst.close();
             status = true;
