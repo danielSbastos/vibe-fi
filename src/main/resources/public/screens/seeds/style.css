@@ -1,0 +1,68 @@
+html {
+  background-color: white;
+}
+#imgbarra {
+  height: 50px;
+}
+
+.select-card {
+  margin-top: 10px;
+}
+.select-card .card-img-block {
+  width: 91%;
+  margin: 0 auto;
+  position: relative;
+  top: -20px;
+}
+.select-card .card-img-block img {
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.63);
+}
+.fotoActive {
+  filter: grayscale(100%);
+}
+.select-card h5 {
+  color: #4e5e30;
+  font-weight: 600;
+}
+.select-card p {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.cardActive {
+  box-shadow: 0 4px 8px 0 #1db954, 0 6px 20px 0 #1db954;
+}
+
+#search{
+    appearance: none;
+    border: none;
+}
+#barSearch{
+    background-color:red
+}
+
+#btnSearch{
+    background-color: #1db954;
+    border: none;
+}
+
+.artName{
+    position: relative;
+    top: 85%;
+}
+
+#backpack{
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.cardActive{
+	box-shadow: 0 4px 8px 0 #1DB954, 0 6px 20px 0 #1DB954;
+}
+
+#attSeeds{height:100%;}
+
+#attSeeds i{
+    font-size:20px;
+}
