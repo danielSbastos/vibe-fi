@@ -127,7 +127,7 @@ function configureExport() {
 				"Authorization": "Bearer " + getCookie("access_token")
 			}
 		}).done(function (data) {
-			console.log(data)
+			window.location = `${window.location.protocol}//${window.location.host}/screens/perfil`
 		})
 	)
 }

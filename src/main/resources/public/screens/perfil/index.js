@@ -129,7 +129,7 @@ function setCards(data){
     cards = "";
     data.forEach((e) => {
         let isSeedless = e.seeds.length === 0;
-        let editUrl = isSeedless ?  `../seeds/?vibeId=${e.id}&vibeName=${e.name}` : `../vibe/?vibeId=${e.id}`
+        let editUrl = isSeedless ?  `../seeds/?vibeId=${e.id}` : `../vibe/?vibeId=${e.id}`
 
         cards+= `<div class="col-12 col-md-6">
                     <div class="card vibecard">
