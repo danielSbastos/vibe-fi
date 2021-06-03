@@ -127,15 +127,19 @@ function setStats(userData) {
 
 function setCards(data){
     cards = "";
-    data.forEach((e) => {       
+    data.forEach((e) => {
+        let isSeedless = e.seeds.length === 0;
+        let editUrl = isSeedless ?  `../seeds/?vibeId=${e.id}&vibeName=${e.name}` : `../vibe/?vibeId=${e.id}`
+
         cards+= `<div class="col-12 col-md-6">
                     <div class="card vibecard">
                         <div class="card-body">
                             <h5 class="card-img-top">
                                 <img src="${e.imgUrl}" alt="">${e.name}
+                                ${isSeedless ? "<span class=\"badge bg-warning text-dark\">sem músicas</span>" : ""}
                             </h5>
                             <p class="card-text">${e.description}</p>
-                            <a href="../vibe/?vibeId=${e.id}" class="btn btn-lg float-end btn-success">Editar</a>
+                            <a href="${editUrl}" class="btn btn-lg float-end btn-success">Editar</a>
                             <button type="button" onclick="setModal('${e.id}')"  class="btn btn-lg btn-danger float-end me-2"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <i id="deleteVibe" class="far fa-trash-alt "></i>

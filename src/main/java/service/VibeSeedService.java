@@ -2,9 +2,16 @@ package service;
 
 import dao.*;
 import model.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import spark.Request;
 import spark.Response;
 import util.exceptions.InvalidSeedTypeValueException;
+
+import java.util.List;
+import java.util.ArrayList;
 
 public class VibeSeedService {
 
@@ -14,19 +21,31 @@ public class VibeSeedService {
         vibeSeedDAO = new VibeSeedDAO();
     }
 
-    public Object add(Request request, Response response) throws InvalidSeedTypeValueException {
-        String vibeId = request.queryParams("vibeId");
-        String identifier = request.queryParams("identifier");
-        String type = request.queryParams("type");
+    public Object add(Request request, Response response) throws InvalidSeedTypeValueException, ParseException {
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(request.body());
+        JSONArray array = (JSONArray)obj;
 
-        VibeSeed vibeSeed = new VibeSeed(vibeId, identifier, type);
+        List<Boolean> statuses = new ArrayList();
+        boolean status;
 
-        if (vibeSeedDAO.createVibeSeed(vibeSeed)) {
+        for (Object jsonObject : array) {
+            String vibeId = (String) ((JSONObject) jsonObject).get("vibeId");
+            String identifier = (String) ((JSONObject) jsonObject).get("identifier");
+            String type = (String) ((JSONObject) jsonObject).get("type");
+
+            VibeSeed vibeSeed = new VibeSeed(vibeId, identifier, type);
+
+            status = vibeSeedDAO.createVibeSeed(vibeSeed);
+            statuses.add(status);
+        }
+
+        if (!statuses.contains(false)) {
             response.status(201);
         } else {
             response.status(500);
         }
-        return identifier;
+        return "ok";
     }
 
     public Object get(Request request, Response response) {

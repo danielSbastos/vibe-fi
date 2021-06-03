@@ -1,3 +1,11 @@
+const params = new URLSearchParams(window.location.search)
+const vibeId = params.get("vibeId")
+const vibeName = params.get("vibeName")
+
+window.onload = () => {
+    $("#title").text($("#title").text() + ' ' + vibeName)
+}
+
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -122,9 +130,18 @@ function sendIDS(){
   let ids = [];
   let children = $('#artistList').children();
   for(var i = 0; i < children.length; i++){
-    ids[i] = [children[i].id, children[i].getAttribute('seedType')];
+    ids[i] = { vibeId, identifier: children[i].id, type: children[i].getAttribute('seedType') };
   }
-  console.log(ids);
+
+  $.ajax({
+      url: `${window.location.protocol}//${window.location.host}/vibeseed`,
+      type: "POST",
+      data: JSON.stringify(ids),
+      contentType: "application/json; charset=utf-8"
+  }).done(function (data) {
+      console.log(data);
+      window.location = `${window.location.protocol}//${window.location.host}/screens/vibe/?vibeId=${vibeId}`;
+  })
 }
 
 function prepSearch() {

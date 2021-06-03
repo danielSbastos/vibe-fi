@@ -33,19 +33,23 @@ window.onload = () => {
 			data: JSON.stringify(playlist),
 			contentType: "application/json; charset=utf-8"
 		}).done(function (data) {
-			$.ajax({
-				url: `${window.location.protocol}//${window.location.host}/vibe/recommend/${vibeId}`,
-				type: "GET",
-				data: JSON.stringify(playlist),
-				headers: {
-					"Content-Type": "application/json",
-					"Authorization": "Bearer " + getCookie("access_token")
-				}
-			}).done(function (data) {
-				showPlaylist(JSON.parse(data))
-			})
+            recommend(playlist)
 		})
 	})
+}
+
+function recommend(playlist) {
+    $.ajax({
+        url: `${window.location.protocol}//${window.location.host}/vibe/recommend/${vibeId}`,
+        type: "GET",
+        data: JSON.stringify(playlist),
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + getCookie("access_token")
+        }
+    }).done(function (data) {
+        showPlaylist(JSON.parse(data))
+    })
 }
 
 function setSlider(param, data, percentVlaue = true) {

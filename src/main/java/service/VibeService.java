@@ -90,7 +90,7 @@ public class VibeService {
             response.header("Content-Encoding", "UTF-8");
 
             for (int i = 0; i < vibe.length; i++) {
-                resp.add(parseVibe(vibe[i]));
+                resp.add(parseVibe(vibe[i], vibeSeedDAO.getVibeSeedsByVibe(vibe[i].getId())));
             }
 
             return resp;
