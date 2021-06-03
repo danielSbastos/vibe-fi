@@ -214,8 +214,8 @@ public class VibeDAO {
 
         return status;
     }
-
-    public boolean deleteTemplate(String id) {
+    
+    public boolean deleteVibe(String id) {
         boolean status = false;
 
         try {
