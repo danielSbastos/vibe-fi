@@ -7,6 +7,7 @@ public class VibeSeed {
     private Vibe vibe;
     private String identifier;
     private String type;
+    private String description;
 
     public VibeSeed(String identifier, String type) throws InvalidSeedTypeValueException {
         setIdentifier(identifier);
@@ -17,6 +18,13 @@ public class VibeSeed {
         setVibeId(vibeId);
         setIdentifier(identifier);
         setType(type);
+    }
+    
+    public VibeSeed(String vibeId, String identifier, String type, String description) throws InvalidSeedTypeValueException {
+        setVibeId(vibeId);
+        setIdentifier(identifier);
+        setType(type);
+        setDescription(description);
     }
 
     public String getVibeId() {
@@ -47,7 +55,15 @@ public class VibeSeed {
     public String getType() {
         return this.type;
     }
+    
+    public String getDescription() {
+        return this.description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     public void setType(String type) throws InvalidSeedTypeValueException {
         type = type.trim().toLowerCase();
         if (type.equals("track") || type.equals("artist") || type.equals("genre")) {
