@@ -29,7 +29,8 @@ public class Application {
 
         before((request, response) -> {
             List<String> blackListPaths = Arrays.asList("/login", "/callback", "/logout");
-            if (!blackListPaths.contains(request.pathInfo())) {
+            boolean userLoggedIn = request.cookie("user_id") != null;
+            if (userLoggedIn && !blackListPaths.contains(request.pathInfo())) {
                 authService.refresh(request, response);
             }
         });
