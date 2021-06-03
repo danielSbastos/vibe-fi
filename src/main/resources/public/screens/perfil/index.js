@@ -134,7 +134,6 @@ function setCards(data) {
                     <div class="card vibecard">
                         <div class="card-body">
                             <h5 class="card-img-top">
-                                <img src="${e.imgUrl}" alt="">${e.name}
                                 ${
 									isSeedless
 										? '<span class="badge bg-warning text-dark">sem músicas</span>'
