@@ -1,151 +1,181 @@
 const params = new URLSearchParams(window.location.search)
 const vibeId = params.get("vibeId")
-const vibeName = params.get("vibeName")
+const userId = getCookie("user_id")
+let vibe = {}
 
 window.onload = () => {
-    $("#title").text($("#title").text() + ' ' + vibeName)
+	$.ajax({
+		url: `${window.location.protocol}//${window.location.host}/vibeseed/${vibeId}?`,
+		type: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + getCookie("access_token")
+		}
+	}).done((data) => {
+		if (data.vibeUser == userId) {
+			vibe = JSON.parse(JSON.stringify(data))
+			$("#title").text($("#title").text() + " " + data.vibeName)
+			vibe.vibeseeds = []
+			data.vibeseeds.forEach(addSeed)
+		} else {
+			setNoAcess()
+		}
+	})
 }
 
 function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
+	var name = cname + "="
+	var decodedCookie = decodeURIComponent(document.cookie)
+	var ca = decodedCookie.split(";")
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i]
+		while (c.charAt(0) == " ") {
+			c = c.substring(1)
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length)
+		}
+	}
+	return ""
 }
 
 function search(input, type) {
-  $.ajax({
-    url: `https://api.spotify.com/v1/search?q=${input}&type=${type}&limit=6`,
-    type: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + getCookie("access_token"),
-    },
-  })
-    .done(function (data) {
-      if (type == "artist") {
-        genArtists(data, type);
-      } else {
-        genTrack(data, type);
-      }
-    })
-    .fail(() => {
-      console.log("fail");
-    });
+	$.ajax({
+		url: `https://api.spotify.com/v1/search?q=${input}&type=${type}&limit=6`,
+		type: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + getCookie("access_token")
+		}
+	})
+		.done(function (data) {
+			if (type == "artist") {
+				genArtists(data)
+			} else if (type == "track") {
+				genTrack(data)
+			}
+		})
+		.fail(() => {
+			console.log("fail")
+		})
 }
 
-function removeItem(obj, type) {
-  let fullId = obj.innerText.trim() + ";" + obj.id + ";" + type;
-  let element = document.getElementById(fullId);
-  if (element) {
-    element.firstElementChild.classList.toggle("cardActive");
-  }
-  $(`#${obj.id}`).remove();
-  let count = $(`#artistList`).attr(type);
-  $(`#artistList`).attr(`${type}`, parseInt(count) - 1);
+function removeItem(seedId, type) {
+	let fullId = type + ":" + seedId
+	let element = document.getElementById(fullId)
+	if (element) {
+		element.firstElementChild.classList.remove("cardActive")
+	}
+	$(`#${seedId}`).remove()
+
+	let removeIndex = vibe.vibeseeds.findIndex(
+		(seed) => seed.identifier == seedId
+	)
+
+	if (removeIndex > -1) {
+		vibe.vibeseeds.splice(removeIndex, 1)
+	}
+}
+
+function addSeed(seed) {
+	if (vibe.vibeseeds.length >= 5) {
+		alert(`O máximo itens selecionados foi atingido`)
+		return
+	}
+
+	vibe.vibeseeds.push(seed)
+	let icon = seed.type == "track" ? "fas fa-music" : "fas fa-user-alt"
+
+	$("#seedList").append(
+		`<li class="list-group-item bg-transparent text-light border-0" id="${seed.identifier}" seedType="${seed.type}">
+		<i class="${icon}"></i>
+		${seed.description} 
+		<i class="fas fa-trash float-end" onclick="removeItem(this.parentNode.id, this.parentNode.seedType)"></i>
+        </li>`
+	)
+
+	let fullId = seed.type + ":" + seed.identifier
+	let element = document.getElementById(fullId)
+	if (element) {
+		element.firstElementChild.classList.add("cardActive")
+	}
 }
 
 function toggleActive(object) {
-  let info = object.id.split(";");
-  let count = $(`#artistList`).attr(info[2]);
-  let icon = info[2] == "track" ? "fas fa-music" : "fas fa-user-alt";
+	let info = object.id.split(":")
+	seed = {
+		identifier: info[1],
+		description: object.getElementsByClassName("artName")[0].textContent,
+		type: info[0],
+		vibeId: vibeId
+	}
 
-  if ($(`#${info[1]}`).length) {
-    $(`#${info[1]}`).remove();
-    $(`#artistList`).attr(`${info[2]}`, parseInt(count) - 1);
-    object.firstElementChild.classList.toggle("cardActive");
-  } else {
-    if (count >= 5) {
-      alert(`O máximo de ${info[2]} foi atingido`);
-    } else {
-      $("#artistList").append(
-        `<li class="list-group-item bg-transparent text-light border-0" id="${info[1]}" seedType="${info[2]}">
-            <i class="${icon}"></i>
-            ${info[0]} 
-            <i class="fas fa-trash float-end" onclick="removeItem(this.parentNode, '${info[2]}')"></i>
-        </li>`
-      );
-      $(`#artistList`).attr(`${info[2]}`, parseInt(count) + 1);
-
-      object.firstElementChild.classList.toggle("cardActive");
-    }
-  }
+	if ($(`#${seed.identifier}`).length) {
+		removeItem(seed.identifier, seed.type)
+	} else {
+		addSeed(seed)
+	}
 }
 
-function genArtists(data, type) {
-  let content = "";
-  data.artists.items.forEach((e) => {
-    let url = "";
-    if (e.images.length) {
-      url = e.images[0].url;
-    } else {
-      url = "../../assets/VibefiFull.png";
-    }
-    content += `<div class="col-md-4 my-3" onclick="toggleActive(this)" id="${e.name};${e.id};${type}">
+function addCard(item, type, imageUrl) {
+	$("#cardsSelection")
+		.append(`<div class="col-md-4 my-3" onclick="toggleActive(this)" id="${type}:${item.id}">
             <div class="card bg-dark text-white" style="max-height: 260px; overflow: hidden;">
-                <img src="${url}" class="card-img" alt="..." />
+                <img src="${imageUrl}" class="card-img" alt="..." />
                 <div class="card-img-overlay">
-                    <h5 class="card-title artName float-end">${e.name}</h5>
+                    <h5 class="card-title artName float-end">${item.name}</h5>
                 </div>
                 <div class="clear-fix"></div>
             </div>
-        </div>`;
-  });
-  $("#cardsSelection").html(content);
+        </div>`)
 }
 
-function genTrack(data, type) {
-  let content = "";
-  data.tracks.items.forEach((e) => {
-    let url = "";
-    if (e.album.images.length) {
-      url = e.album.images[0].url;
-    } else {
-      url = "../../assets/VibefiFull.png";
-    }
-    content += `<div class="col-md-4 my-3" onclick="toggleActive(this)" id="${e.name};${e.id};${type}">
-              <div class="card bg-dark text-white" style="max-height: 260px; overflow: hidden;">
-                  <img src="${url}" class="card-img" alt="..." />
-                  <div class="card-img-overlay">
-                      <h5 class="card-title artName float-end">${e.name}</h5>
-                  </div>
-                  <div class="clear-fix"></div>
-              </div>
-          </div>`;
-  });
+function genArtists(data) {
+	$("#cardsSelection").html("")
 
-  $("#cardsSelection").html(content);
+	data.artists.items.forEach((artist) => {
+		let url = ""
+		if (artist.images.length) {
+			url = artist.images[0].url
+		} else {
+			url = "../../assets/VibefiFull.png"
+		}
+		addCard(artist, "artist", url)
+	})
 }
 
-function sendIDS(){
-  let ids = [];
-  let children = $('#artistList').children();
-  for(var i = 0; i < children.length; i++){
-    ids[i] = { vibeId, identifier: children[i].id, type: children[i].getAttribute('seedType') };
-  }
+function genTrack(data) {
+	$("#cardsSelection").html("")
 
-  $.ajax({
-      url: `${window.location.protocol}//${window.location.host}/vibeseed`,
-      type: "POST",
-      data: JSON.stringify(ids),
-      contentType: "application/json; charset=utf-8"
-  }).done(function (data) {
-      console.log(data);
-      window.location = `${window.location.protocol}//${window.location.host}/screens/vibe/?vibeId=${vibeId}`;
-  })
+	data.tracks.items.forEach((track) => {
+		let url = ""
+		if (track.album.images.length) {
+			url = track.album.images[0].url
+		} else {
+			url = "../../assets/VibefiFull.png"
+		}
+		addCard(track, "track", url)
+	})
+}
+
+function sendIDS() {
+	$.ajax({
+		url: `${window.location.protocol}//${window.location.host}/vibeseed/allseeds/${vibeId}`,
+		type: "POST",
+		data: JSON.stringify(vibe.vibeseeds),
+		contentType: "application/json; charset=utf-8"
+	}).done(function (data) {
+		window.location = `${window.location.protocol}//${window.location.host}/screens/vibe/?vibeId=${vibeId}`
+	})
 }
 
 function prepSearch() {
-  let input = $("#inputSearch").val();
-  let option = $("#selectSearch").val() === "Artista" ? "artist" : "track";
-  search(input, option);
+	let input = $("#inputSearch").val()
+	let option = $("#selectSearch").val() === "Artista" ? "artist" : "track"
+	search(input, option)
+}
+
+function setNoAcess() {
+	content = `<div class="display-6 text-center p-5">Parece que você não possui acesso a essa Vibe :(</div>`
+	$("#mainContainer").html(content)
 }

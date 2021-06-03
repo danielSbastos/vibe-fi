@@ -59,6 +59,62 @@ public class VibeSeedService {
         return "ok";
     }
 
+    public Object updateSeedsFromVibe(Request request, Response response) throws InvalidSeedTypeValueException, ParseException {
+        String id = (request.params(":vibeId"));
+        VibeSeed[] currentSeeds = (VibeSeed[]) vibeSeedDAO.getVibeSeedsByVibe(id);
+        JSONParser parser = new JSONParser();
+        Object requestBody = parser.parse(request.body());
+        List<Boolean> statuses = new ArrayList<>();
+        boolean status;
+
+        JSONArray seeds = (JSONArray) requestBody;
+        VibeSeed[] newSeeds = new VibeSeed[seeds.size()];
+        int i =0;
+
+        for (Object seedObject : seeds) {
+            if (seedObject instanceof JSONObject) {
+                JSONObject seedJSON = (JSONObject)seedObject;
+
+                String vibeId = (String) seedJSON.get("vibeId");
+                String identifier = (String) seedJSON.get("identifier");
+                String type = (String) seedJSON.get("type");
+
+                VibeSeed vibeSeed = new VibeSeed(vibeId, identifier, type);
+
+                newSeeds[i++] = vibeSeed;
+            }
+        }
+
+        for (i = 0; i<currentSeeds.length; i++) {
+            boolean found = false;
+            for (int j = 0; j < newSeeds.length && !found; j++) {
+                found = currentSeeds[i].getIdentifier().equals(newSeeds[j].getIdentifier());
+            }
+            if (!found) {
+                status = vibeSeedDAO.deleteVibeSeed(currentSeeds[i]);
+                statuses.add(status);
+            }
+        }
+        
+        for (i = 0; i < newSeeds.length; i++) {
+            boolean found = false;
+            for (int j = 0; j < currentSeeds.length && !found; j++) {
+                found = newSeeds[i].getIdentifier().equals(currentSeeds[j].getIdentifier());
+            }
+            if (!found) {
+                status = vibeSeedDAO.deleteVibeSeed(newSeeds[i]);
+                statuses.add(status);
+            }
+        }
+
+        if (!statuses.contains(false)) {
+            response.status(200);
+        } else {
+            response.status(500);
+        }
+        return response;
+    }
+
     private JSONObject vibeSeedToJSON(VibeSeed vs) {
         Map<String, Object> seedMap = new HashMap<>();
 
@@ -187,6 +243,8 @@ public class VibeSeedService {
             returnObj.put("vibeUser", vibe.getUserId());
             returnObj.put("templateId", vibe.getOriginTemplateId());
             returnObj.put("vibeseeds", seedArray);
+
+            response.status(201);
 
             return new JSONObject(returnObj);
         } else {

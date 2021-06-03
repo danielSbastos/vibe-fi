@@ -14,6 +14,7 @@ window.onload = () => {
 		if (data.userId == userId) {
 			setSliders(data)
 			setDesc(data)
+			setLink(vibeId)
 		} else {
 			setNoAcess()
 		}
@@ -33,23 +34,30 @@ window.onload = () => {
 			data: JSON.stringify(playlist),
 			contentType: "application/json; charset=utf-8"
 		}).done(function (data) {
-            recommend(playlist)
+			recommend(playlist)
 		})
 	})
 }
 
+function setLink(vibeId) {
+	$("#go-seeds").click(
+		() =>
+			(window.location = `${window.location.protocol}//${window.location.host}/screens/seeds/?vibeId=${vibeId}`)
+	)
+}
+
 function recommend(playlist) {
-    $.ajax({
-        url: `${window.location.protocol}//${window.location.host}/vibe/recommend/${vibeId}`,
-        type: "GET",
-        data: JSON.stringify(playlist),
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + getCookie("access_token")
-        }
-    }).done(function (data) {
-        showPlaylist(JSON.parse(data))
-    })
+	$.ajax({
+		url: `${window.location.protocol}//${window.location.host}/vibe/recommend/${vibeId}`,
+		type: "GET",
+		data: JSON.stringify(playlist),
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + getCookie("access_token")
+		}
+	}).done(function (data) {
+		showPlaylist(JSON.parse(data))
+	})
 }
 
 function setSlider(param, data, percentVlaue = true) {
