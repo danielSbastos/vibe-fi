@@ -42,7 +42,7 @@ public class AuthService {
 
         response.cookie("/", STATE_KEY, state, 5000, false);
         response.redirect(AUTHORIZE_URL + query);
-
+        
         return "success";
     }
 
@@ -131,7 +131,7 @@ public class AuthService {
             } else {
                 return 0;
             }
-        } else if (user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(0)))) {
+        } else if (user.getLastUpdateDate().before(Timestamp.valueOf(LocalDateTime.now().minusDays(2)))) {
             Features uFeatures = parseFeatures((JSONObject) spotifyService.getUserTop(authToken).get("avgFeatures"));
             user.setName(name);
             user.setImageURL(imageURL);
