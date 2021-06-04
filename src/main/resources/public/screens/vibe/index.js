@@ -117,6 +117,7 @@ function getBodyForPlaylist() {
 }
 
 function configureExport() {
+	$("#export-button").removeClass("d-none")
 	$("#export-button").click(() =>
 		$.ajax({
 			url: `${window.location.protocol}//${window.location.host}/vibe/playlist/${userId}`,
@@ -127,7 +128,7 @@ function configureExport() {
 				"Authorization": "Bearer " + getCookie("access_token")
 			}
 		}).done(function (data) {
-			window.location = `${window.location.protocol}//${window.location.host}/screens/perfil`
+			window.location = `${window.location.protocol}//${window.location.host}/screens/perfil/`
 		})
 	)
 }
