@@ -249,12 +249,11 @@ public class VibeSeedService {
 
             response.status(201);
 
-            return new JSONObject(returnObj);
         } else if (vibe == null){
             response.status(404); // 404 Not found
-            return "Vibe " + id + " nao encontrado.";
+            returnObj.put("error", "Vibe " + id + " nao encontrado.");
         }
-        return "ok";
+        return new JSONObject(returnObj);
 
     }
 
