@@ -12,7 +12,7 @@ window.onload = () => {
 			"Authorization": "Bearer " + getCookie("access_token")
 		}
 	}).done((data) => {
-		data =  JSON.parse(data)
+		if (!data.vibeUser) data = JSON.parse(data)
 		if (data.vibeUser == userId) {
 			vibe = JSON.parse(JSON.stringify(data))
 			$("#title").text($("#title").text() + " " + data.vibeName)
