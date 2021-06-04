@@ -68,7 +68,7 @@ public class Application {
         post("/vibeseed", "application/json", (request, response) -> vibeSeedService.add(request, response));
         post("/vibeseed/allseeds/:vibeId", "application/json",
                 (request, response) -> vibeSeedService.updateSeedsFromVibe(request, response));
-        get("/vibeseed/:vibeId", (request, response) -> vibeSeedService.getSeedsByVibe(request, response));
+        get("/vibeseed/:vibeId", "application/json",(request, response) -> vibeSeedService.getSeedsByVibe(request, response));
         get("/vibeseed/update/:id", (request, response) -> vibeSeedService.update(request, response));
         get("/vibeseed/delete/:id", (request, response) -> vibeSeedService.remove(request, response));
 

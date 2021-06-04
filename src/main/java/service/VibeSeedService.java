@@ -102,7 +102,7 @@ public class VibeSeedService {
                 found = newSeeds[i].getIdentifier().equals(currentSeeds[j].getIdentifier());
             }
             if (!found) {
-                status = vibeSeedDAO.deleteVibeSeed(newSeeds[i]);
+                status = vibeSeedDAO.createVibeSeed(newSeeds[i]);
                 statuses.add(status);
             }
         }
@@ -225,6 +225,14 @@ public class VibeSeedService {
         Vibe vibe = vibeDAO.getVibe(id);
         VibeSeed[] vibeSeed = (VibeSeed[]) vibeSeedDAO.getVibeSeedsByVibe(id);
 
+        if (vibe != null) {
+            returnObj.put("vibeId", vibe.getId());
+            returnObj.put("vibeName", vibe.getName());
+            returnObj.put("vibeDescription", vibe.getDescription());
+            returnObj.put("vibeUser", vibe.getUserId());
+            returnObj.put("templateId", vibe.getOriginTemplateId());
+        }
+        
         if (vibeSeed != null) {
             response.header("Content-Type", "application/json");
             response.header("Content-Encoding", "UTF-8");
@@ -236,21 +244,17 @@ public class VibeSeedService {
             for (int i = 0; i < vibeSeed.length; i++) {
                 seedArray.add(vibeSeedToJSON(vibeSeed[i]));
             }
-
-            returnObj.put("vibeId", vibe.getId());
-            returnObj.put("vibeName", vibe.getName());
-            returnObj.put("vibeDescription", vibe.getDescription());
-            returnObj.put("vibeUser", vibe.getUserId());
-            returnObj.put("templateId", vibe.getOriginTemplateId());
+            
             returnObj.put("vibeseeds", seedArray);
 
             response.status(201);
 
             return new JSONObject(returnObj);
-        } else {
+        } else if (vibe == null){
             response.status(404); // 404 Not found
-            return "Vibeseed " + id + " nao encontrado.";
+            return "Vibe " + id + " nao encontrado.";
         }
+        return "ok";
 
     }
 
