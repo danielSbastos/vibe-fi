@@ -5,7 +5,7 @@ let vibe = {}
 
 window.onload = () => {
 	$.ajax({
-		url: `${window.location.protocol}//${window.location.host}/vibeseed/${vibeId}?`,
+		url: `${window.location.protocol}//${window.location.host}/vibeseed/${vibeId}`,
 		type: "GET",
 		headers: {
 			"Content-Type": "application/json",
