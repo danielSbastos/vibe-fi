@@ -59,7 +59,8 @@ public class VibeSeedService {
         return "ok";
     }
 
-    public Object updateSeedsFromVibe(Request request, Response response) throws InvalidSeedTypeValueException, ParseException {
+    public Object updateSeedsFromVibe(Request request, Response response)
+            throws InvalidSeedTypeValueException, ParseException {
         String id = (request.params(":vibeId"));
         VibeSeed[] currentSeeds = (VibeSeed[]) vibeSeedDAO.getVibeSeedsByVibe(id);
         JSONParser parser = new JSONParser();
@@ -69,11 +70,11 @@ public class VibeSeedService {
 
         JSONArray seeds = (JSONArray) requestBody;
         VibeSeed[] newSeeds = new VibeSeed[seeds.size()];
-        int i =0;
+        int i = 0;
 
         for (Object seedObject : seeds) {
             if (seedObject instanceof JSONObject) {
-                JSONObject seedJSON = (JSONObject)seedObject;
+                JSONObject seedJSON = (JSONObject) seedObject;
 
                 String vibeId = (String) seedJSON.get("vibeId");
                 String identifier = (String) seedJSON.get("identifier");
@@ -85,29 +86,39 @@ public class VibeSeedService {
             }
         }
 
-        for (i = 0; i<currentSeeds.length; i++) {
-            boolean found = false;
-            for (int j = 0; j < newSeeds.length && !found; j++) {
-                found = currentSeeds[i].getIdentifier().equals(newSeeds[j].getIdentifier());
+        if (currentSeeds != null) {
+
+            for (i = 0; i < currentSeeds.length; i++) {
+                boolean found = false;
+                for (int j = 0; j < newSeeds.length && !found; j++) {
+                    found = currentSeeds[i].getIdentifier().equals(newSeeds[j].getIdentifier());
+                }
+                if (!found) {
+                    status = vibeSeedDAO.deleteVibeSeed(currentSeeds[i]);
+                    statuses.add(status);
+                }
             }
-            if (!found) {
-                status = vibeSeedDAO.deleteVibeSeed(currentSeeds[i]);
-                statuses.add(status);
+
+            for (i = 0; i < newSeeds.length; i++) {
+                boolean found = false;
+                for (int j = 0; j < currentSeeds.length && !found; j++) {
+                    found = newSeeds[i].getIdentifier().equals(currentSeeds[j].getIdentifier());
+                }
+                if (!found) {
+                    status = vibeSeedDAO.createVibeSeed(newSeeds[i]);
+                    statuses.add(status);
+                }
             }
-        }
-        
-        for (i = 0; i < newSeeds.length; i++) {
-            boolean found = false;
-            for (int j = 0; j < currentSeeds.length && !found; j++) {
-                found = newSeeds[i].getIdentifier().equals(currentSeeds[j].getIdentifier());
-            }
-            if (!found) {
+        } else {
+            for (i = 0; i < newSeeds.length; i++) {
                 status = vibeSeedDAO.createVibeSeed(newSeeds[i]);
                 statuses.add(status);
             }
         }
 
-        if (!statuses.contains(false)) {
+        if (!statuses.contains(false))
+
+        {
             response.status(200);
         } else {
             response.status(500);
@@ -232,7 +243,7 @@ public class VibeSeedService {
             returnObj.put("vibeUser", vibe.getUserId());
             returnObj.put("templateId", vibe.getOriginTemplateId());
         }
-        
+
         if (vibeSeed != null) {
             response.header("Content-Type", "application/json");
             response.header("Content-Encoding", "UTF-8");
@@ -244,12 +255,12 @@ public class VibeSeedService {
             for (int i = 0; i < vibeSeed.length; i++) {
                 seedArray.add(vibeSeedToJSON(vibeSeed[i]));
             }
-            
+
             returnObj.put("vibeseeds", seedArray);
 
             response.status(201);
 
-        } else if (vibe == null){
+        } else if (vibe == null) {
             response.status(404); // 404 Not found
             returnObj.put("error", "Vibe " + id + " nao encontrado.");
         }

@@ -17,7 +17,7 @@ window.onload = () => {
 			vibe = JSON.parse(JSON.stringify(data))
 			$("#title").text($("#title").text() + " " + data.vibeName)
 			vibe.vibeseeds = []
-			data.vibeseeds.forEach(addSeed)
+			if (data.vibeseeds) data.vibeseeds.forEach(addSeed)
 		} else {
 			setNoAcess()
 		}
