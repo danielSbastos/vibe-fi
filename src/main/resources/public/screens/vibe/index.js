@@ -117,7 +117,7 @@ function getBodyForPlaylist() {
 }
 
 function configureExport() {
-	$("#export-button").removeClass("d-none")
+	$("#playlist-export").removeClass("d-none")
 	$("#export-button").click(() =>
 		$.ajax({
 			url: `${window.location.protocol}//${window.location.host}/vibe/playlist/${userId}`,
