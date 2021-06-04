@@ -203,7 +203,7 @@ public class VibeSeedService {
                     JSONObject artistJSON = (JSONObject) artist;
                     boolean found = false;
                     for (int i = 0; i < vibeSeeds.length && !found; i++) {
-                        if (vibeSeeds[i].getVibeId().equals((String) artistJSON.get("id"))) {
+                        if (vibeSeeds[i].getIdentifier().equals((String) artistJSON.get("id"))) {
                             vibeSeeds[i].setDescription((String) artistJSON.get("name"));
                         }
                     }
