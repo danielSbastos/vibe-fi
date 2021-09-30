@@ -34,14 +34,4 @@ def run(data):
         test_data=DataTable.from_dfd(data_frame_directory),
         append_or_result_only=True)
 
-    grouped = result.data_frame.groupby("Scored Labels")
-    groups = None
-    for name, group in grouped:
-        new_group = group.sort_values(by=['Scored Probabilities_' + name], ascending=False)
-        if groups is None:
-            groups = new_group.head(5)
-        else:
-            groups = groups.append(new_group.head(5))
-
-    return {"result": groups.to_dict(orient="records") }
-
+    return {"result": result.data_frame.to_dict(orient="records") }
